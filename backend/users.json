@@ -1,10 +1,10 @@
 {
     "users": [
         {
-            "name": "username",
+            "name": "test",
             "rname": "name",
             "email": "email",
-            "password": "testpassword"
+            "password": "test"
         }
     ]
 }

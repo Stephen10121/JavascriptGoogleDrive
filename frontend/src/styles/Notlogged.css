@@ -1,7 +1,8 @@
 .not-logged {
   width: 100%;
   height: 100vh;
-  background-color: rgb(19, 19, 19);
+  background-color: #a9c9ff;
+  background-image: linear-gradient(180deg, #a9c9ff 0%, #ffbbec 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,13 +11,21 @@
 
 .welcome-h {
   text-transform: uppercase;
-  font-size: 5rem;
+  font-size: 3.5rem;
   text-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 50;
+}
+
+.sub {
+  font-size: 2rem;
+  text-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin-bottom: 5px;
 }
 
 .links {
   display: flex;
   gap: 10px;
+  z-index: 50;
 }
 
 .home-a-tags {
@@ -30,4 +39,13 @@
 
 .home-a-tags:hover {
   background-color: #2e51c4;
+}
+
+.free {
+  position: absolute;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+  overflow: hidden;
+  color: rgb(121, 92, 40);
+  z-index: 0;
 }
