@@ -21,8 +21,24 @@ app.post('/login', (req, res) => {
     res.send("wow");
 });
 
+const whiteList = [];
+
 io.on('connection', socket => {
-  socket.on("test", (data) => console.log(data));
+    socket.on("auth", (data) => {
+        if (data == "password") {
+            whiteList.push(socket.id);
+        } else {
+            socket.disconnect();
+        }
+    });
+
+    socket.on("test", (data) => {
+        if (whiteList.includes(socket.id)) {
+            console.log(data);
+        } else {
+            socket.disconnect();
+        }
+    });
 });
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}.`));

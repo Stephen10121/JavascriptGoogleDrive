@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Drive</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <form action="/login" method="post">
@@ -12,5 +13,10 @@
         <input type="password" name="password" id="password" placeholder="Password" />
         <button type="submit">Login</button>
     </form>
+    <script>
+        const socket = io();
+        socket.emit("auth", "password");
+        socket.emit("test", "wwo");
+    </script>
 </body>
 </html>
