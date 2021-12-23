@@ -1,7 +1,7 @@
 const http = require("http");
 const express = require('express');
 const socketio = require('socket.io');
-const { createHash } = require("./functions");
+const { userLogin } = require("./database");
 const PORT = 4000;
 const app = express();
 
@@ -24,10 +24,10 @@ const io = socketio(server, {
 
 app.get('/', (req, res) => res.render('index'));
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     if (req.body.username && req.body.password) {
-        console.log(req.body);
-        res.status(200).send({error: "none", key: createHash()});
+        const user = await userLogin(req.body.username, req.body.password);
+        res.status(200).send({error: user.error, key: user});
     } else {
         res.status(400).send("Missing Fields");
     }

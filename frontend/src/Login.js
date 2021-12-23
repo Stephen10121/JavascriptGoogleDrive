@@ -21,6 +21,11 @@ const Login = () => {
       }
     }).then(res => {
       if (res.status === 200) {
+        if (res.data.error !== 200) {
+          setError(res.data.key.errorMessage);
+        } else {
+          setError("");
+        }
         console.log(res.data);
       }
     });
