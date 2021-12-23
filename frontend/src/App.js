@@ -1,53 +1,22 @@
-import { Link } from "react-router-dom";
-import React, { useState, useEffect, useRef } from "react";
-import Notlogged from "./Notlogged";
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import Login from './Login';
+import Signup from './Signup';
+import CheckLog from "./CheckLog";
 import './styles/App.css';
 
-const getCookie = (name) => {
-  var dc = document.cookie;
-  var prefix = name + "=";
-  var begin = dc.indexOf("; " + prefix);
-  if (begin == -1) {
-      begin = dc.indexOf(prefix);
-      if (begin != 0) return null;
-  }
-  else
-  {
-      begin += 2;
-      var end = document.cookie.indexOf(";", begin);
-      if (end == -1) {
-      end = dc.length;
-      }
-  }
-  return decodeURI(dc.substring(begin + prefix.length, end));
-}
-
 const App = () => {
-  const [id, setId] = useState("");
-  const [logged, setLogged] = useState("");
-
-  const isLoggedIn = () => {
-    const gotCookie = getCookie("G_VAR");
-    if (gotCookie) {
-      setId(getCookie);
-      setLogged(<div>Logged in</div>);
-    } else {
-      setLogged(<Notlogged />);
-    }
-  }
-
-  const onStartup = useRef(() => {});
-  onStartup.current = () => {
-    isLoggedIn();
-  }
-
-  useEffect(() => {
-      onStartup.current();
-  }, []);
+  const [userInfo, setUserInfo] = useState(null);
 
   return (
     <div className="App">
-      {logged}
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<CheckLog userInfo={userInfo} setUser={setUserInfo} />} />
+          <Route path="/login" element={<Login setUser={setUserInfo} />} />
+          <Route path="/signup" element={<Signup setUser={setUserInfo} />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

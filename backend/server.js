@@ -1,7 +1,8 @@
 const http = require("http");
 const express = require('express');
 const socketio = require('socket.io');
-const { userLogin } = require("./database");
+const { userLogin, getUserData } = require("./database");
+const { userInfo } = require("os");
 const PORT = 4000;
 const app = express();
 
@@ -21,13 +22,28 @@ const io = socketio(server, {
       methods: ['GET', 'POST']
   }
 });
-
+const theUsernames = {}
 app.get('/', (req, res) => res.render('index'));
 
 app.post('/login', async (req, res) => {
     if (req.body.username && req.body.password) {
         const user = await userLogin(req.body.username, req.body.password);
+        theUsernames[user.data.key] = req.body.username;
         res.status(200).send({error: user.error, key: user});
+    } else {
+        res.status(400).send("Missing Fields");
+    }
+});
+
+app.post('/userinfo', async (req, res) => {
+    if (req.body.id) {
+        if (theUsernames[req.body.id]) {
+            const userinfo = await getUserData(theUsernames[req.body.id]);
+            console.log(userinfo);
+            res.status(200).send({error: 200, user: userInfo});
+        } else {
+            res.status(200).send({error: 1010, errorMessage: "invalid id"});
+        }
     } else {
         res.status(400).send("Missing Fields");
     }

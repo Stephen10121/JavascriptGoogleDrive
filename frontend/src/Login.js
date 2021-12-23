@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import './styles/login.css';
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 const axios = require("axios");
 
-const Login = () => {
+const Login = (props) => {
   const [error, setError] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -25,14 +27,23 @@ const Login = () => {
           setError(res.data.key.errorMessage);
         } else {
           setError("");
+          document.cookie = `G_VAR=${res.data.key.data.key}`;
+          props.setUser(res.data.key.data.userInfo);
+          setRedirect("/");
         }
-        console.log(res.data);
       }
     });
   }
 
+  const checkRedirect = () => {
+    if (redirect) {
+      return <Navigate to={redirect} />
+    }
+  }
+
   return (
     <div className="Login">
+      {checkRedirect()}
       <form className="login-form" onSubmit={submitForm}>
         <p id="error-login">{error}</p>
         <input type="text" name="username" placeholder="Username: " id="username"/>

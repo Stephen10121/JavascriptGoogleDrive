@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import './styles/Notlogged.css';
 
-const Notlogged = () => {
+const Notlogged = (props) => {
   return (
     <div className="not-logged" id="cover">
       <h3 className="welcome-h">Strorage Drive</h3>
