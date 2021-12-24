@@ -3,6 +3,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const { userLogin, getUserData } = require("./database");
 const { userInfo } = require("os");
+const { PassThrough } = require("stream");
 const PORT = 4000;
 const app = express();
 
@@ -39,8 +40,21 @@ app.post('/userinfo', async (req, res) => {
     if (req.body.id) {
         if (theUsernames[req.body.id]) {
             const userinfo = await getUserData(theUsernames[req.body.id]);
-            console.log(userinfo);
             res.status(200).send({error: 200, user: userInfo});
+        } else {
+            res.status(200).send({error: 1010, errorMessage: "invalid id"});
+        }
+    } else {
+        res.status(400).send("Missing Fields");
+    }
+});
+
+app.post("/logout", (req, res) => {
+    console.log("Logout request");
+    if (req.body.id) {
+        if (theUsernames[req.body.id]) {
+            delete theUsernames[req.body.id];
+            res.status(200).send({error: 200, errorMessage: "all-good"});
         } else {
             res.status(200).send({error: 1010, errorMessage: "invalid id"});
         }

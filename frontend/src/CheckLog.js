@@ -7,15 +7,15 @@ const getCookie = (name) => {
   var dc = document.cookie;
   var prefix = name + "=";
   var begin = dc.indexOf("; " + prefix);
-  if (begin == -1) {
+  if (begin === -1) {
       begin = dc.indexOf(prefix);
-      if (begin != 0) return null;
+      if (begin !== 0) return null;
   }
   else
   {
       begin += 2;
       var end = document.cookie.indexOf(";", begin);
-      if (end == -1) {
+      if (end === -1) {
       end = dc.length;
       }
   }
@@ -29,8 +29,11 @@ const CheckLog = (props) => {
   const isLoggedIn = () => {
     const gotCookie = getCookie("G_VAR");
     if (gotCookie) {
-      setId(getCookie);
-      setLogged(<HomePage setUser={props.setUser} userInfo={props.userInfo}/>);
+      setId(gotCookie);
+      if (!window.localStorage.user) {
+        window.localStorage.user = JSON.stringify(props.userInfo);
+      }
+      setLogged(<HomePage id={id}/>);
     } else {
       setLogged(<Notlogged/>);
     }

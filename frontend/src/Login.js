@@ -37,7 +37,7 @@ const Login = (props) => {
 
   const checkRedirect = () => {
     if (redirect) {
-      return <Navigate to={redirect} />
+      return <Navigate to={redirect} />;
     }
   }
 
