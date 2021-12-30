@@ -29,6 +29,7 @@ app.get('/', (req, res) => res.render('index'));
 app.post('/login', async (req, res) => {
     if (req.body.username && req.body.password) {
         const user = await userLogin(req.body.username, req.body.password);
+        delete user.data.userInfo.password;
         theUsernames[user.data.key] = req.body.username;
         res.status(200).send({error: user.error, key: user});
     } else {
@@ -40,7 +41,8 @@ app.post('/userinfo', async (req, res) => {
     if (req.body.id) {
         if (theUsernames[req.body.id]) {
             const userinfo = await getUserData(theUsernames[req.body.id]);
-            res.status(200).send({error: 200, user: userInfo});
+            delete userinfo.password;
+            res.status(200).send({error: 200, user: userinfo});
         } else {
             res.status(200).send({error: 1010, errorMessage: "invalid id"});
         }
@@ -50,7 +52,6 @@ app.post('/userinfo', async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-    console.log("Logout request");
     if (req.body.id) {
         if (theUsernames[req.body.id]) {
             delete theUsernames[req.body.id];

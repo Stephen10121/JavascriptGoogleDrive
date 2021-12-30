@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 const axios = require("axios");
 
@@ -23,7 +23,6 @@ const getCookie = (name) => {
 
 const Logout = () => {
     const removeUser = () => {
-        console.log("logging out");
         const cookie = getCookie("G_VAR");
         if (cookie) {
             axios({
@@ -39,12 +38,9 @@ const Logout = () => {
             }).then(res => {
                 document.cookie = 'G_VAR=; Max-Age=-99999999;';  
                 localStorage.removeItem("user");
-                console.log(res);
-                return(<Navigate to="/" />);
             });
-        } else {
-            return(<Navigate to="/" />);
         }
+        return(<Navigate to="/login" />);
     }
 
     return (
