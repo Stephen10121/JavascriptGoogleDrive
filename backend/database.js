@@ -1,6 +1,4 @@
 const fs = require("fs");
-const { resolve } = require("path");
-const { receiveMessageOnPort } = require("worker_threads");
 const { hashed, createHash } = require("./functions");
 
 function getData() {
@@ -53,6 +51,11 @@ async function signup(username, userPassword, userEmail, name) {
     }
     const sentData = await addData(JSON.stringify(data));
     if (sentData) {
+        var dir = `./storage/${hashed(username)}`;
+
+        fs.mkdir(dir, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
         return({error: 200, data: {userInfo: {rname: name, email: userEmail}, key: createHash()}});
     } else {
         return({error: 1006, errorMessage: "Error Saving Data 1006"});

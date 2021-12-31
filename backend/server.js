@@ -2,7 +2,9 @@ const http = require("http");
 const express = require('express');
 const socketio = require('socket.io');
 const { userLogin, getUserData, signup } = require("./database");
+const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
+const { hashed } = require("./functions");
 const PORT = 4000;
 const app = express();
 
@@ -60,6 +62,19 @@ app.post('/userinfo', async (req, res) => {
             const userinfo = await getUserData(theUsernames[req.body.id]);
             delete userinfo.password;
             res.status(200).send({error: 200, user: userinfo});
+        } else {
+            res.status(200).send({error: 1010, errorMessage: "invalid id"});
+        }
+    } else {
+        res.status(400).send("Missing Fields");
+    }
+});
+
+app.post('/getFiles', async (req, res) => {
+    if (req.body.id) {
+        if (theUsernames[req.body.id]) {
+            const files = await getFiles(`./storage/${hashed(theUsernames[req.body.id])}`);
+            res.status(200).send({error: 200, data: files});
         } else {
             res.status(200).send({error: 1010, errorMessage: "invalid id"});
         }
