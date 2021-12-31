@@ -20,11 +20,43 @@ function getData() {
     });
 }
 
+function addData(data) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('./users.json', data, async (err) => {
+            if (err) {
+                console.log(err);
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
+
 async function getUsers() {
     const user = [];
     const data = await getData();
     for (i in data.users) {user.push(i);}
     return user;
+}
+
+async function signup(username, userPassword, userEmail, name) {
+    const users = await getUsers();
+    if (users.includes(username)) {
+        return({error: 1005, errorMessage: "Username Taken"});
+    }
+    const data = await getData();
+    data.users[username] = {
+        rname: name,
+        email: userEmail,
+        password: hashed(userPassword)
+    }
+    const sentData = await addData(JSON.stringify(data));
+    if (sentData) {
+        return({error: 200, data: {userInfo: {rname: name, email: userEmail}, key: createHash()}});
+    } else {
+        return({error: 1006, errorMessage: "Error Saving Data 1006"});
+    }
 }
 
 async function getUserData(user) {
@@ -37,7 +69,7 @@ async function userLogin(username, password) {
     if (users.includes(username)) {
         const user = await getUserData(username);
         if (user.password == hashed(password)) {
-            return({error: 200, data: {userInfo: user, key: createHash()}})
+            return({error: 200, data: {userInfo: user, key: createHash()}});
         } else {
             return({error: 1001, errorMessage: "Invalid Password"});
         }
@@ -48,5 +80,6 @@ async function userLogin(username, password) {
 
 module.exports = {
     userLogin,
-    getUserData
+    getUserData,
+    signup
 }

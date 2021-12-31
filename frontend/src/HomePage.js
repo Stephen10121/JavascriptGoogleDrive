@@ -8,14 +8,11 @@ const HomePage = (props) => {
 
     const loadUserData = () => {
         if (userId === "") {
-            console.log("true");
             const cook = getCookie("G_VAR")
             if (cook) {
                 setId(cook);
             }
         }
-        console.log(user);
-        console.log(userId);
     }
 
     const onStartup = useRef(() => {});
@@ -29,7 +26,7 @@ const HomePage = (props) => {
 
     return (
     <div className="HomePage">
-        This is the home Home <br/>{user.rname}
+        Hello {user.rname}!
         <Link to="/logout">Logout</Link>
     </div>
     );

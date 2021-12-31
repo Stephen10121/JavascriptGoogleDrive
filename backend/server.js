@@ -1,7 +1,7 @@
 const http = require("http");
 const express = require('express');
 const socketio = require('socket.io');
-const { userLogin, getUserData } = require("./database");
+const { userLogin, getUserData, signup } = require("./database");
 const { userInfo } = require("os");
 const { PassThrough } = require("stream");
 const PORT = 4000;
@@ -32,6 +32,20 @@ app.post('/login', async (req, res) => {
         delete user.data.userInfo.password;
         theUsernames[user.data.key] = req.body.username;
         res.status(200).send({error: user.error, key: user});
+    } else {
+        res.status(400).send("Missing Fields");
+    }
+});
+
+app.post('/signup', async (req, res) => {
+    if (req.body.name && req.body.email && req.body.username && req.body.password && req.body.rpassword) {
+        if (req.body.password === req.body.rpassword) {
+            const user = await signup(req.body.username, req.body.password, req.body.email, req.body.name);
+            //theUsernames[user.data.key] = req.body.username;
+            res.status(200).send({error: user.error, key: user});
+        } else {
+            res.status(200).send({error: 444, key: {errorMessage: "Passwords Dont Match."}})
+        }
     } else {
         res.status(400).send("Missing Fields");
     }

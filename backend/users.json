@@ -1,14 +1,1 @@
-{
-    "users": {
-        "test": {
-            "rname": "Stephen Gruzin",
-            "email": "135407@student.vansd.org",
-            "password": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
-        },
-        "jeff": {
-            "rname": "Jeff",
-            "email": "jeff@gmail.com",
-            "password": "jeffiscool"
-        }
-    }
-}
+{"users":{"test":{"rname":"Stephen Gruzin","email":"135407@student.vansd.org","password":"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"},"jeff":{"rname":"Jeff","email":"jeff@gmail.com","password":"jeffiscool"},"larry404":{"rname":"Larry Bird","email":"larry@gmail.com","password":"e7e4061fdec1d21b915bb84b28a4d4a2a984aff98144a8c8b053d020520f77c5"}}}
