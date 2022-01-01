@@ -74,7 +74,11 @@ app.post('/getFiles', async (req, res) => {
     if (req.body.id) {
         if (theUsernames[req.body.id]) {
             const files = await getFiles(`./storage/${hashed(theUsernames[req.body.id])}`);
-            res.status(200).send({error: 200, data: files});
+            const newFiles = [];
+            for (i in files) {
+                newFiles.push(files[i].replace(`./storage/${hashed(theUsernames[req.body.id])}`,''));
+            }
+            res.status(200).send({error: 200, data: newFiles});
         } else {
             res.status(200).send({error: 1010, errorMessage: "invalid id"});
         }

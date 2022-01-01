@@ -1,0 +1,8 @@
+.file-struct {
+  overflow: hidden;
+}
+
+.file-struct button {
+  white-space: normal;
+  width: 80%;
+}

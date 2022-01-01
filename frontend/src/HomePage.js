@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
+import FileLoad from './LoadFileStruct';
 import { getCookie } from "./Cookie";
-import { files } from "./getFiles";
 import './styles/mainPage.css';
 
 const HomePage = (props) => {
     const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
     const [userId, setId] = useState(getCookie("G_VAR"));
-    const [recievedFiles, setFiles] = useState("No Files");
+    const [currentDirectory, changeCurrentDirectory] = useState("/");
 
     const loadUserData = () => {
         if (userId === "") {
@@ -22,13 +22,6 @@ const HomePage = (props) => {
     onStartup.current = () => {
         loadUserData();
         console.log(user);
-        files(userId).then((data) => {
-            if (data !== "error") {
-                setFiles(data.data.data);
-            } else {
-                console.log(data);
-            }
-        });
     }
 
     useEffect(() => {
@@ -61,12 +54,10 @@ const HomePage = (props) => {
             <div className="name-show">
                 <p className="name-show-p">{user.rname}</p>
             </div>
-            <div>
-                files
-            </div>
+            <FileLoad changeDir={changeCurrentDirectory} id={userId}/>
         </div>
         <div className="main-files">
-            main files
+            {currentDirectory}
         </div>
     </div>
     );
