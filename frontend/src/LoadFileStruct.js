@@ -8,7 +8,12 @@ const FileLoad = (props) => {
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
-        
+        files(props.id).then((data) => {
+            if (data !== "error") {
+                changeFiles(data.data.data);
+            }
+            console.log(data);
+        });
     }
 
     const showFiles = (where) => {
@@ -17,12 +22,6 @@ const FileLoad = (props) => {
     }
 
     useEffect(() => {
-        files(props.id).then((data) => {
-            if (data !== "error") {
-                changeFiles(data.data.data);
-            }
-            console.log(data);
-        });
         onStartup.current();
     }, []);
 
