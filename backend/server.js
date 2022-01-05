@@ -37,7 +37,7 @@ app.post('/login', async (req, res) => {
         const files = await getFiles(`./storage/${hashed(req.body.username)}`);
         const newFiles = [];
         for (i in files) {
-            newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,''));
+            newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,'home'));
         }
         user.data.userInfo['files'] = newFiles;
         res.status(200).send({error: user.error, key: user});
@@ -56,7 +56,7 @@ app.post('/signup', async (req, res) => {
             const files = await getFiles(`./storage/${hashed(req.body.username)}`);
             const newFiles = [];
             for (i in files) {
-                newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,''));
+                newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,'home'));
             }
             user.data.userInfo['files'] = newFiles;
             res.status(200).send({error: user.error, key: user});

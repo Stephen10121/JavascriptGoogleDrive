@@ -3,18 +3,18 @@ import './styles/FileStruct.css';
 
 const FileLoad = (props) => {
     const [files, changeFiles] = useState(JSON.parse(window.localStorage.getItem("user")).files);
-    const [visible, changeVisible] = useState(<button onClick={() => showFiles("/")}>Root</button>);
+    const [visible, changeVisible] = useState(<button onClick={() => showFiles("home")}>Root</button>);
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
-        convertToJson();
+        console.log('loading files');
     }
 
-    const convertToJson = () => {
+    const convertToJson = (theFiles) => {
         const output = {};
         let current;
 
-        for (const path of files) {
+        for (const path of theFiles) {
             current = output;
 
             for (const segment of path.split('/')) {
@@ -26,11 +26,17 @@ const FileLoad = (props) => {
                 }
             }
         }
-        console.log(output);
-        changeFiles(JSON.stringify(output));
+        return(output);
     }
 
     const showFiles = (where) => {
+        const newFileLocation = convertToJson(files)[where];
+        console.log("showing files");
+        console.log(newFileLocation);
+        //const newStruct = newFileLocation.map((file) => {
+        //    <div><button>{file}</button><br/></div>
+        //});
+        //changeVisible(newStruct);
     }
 
     useEffect(() => {
