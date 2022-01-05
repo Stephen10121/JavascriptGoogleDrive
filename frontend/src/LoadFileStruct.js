@@ -1,24 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
-import { files } from "./getFiles";
 import './styles/FileStruct.css';
 
 const FileLoad = (props) => {
-    const [gotFiles, changeFiles] = useState('');
+    const [files, changeFiles] = useState(JSON.parse(window.localStorage.getItem("user")).files);
     const [visible, changeVisible] = useState(<button onClick={() => showFiles("/")}>Root</button>);
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
-        files(props.id).then((data) => {
-            if (data !== "error") {
-                changeFiles(data.data.data);
+        convertToJson();
+    }
+
+    const convertToJson = () => {
+        const output = {};
+        let current;
+
+        for (const path of files) {
+            current = output;
+
+            for (const segment of path.split('/')) {
+                if (segment !== '') {
+                    if (!(segment in current)) {
+                        current[segment] = {};
+                    }
+                    current = current[segment];
+                }
             }
-            console.log(data);
-        });
+        }
+        console.log(output);
+        changeFiles(JSON.stringify(output));
     }
 
     const showFiles = (where) => {
-        console.log(where);
-        console.log(gotFiles);
     }
 
     useEffect(() => {
@@ -28,6 +40,7 @@ const FileLoad = (props) => {
     return (
     <div className="file-struct">
         {visible}
+        {files}
     </div>
     );
 }

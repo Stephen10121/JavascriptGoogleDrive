@@ -11,7 +11,7 @@ const HomePage = (props) => {
 
     const loadUserData = () => {
         if (userId === "") {
-            const cook = getCookie("G_VAR")
+            const cook = getCookie("G_VAR");
             if (cook) {
                 setId(cook);
             }
