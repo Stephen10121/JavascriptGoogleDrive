@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import './styles/FileStruct.css';
 
 const FileLoad = (props) => {
-    const [files, changeFiles] = useState(JSON.parse(window.localStorage.getItem("user")).files);
-    const [visible, changeVisible] = useState(<button onClick={() => showFiles("home")}>Root</button>);
+    const [files] = useState(JSON.parse(window.localStorage.getItem("user")).files);
+    const [visible, changeVisible] = useState([]);
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
@@ -30,13 +30,25 @@ const FileLoad = (props) => {
     }
 
     const showFiles = (where) => {
-        const newFileLocation = convertToJson(files)[where];
+        console.log(where);
+        let newFileLocation;
+        if (where.includes('/')) {
+            where = where.replace("/",".");
+            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(files)));
+        }
+        else {
+            newFileLocation = Object.keys(convertToJson(files)[where]);
+        }
         console.log("showing files");
-        console.log(newFileLocation);
-        //const newStruct = newFileLocation.map((file) => {
-        //    <div><button>{file}</button><br/></div>
-        //});
-        //changeVisible(newStruct);
+        let newFolders = [];
+        for (const checkFile of newFileLocation) {
+            if (!checkFile.includes(".")) {
+                newFolders.push(checkFile);
+            }
+        }
+        const newStruct = newFolders.map((file, index) => <button key={index} onClick={() => showFiles(`${where}/${file}`)}>{file}</button>);
+        console.log(visible);
+        changeVisible(newStruct);
     }
 
     useEffect(() => {
@@ -45,8 +57,8 @@ const FileLoad = (props) => {
 
     return (
     <div className="file-struct">
+        <button onClick={() => showFiles("home")}>Root</button>
         {visible}
-        {files}
     </div>
     );
 }
