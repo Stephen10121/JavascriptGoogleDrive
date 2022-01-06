@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
-import FileLoad from './LoadFileStruct';
+import FolderLoad from './LoadFolderStruct';
+import FileLoad from "./LoadFileStruct";
+import { convertToJson } from "./jsonIt";
 import { getCookie } from "./Cookie";
 import './styles/mainPage.css';
 
 const HomePage = (props) => {
     const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
     const [userId, setId] = useState(getCookie("G_VAR"));
-    const [currentDirectory, changeCurrentDirectory] = useState("/");
+    const [files, changeFiles] = useState([]);
 
     const loadUserData = () => {
         if (userId === "") {
@@ -16,6 +18,24 @@ const HomePage = (props) => {
                 setId(cook);
             }
         }
+    }
+
+    const showFiles = (where) => {
+        let newFileLocation;
+        if (where.includes('/')) {
+            where = where.replace("/",".");
+            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(user.files)));
+        }
+        else {
+            newFileLocation = Object.keys(convertToJson(user.files)[where]);
+        }
+        let newFolders = [];
+        for (const checkFile of newFileLocation) {
+            if (checkFile.includes(".")) {
+                newFolders.push(checkFile);
+            }
+        }
+        changeFiles(newFolders);
     }
 
     const onStartup = useRef(() => {});
@@ -54,10 +74,10 @@ const HomePage = (props) => {
             <div className="name-show">
                 <p className="name-show-p">{user.rname}</p>
             </div>
-            <FileLoad changeDir={changeCurrentDirectory} id={userId}/>
+            <FolderLoad changeDir={showFiles} id={userId}/>
         </div>
         <div className="main-files">
-            {currentDirectory}
+            <FileLoad files={files}/>
         </div>
     </div>
     );
