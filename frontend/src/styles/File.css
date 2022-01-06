@@ -1,0 +1,52 @@
+.file {
+  width: 100%;
+  padding: 5px;
+  background-color: rgb(115, 120, 145);
+  border: none;
+  border-radius: 7px;
+  margin: 5px 0;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+.file:hover {
+  background-color: rgb(86, 90, 109);
+}
+
+.file-container {
+  width: 100%;
+}
+
+.file-popup {
+  position: absolute;
+  background: rgba(10, 10, 10, 0.5);
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-popup div {
+  background-color: rgba(65, 65, 65, 0.5);
+  width: 60%;
+  height: 60%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-popup div button {
+  padding: 10px;
+  border: none;
+  background-color: rgb(255, 165, 0);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.file-popup div button:hover {
+  outline: 1px solid rgb(207, 135, 0);
+  background-color: rgb(207, 135, 0);
+}

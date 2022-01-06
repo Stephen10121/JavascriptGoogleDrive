@@ -10,6 +10,7 @@ const HomePage = (props) => {
     const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
     const [userId, setId] = useState(getCookie("G_VAR"));
     const [files, changeFiles] = useState([]);
+    const [currentPath, changeCurrentPath] = useState('home');
 
     const loadUserData = () => {
         if (userId === "") {
@@ -35,6 +36,7 @@ const HomePage = (props) => {
                 newFolders.push(checkFile);
             }
         }
+        changeCurrentPath(where);
         changeFiles(newFolders);
     }
 
@@ -77,7 +79,7 @@ const HomePage = (props) => {
             <FolderLoad changeDir={showFiles} id={userId}/>
         </div>
         <div className="main-files">
-            <FileLoad files={files}/>
+            <FileLoad path={currentPath} files={files}/>
         </div>
     </div>
     );
