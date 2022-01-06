@@ -1,10 +1,8 @@
-import React, { useState } from "react";
 import { getData } from './getFileData';
+import { getType } from "./fileType";
 import './styles/File.css';
 
 const File = (props) => {
-    const [owner, changeOwner] = useState("Stephen Gruzin");
-    const [dateCreated, changeDateCreated] = useState("11/07/2004");
     const toggle = (e) => {
         let box = document.getElementById(`${props.file}1`);
         let rect = box.getBoundingClientRect();
@@ -28,9 +26,9 @@ const File = (props) => {
             </button>
             <div className='file-popup' id={props.file} onClick={(e) => toggle(e)}>
                 <div id={`${props.file}1`}>
-                    <p>Owner: {owner}</p>
+                    <p>Owner: {props.owner}</p>
                     <p>Path: {`${props.path.replace(".",'/')}/${props.file}`}</p>
-                    <p>Date Created: {dateCreated}</p>
+                    <p>Content-type: {getType(props.file.split(".").reverse()[0])}</p>
                     <button>Download</button>
                 </div>
             </div>

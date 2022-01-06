@@ -76,10 +76,10 @@ const HomePage = (props) => {
             <div className="name-show">
                 <p className="name-show-p">{user.rname}</p>
             </div>
-            <FolderLoad changeDir={showFiles} id={userId}/>
+            <FolderLoad changeDir={showFiles} id={userId} />
         </div>
         <div className="main-files">
-            <FileLoad path={currentPath} files={files}/>
+            <FileLoad path={currentPath} files={files} owner={user.rname}/>
         </div>
     </div>
     );
