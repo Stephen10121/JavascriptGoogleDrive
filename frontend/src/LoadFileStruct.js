@@ -7,6 +7,7 @@ const FileLoad = (props) => {
     const [visible, changeVisible] = useState([]);
 
     const showFiles = (where) => {
+        console.log("show files");
         console.log(visible);
         console.log(where);
         let newFileLocation;
@@ -23,16 +24,50 @@ const FileLoad = (props) => {
                 newFolders.push(checkFile);
             }
         }
-        const newStruct = newFolders.map((file, index) => <li><button key={index} onClick={() => showFiles(`${where}/${file}`)}>{file}</button><ul></ul></li>);
-        document.getElementById(where).appendChild(<button>Cool</button>);
+        return(newFolders.map((file, index) => 
+            <li key={Math.floor(Math.random()*1000)}>
+                <button key={Math.floor(Math.random()*1000)}>{file}</button>
+                <ul key={Math.floor(Math.random()*1000)} className="folder-ul">
+                    {showFiles(`${where}/${file}`)}
+                </ul>
+            </li>
+        ));
+    }
+
+    const renderFolders = (where) => {
+        let newFileLocation;
+        if (where.includes('/')) {
+            where = where.replace("/",".");
+            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(files)));
+        }
+        else {
+            newFileLocation = Object.keys(convertToJson(files)[where]);
+        }
+        let newFolders = [];
+        for (const checkFile of newFileLocation) {
+            if (!checkFile.includes(".")) {
+                newFolders.push(checkFile);
+            }
+        }
+        //const newStruct = newFolders.map((file, index) => <li><button key={index} onClick={() => showFiles(`${where}/${file}`)}>{file}</button><ul></ul></li>);
+        //<button key={index} onClick={() => showFiles(`${where}/${file}`)}>{file}</button>
+        changeVisible(newFolders.map((file, index) => 
+            <li key={Math.floor(Math.random()*1000)}>
+                <button key={Math.floor(Math.random()*1000)}>{file}</button>
+                <ul key={Math.floor(Math.random()*1000)} className="folder-ul">
+                    {showFiles(`${where}/${file}`)}
+                </ul>
+            </li>
+        ));
     }
 
     return (
     <div className="file-struct">
         <ul className="folder-ul">
             <li>
-                <button onClick={() => showFiles("home")}>Root</button>
+                <button onClick={() => renderFolders("home")}>Root</button>
                 <ul className="folder-ul" id="home">
+                    {visible}
                 </ul>
             </li>
         </ul>
