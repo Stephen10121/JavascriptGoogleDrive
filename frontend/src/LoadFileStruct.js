@@ -7,9 +7,6 @@ const FileLoad = (props) => {
     const [visible, changeVisible] = useState([]);
 
     const showFiles = (where) => {
-        console.log("show files");
-        console.log(visible);
-        console.log(where);
         let newFileLocation;
         if (where.includes('/')) {
             where = where.replace("/",".");
@@ -26,8 +23,8 @@ const FileLoad = (props) => {
         }
         return(newFolders.map((file, index) => 
             <li key={Math.floor(Math.random()*1000)}>
-                <button key={Math.floor(Math.random()*1000)}>{file}</button>
-                <ul key={Math.floor(Math.random()*1000)} className="folder-ul">
+                <button key={Math.floor(Math.random()*1000)} onClick={() => {toggleFolder(`${where}/${file}`);props.changeDir(`${where}/${file}`)}}>{file}</button>
+                <ul key={Math.floor(Math.random()*1000)} className="folder-ul hidden" id={`${where}/${file}`}>
                     {showFiles(`${where}/${file}`)}
                 </ul>
             </li>
@@ -53,20 +50,24 @@ const FileLoad = (props) => {
         //<button key={index} onClick={() => showFiles(`${where}/${file}`)}>{file}</button>
         changeVisible(newFolders.map((file, index) => 
             <li key={Math.floor(Math.random()*1000)}>
-                <button key={Math.floor(Math.random()*1000)}>{file}</button>
-                <ul key={Math.floor(Math.random()*1000)} className="folder-ul">
+                <button key={Math.floor(Math.random()*1000)} onClick={() => {toggleFolder(`${where}/${file}`);props.changeDir(`${where}/${file}`)}}>{file}</button>
+                <ul key={Math.floor(Math.random()*1000)} className="folder-ul hidden" id={`${where}/${file}`}>
                     {showFiles(`${where}/${file}`)}
                 </ul>
             </li>
         ));
     }
 
+    const toggleFolder = (which) => {
+        document.getElementById(which).classList.toggle('hidden');
+    }
+
     return (
     <div className="file-struct">
-        <ul className="folder-ul">
+        <ul>
             <li>
-                <button onClick={() => renderFolders("home")}>Root</button>
-                <ul className="folder-ul" id="home">
+                <button onClick={() => {renderFolders("home");toggleFolder('home');props.changeDir('home')}}>Root</button>
+                <ul className="folder-ul hidden" id="home">
                     {visible}
                 </ul>
             </li>
