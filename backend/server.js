@@ -33,13 +33,13 @@ app.post('/login', async (req, res) => {
         if (user.error == 200) {
             delete user.data.userInfo.password;
             theUsernames[user.data.key] = req.body.username;
+            const files = await getFiles(`./storage/${hashed(req.body.username)}`);
+            const newFiles = [];
+            for (i in files) {
+                newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,'home'));
+            }
+            user.data.userInfo['files'] = newFiles;
         }
-        const files = await getFiles(`./storage/${hashed(req.body.username)}`);
-        const newFiles = [];
-        for (i in files) {
-            newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,'home'));
-        }
-        user.data.userInfo['files'] = newFiles;
         res.status(200).send({error: user.error, key: user});
     } else {
         res.status(400).send("Missing Fields");

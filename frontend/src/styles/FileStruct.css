@@ -1,5 +1,6 @@
 .file-struct {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .file-struct button {
