@@ -33,3 +33,11 @@
   flex-direction: column;
   padding: 5px 10px;
 }
+
+#file-empty-p {
+  color: gray;
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
