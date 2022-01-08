@@ -19,7 +19,7 @@ const Signup = (props) => {
     }
     axios({
       method: 'post',
-      url: 'http://192.168.0.24:4000/signup',
+      url: 'https://drive.gruzservices.com/signup',
       data: {
           name: data.rname,
           email: data.email,

@@ -1,4 +1,4 @@
-import { getData } from './getFileData';
+import { downloadFile } from "./fileDownload";
 import { getType } from "./fileType";
 import './styles/File.css';
 
@@ -21,7 +21,7 @@ const File = (props) => {
 
     return (
         <div className='file-container'>
-            <button className="file" onClick={() => {getData(`${props.path.replace(".",'/')}/${props.file}`);showInfo(props.file)}}>
+            <button className="file" onClick={() => {showInfo(props.file)}}>
                 {props.file}
             </button>
             <div className='file-popup' id={props.file} onClick={(e) => toggle(e)}>
@@ -29,7 +29,7 @@ const File = (props) => {
                     <p>Owner: {props.owner}</p>
                     <p>Path: {`${props.path.replace(".",'/')}/${props.file}`}</p>
                     <p>Content-type: {getType(props.file.split(".").reverse()[0])}</p>
-                    <button>Download</button>
+                    <button onClick={() => {downloadFile(props.id, `${props.path.replace(".",'/')}/${props.file}`).then(data=>console.log(data))}}>Download</button>
                 </div>
             </div>
         </div>

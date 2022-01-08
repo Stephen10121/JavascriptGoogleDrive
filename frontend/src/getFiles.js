@@ -3,7 +3,7 @@ const axios = require("axios");
 const files = async (key) => {
     const data = await axios({
         method: 'post',
-        url: 'http://192.168.0.24:4000/getFiles',
+        url: 'https://drive.gruzservices.com/getFiles',
         data: {
             id: key
         }

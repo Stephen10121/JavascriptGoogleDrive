@@ -27,7 +27,7 @@ const Logout = () => {
         if (cookie) {
             axios({
                 method: 'post',
-                url: 'http://192.168.0.24:4000/logout',
+                url: 'https://drive.gruzservices.com/logout',
                 data: {
                     id: cookie
                 }

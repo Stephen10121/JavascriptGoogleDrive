@@ -5,7 +5,7 @@ const { userLogin, getUserData, signup } = require("./database");
 const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
 const { hashed } = require("./functions");
-const PORT = 4000;
+const PORT = 5400;
 const app = express();
 
 app.use((req, res, next) => {
@@ -109,6 +109,22 @@ app.post("/logout", (req, res) => {
         }
     } else {
         res.status(400).send("Missing Fields");
+    }
+});
+
+app.get('/download', (req, res) => {
+    console.log(req.query);
+    if (req.query.id && req.query.location) {
+        if (theUsernames[req.query.id]) {
+            console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
+            res.status(200).send("all good");
+            //const file = `${__dirname}/views/index.ejs`;
+            //res.download(file);
+        } else {
+            res.status(200).send("Invalid id");
+        }
+    } else {
+        res.status(200).send("Missing parameters.");
     }
 });
 

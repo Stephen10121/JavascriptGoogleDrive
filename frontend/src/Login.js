@@ -12,7 +12,7 @@ const Login = (props) => {
     e.preventDefault();
     axios({
       method: 'post',
-      url: 'http://192.168.0.24:4000/login',
+      url: 'https://drive.gruzservices.com/login',
       data: {
           username: e.target[0].value,
           password: e.target[1].value

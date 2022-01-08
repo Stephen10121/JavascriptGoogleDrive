@@ -11,7 +11,7 @@ const FileLoad = (props) => {
     return (
     <div className="file-ind-struct">
         {checkEmpty(props.files)}
-        {props.files.map((file, index) => <File owner={props.owner} key={index} path={props.path} file={file}/>)}
+        {props.files.map((file, index) => <File id={props.id} owner={props.owner} key={index} path={props.path} file={file}/>)}
     </div>
     );
 }
