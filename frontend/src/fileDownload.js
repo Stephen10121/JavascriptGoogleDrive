@@ -4,7 +4,7 @@ const downloadFile = async (id, which) => {
     console.log(id);
     console.log(which);
     const data = await axios.get(
-        'https://drive.gruzservices.com/download',
+        '/download',
         { params: {
             id: id,
             location: which

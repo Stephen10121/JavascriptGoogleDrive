@@ -5,6 +5,7 @@ import FileLoad from "./LoadFileStruct";
 import { convertToJson } from "./jsonIt";
 import { getCookie } from "./Cookie";
 import './styles/mainPage.css';
+import FileUpload from "./FileUpload";
 
 const HomePage = (props) => {
     const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
@@ -59,9 +60,7 @@ const HomePage = (props) => {
                 </button>
             </div>
             <div className="upload-icon">
-                <button title="Upload a file or folder">
-                    <img src="./icons/upload.svg" alt="Upload"/>
-                </button>
+                <FileUpload changefiles={changeFiles} files={files} id={userId} path={currentPath}/>
             </div>
             <div className="shared-icon">
                 <button title="Shared With Me">

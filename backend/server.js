@@ -1,5 +1,6 @@
 const http = require("http");
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const socketio = require('socket.io');
 const { userLogin, getUserData, signup } = require("./database");
 const { getFiles } = require("./data");
@@ -9,13 +10,17 @@ const PORT = 5400;
 const app = express();
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', "http://192.168.0.24:3000");
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
 });
 
 app.set('view engine', 'ejs');
-app.use( express.json(), express.static('public'), express.urlencoded({ extended: true }));
+app.use( fileUpload({
+    limits: {
+        fileSize: 10000000 //1mb
+    },
+}), express.json(), express.static('public'), express.urlencoded({ extended: true }));
 
 const server = http.createServer(app);
 const io = socketio(server, {
@@ -28,6 +33,7 @@ const theUsernames = {}
 app.get('/', (req, res) => res.render('index'));
 
 app.post('/login', async (req, res) => {
+    console.log(req.get('origin'));
     if (req.body.username && req.body.password) {
         const user = await userLogin(req.body.username, req.body.password);
         if (user.error == 200) {
@@ -110,6 +116,39 @@ app.post("/logout", (req, res) => {
     } else {
         res.status(400).send("Missing Fields");
     }
+});
+
+String.prototype.replaceAll = function(str1, str2, ignore) 
+{
+    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
+} 
+
+app.post('/upload', (req, res) => {
+    if(req.files === null) {
+        return res.status(400).json({ msg: 'No file uploaded' });
+    }
+    if (!req.body.jsondataRequest) {
+        return res.status(400).json({ msg: 'Missing parameters' });
+    }
+    const data = JSON.parse(req.body.jsondataRequest);
+    if(!data.id & !data.path) {
+        return res.status(400).json({ msg: 'Missing parameters' });
+    }
+    const {id, path} = data;
+    if (!theUsernames[id]) {
+        return res.status(400).json({ msg: 'Invalid input' });
+    }
+    let path2 = path;
+    path2 = path2.replaceAll(".", "/").replace('home', hashed(theUsernames[id]));
+    const file = req.files.file;
+    file.mv(`${__dirname}/storage/${path2}/${req.files.file.name}`, (err) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send(err);
+        }
+
+        res.json({ fileName: file.name, filePath: `test` });
+    });
 });
 
 app.get('/download', (req, res) => {

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import './styles/login.css';
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-const axios = require("axios");
+import axios from "axios";
 
 const Login = (props) => {
   const [error, setError] = useState("");
