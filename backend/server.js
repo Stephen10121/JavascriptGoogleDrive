@@ -6,11 +6,13 @@ const { userLogin, getUserData, signup } = require("./database");
 const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
 const { hashed } = require("./functions");
+const multer  = require('multer');
 const PORT = 5400;
 const app = express();
-
+const upload = multer();
+var type = upload.single('document');
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', "http://192.168.0.24:3000");
+    res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     next();
 });
@@ -121,7 +123,14 @@ app.post("/logout", (req, res) => {
 String.prototype.replaceAll = function(str1, str2, ignore) 
 {
     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
-} 
+}
+let reqnum = 0;
+app.post('/uploadc', type, (req, res) => {
+    reqnum++;
+    console.log(`${reqnum} reqs made`);
+    console.log(req.body);
+    res.send("good");
+});
 
 app.post('/upload', (req, res) => {
     if(req.files === null) {

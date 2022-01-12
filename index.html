@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chunk test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js" integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="shortcut icon" href="iconsmile.png" type="image/x-icon">
+</head>
+<body>
+    <input type="file" id="file2"/>
+    <button onclick="send()">Test</button>
+    <ul>
+        <li id="b1"></li>
+        <li id="b2"></li>
+        <li id="b3"></li>
+        <li id="b4"></li>
+        <li id="b5"></li>
+        <li id="b6"></li>
+        <li id="b7"></li>
+        <li id="b8"></li>
+        <li id="b9"></li>
+        <li id="b10"></li>
+        <li id="b11"></li>
+        <li id="b12"></li>
+        <li id="b13"></li>
+        <li id="b14"></li>
+        <li id="b15"></li>
+        <li id="b16"></li>
+        <li id="b17"></li>
+        <li id="b18"></li>
+        <li id="b19"></li>
+        <li id="b20"></li>
+    </ul>
+    <script>
+        const createChunks = (file,cSize/* cSize should be byte 1024*1 = 1KB */) => {
+            let startPointer = 0;
+            let endPointer = file.size;
+            let chunks = [];
+            while(startPointer<endPointer){
+                let newStartPointer = startPointer+cSize;
+                chunks.push(file.slice(startPointer,newStartPointer));
+                startPointer = newStartPointer;
+            }
+            return chunks;
+        }
+        function send() {
+            var inputElement = document.getElementById('file2');
+            var fileList = inputElement.files;
+            let chunks = createChunks(fileList[0], 1024*1009);
+            console.log(chunks.length);
+            for (let i = 0; i < chunks.length; i++) {
+                console.log(chunks[i]);
+                const data = new FormData();
+                data.append("document", chunks[i]);
+                axios.post(
+                    'https://drive.gruzservices.com/uploadc',
+                    data,
+                    { onUploadProgress: (ProgressEvent) => {
+                        document.getElementById(`b${i}`).innerText = `Uploading ${parseInt(Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total))}%`;
+                    }
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log('bad');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
