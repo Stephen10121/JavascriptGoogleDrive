@@ -124,12 +124,44 @@ String.prototype.replaceAll = function(str1, str2, ignore)
 {
     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
 }
+var MyBlobBuilder = function() {
+    this.parts = [];
+  }
+  
+  MyBlobBuilder.prototype.append = function(part) {
+    this.parts.push(part);
+    this.blob = undefined; // Invalidate the blob
+  };
+  
+  MyBlobBuilder.prototype.getBlob = function() {
+    if (!this.blob) {
+      this.blob = new Blob(this.parts, { type: "text/plain" });
+    }
+    return this.blob;
+  };
+  function blobToFile(theBlob, fileName){
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    return theBlob;
+}
+  
+let loadedFiles = {}
 let reqnum = 0;
-app.post('/uploadc', type, (req, res) => {
+app.post('/uploadc', (req, res) => {
     reqnum++;
     console.log(`${reqnum} reqs made`);
-    console.log(req.body);
-    res.send("good");
+    const fileData = JSON.parse(req.body.jsondataRequest);
+    loadedFiles[fileData.sec] = req.files.document;
+    if (Object.keys(loadedFiles).length == fileData.totalsecs) {
+        var myBlobBuilder = new MyBlobBuilder();
+        for (let i = 0; i < fileData.totalsecs; i++) {
+            myBlobBuilder.append(loadedFiles[i]);
+        }
+        var bb = blobToFile(myBlobBuilder.getBlob(), "test.mp3");
+        console.log(bb);
+    }
+    res.send(loadedFiles);
 });
 
 app.post('/upload', (req, res) => {

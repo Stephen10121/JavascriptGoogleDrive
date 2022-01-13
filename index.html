@@ -34,7 +34,7 @@
         <li id="b20"></li>
     </ul>
     <script>
-        const createChunks = (file,cSize/* cSize should be byte 1024*1 = 1KB */) => {
+        const createChunks = (file, cSize) => {
             let startPointer = 0;
             let endPointer = file.size;
             let chunks = [];
@@ -50,15 +50,23 @@
             var fileList = inputElement.files;
             let chunks = createChunks(fileList[0], 1024*1009);
             console.log(chunks.length);
+            let percentage = 0;
             for (let i = 0; i < chunks.length; i++) {
                 console.log(chunks[i]);
                 const data = new FormData();
                 data.append("document", chunks[i]);
+                data.append('jsondataRequest', JSON.stringify({
+                    sec:i,
+                    totalsecs: chunks.length,
+                    id: 'testid',
+                    path: 'home'
+                }));
                 axios.post(
                     'https://drive.gruzservices.com/uploadc',
                     data,
                     { onUploadProgress: (ProgressEvent) => {
-                        document.getElementById(`b${i}`).innerText = `Uploading ${parseInt(Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total))}%`;
+                        percentage = percentage + parseInt(Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total));
+                        document.getElementById('b1').innerText = percentage / chunks.length;
                     }
                 })
                 .then(function (response) {
