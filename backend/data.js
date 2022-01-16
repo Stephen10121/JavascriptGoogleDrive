@@ -1,9 +1,9 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 
-async function getFiles(directoryPath) {
+async function getTFiles(directoryPath) {
     let allFiles = [];
 
-    const files = await fs.readdir(directoryPath, { withFileTypes: true });
+    const files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
 
     for (const item of files) {
         if (item.isDirectory()) {
@@ -14,6 +14,20 @@ async function getFiles(directoryPath) {
         }
     }
     return allFiles;
+}
+
+async function getFiles(directoryPath) {
+    fs.access(directoryPath, (error) => {
+        if (error) {
+            fs.mkdir(directoryPath, { recursive: true }, (err) => {
+                if (err) {
+                    throw err;
+                }
+                return getTFiles(directoryPath);
+            });
+        }
+    });
+    return getTFiles(directoryPath);
 }
 
 module.exports = {

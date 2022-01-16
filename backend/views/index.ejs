@@ -8,11 +8,60 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="sha512-nYuHvSAhY5lFZ4ixSViOwsEKFvlxHMU2NHts1ILuJgOS6ptUmAGt/0i5czIgMOahKZ6JN84YFDA+mCdky7dD8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-    <form action="/login" method="post">
+    <form action="/" method="get">
+        <p>If you see this, the website is under development.</p>
         <input type="text" name="username" id="username-input-box" placeholder="Username" />
         <input type="password" name="password" id="password" placeholder="Password" />
         <button type="submit">Login</button>
     </form>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: sans-serif;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #dfdfdf;
+        }
+        form {
+            background-color: #f3f3f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 60%;
+            height: 60%;
+            border-radius: 10px;
+            gap: 10px;
+        }
+        p {
+            color: #8baae4;
+        }
+        input {
+            width: 90%;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid #000000;
+        }
+        button {
+            width: 90%;
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            background-color: #434c53;
+        }
+        button:hover {
+            background-color: #4e6475;
+        }
+    </style>
     <script>
         const socket = io();
         socket.emit("auth", "password");

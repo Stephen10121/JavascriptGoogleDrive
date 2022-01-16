@@ -66,7 +66,7 @@ const FolderLoad = (props) => {
     <div className="file-struct">
         <ul>
             <li>
-                <button id={'home1'} onClick={(e) => {renderFolders("home");toggleFolder(e,'home');props.changeDir('home')}}>Home</button>
+                <button id={'home1'} onClick={(e) => {if(files.length!==0){renderFolders("home");toggleFolder(e,'home');props.changeDir('home')}}}>Home</button>
                 <ul className="folder-ul hidden" id="home">
                     {visible}
                 </ul>

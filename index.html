@@ -62,7 +62,7 @@
                     path: 'home'
                 }));
                 axios.post(
-                    'https://drive.gruzservices.com/uploadc',
+                    'https://drive.gruzservices.com/upload',
                     data,
                     { onUploadProgress: (ProgressEvent) => {
                         percentage = percentage + parseInt(Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total));
