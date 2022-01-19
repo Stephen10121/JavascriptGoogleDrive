@@ -7,6 +7,7 @@ const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
 const { hashed } = require("./functions");
 const multer  = require('multer');
+const fs = require('fs');
 const PORT = 5400;
 const app = express();
 const upload = multer();
@@ -38,13 +39,21 @@ app.get('/download', (req, res) => {
     if (req.query.id && req.query.location) {
         if (theUsernames[req.query.id]) {
             console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
-            //return res.status(200).send("all good");
-            const file = `${__dirname}/views/index.ejs`;
-            return res.download(file);
+            const file = `${__dirname}/storage/${hashed(theUsernames[req.query.id])}${req.query.location.slice(4)}`;
+            console.log(file);
+            fs.access(file, fs.F_OK, (err) => {
+                if (err) {
+                  console.error(err);
+                  return res.status(200).send("Folder doesn't exist.");
+                }
+                return res.download(file);
+            });
+        } else {
+            return res.status(200).send("Invalid id");
         }
-        return res.status(200).send("Invalid id");
+    } else {
+        return res.status(200).send("Missing parameters.");
     }
-    return res.status(200).send("Missing parameters.");
 });
 
 app.post('/login', async (req, res) => {

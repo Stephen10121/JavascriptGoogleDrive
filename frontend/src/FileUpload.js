@@ -1,8 +1,14 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
 const FileUpload = (props) => {
     const [uploadedFile, setUploadedFile] = useState({});
+    const [showUMessage, setShowUMessage] = useState(false);
     const [fileUploadMessage, setFileUploadMessage] = useState("");
     const onChange = async (e) => {
         const formData = new FormData();
@@ -15,9 +21,16 @@ const FileUpload = (props) => {
                     'Content-Type': 'multipart/form-data'
                 },
                 onUploadProgress: (ProgressEvent) => {
+                    setShowUMessage(true);
                     setFileUploadMessage(`Uploading ${parseInt(Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total))}%`);
                     if (ProgressEvent.total === ProgressEvent.loaded) {
-                        setTimeout(() => setFileUploadMessage("File Uploaded."), 1000);
+                        let files = props.usern.files;
+                        const newFilePath = `${`${props.path}`.replaceAll('.','/')}/${e.target.files[0].name}`;
+                        files.push(newFilePath);
+                        let nuser = props.usern;
+                        nuser[files] = files
+                        props.changeFiles(nuser);
+                        setTimeout(() => setFileUploadMessage("Click on folder to refresh."), 1000);
                     }
                 }
             });
@@ -39,7 +52,7 @@ const FileUpload = (props) => {
     }
 
     const begone = () => {
-        document.getElementById('file-popup').style.display = "none";
+        setShowUMessage(false);
     }
 
     return (
@@ -48,7 +61,7 @@ const FileUpload = (props) => {
                 <img title="Upload a file or folder" className="file-upload-icon" src="./icons/upload.svg" style={{width: "100%"}} alt="Upload"/>
             </label>
             <input onChange={onChange} style={{display: "none" }} type="file" id="theFile"/>
-            { fileUploadMessage ? <div id="file-popup" className='file-upload-popup'>
+            { showUMessage ? <div id="file-popup" className='file-upload-popup'>
                 <p>{fileUploadMessage}</p>
                 <button onClick={begone}>&#10006;</button>
             </div>: null}

@@ -4,7 +4,7 @@ import './styles/Notlogged.css';
 const Notlogged = (props) => {
   return (
     <div className="not-logged" id="cover">
-      <h3 className="welcome-h">Strorage Drive</h3>
+      <h3 className="welcome-h">Storage Drive</h3>
       <p className="sub">By: Gruzservices</p>
       <div className="links">
           <Link className="home-a-tags" to="/login">Login</Link>

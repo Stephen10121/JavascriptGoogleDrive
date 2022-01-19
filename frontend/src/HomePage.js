@@ -7,8 +7,13 @@ import { getCookie } from "./Cookie";
 import './styles/mainPage.css';
 import FileUpload from "./FileUpload";
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
 const HomePage = (props) => {
-    const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
+    const [user, setUser] = useState(JSON.parse(window.localStorage.getItem("user")));
     const [userId, setId] = useState(getCookie("G_VAR"));
     const [files, changeFiles] = useState([]);
     const [currentPath, changeCurrentPath] = useState('home');
@@ -25,7 +30,7 @@ const HomePage = (props) => {
     const showFiles = (where) => {
         let newFileLocation;
         if (where.includes('/')) {
-            where = where.replace("/",".");
+            where = where.replaceAll("/",".");
             newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(user.files)));
         }
         else {
@@ -56,11 +61,11 @@ const HomePage = (props) => {
         <div className="taskbar">
             <div className="profile">
                 <button title="Your Profile" className="profile-button">
-                    profile
+                    <img src="https://drive.gruzservices.com/assets/profile.jpg" alt="Profile Pic"/>
                 </button>
             </div>
             <div className="upload-icon">
-                <FileUpload changefiles={changeFiles} files={files} id={userId} path={currentPath}/>
+                <FileUpload usern={user} changeFiles={setUser} changefiles={changeFiles} files={files} id={userId} path={currentPath}/>
             </div>
             <div className="shared-icon">
                 <button title="Shared With Me">
@@ -75,7 +80,7 @@ const HomePage = (props) => {
             <div className="name-show">
                 <p className="name-show-p">{user.rname}</p>
             </div>
-            <FolderLoad changeDir={showFiles} id={userId} />
+            <FolderLoad changeDir={showFiles} id={userId} usern={user}/>
         </div>
         <div className="main-files">
             <FileLoad path={currentPath} files={files} id={userId} owner={user.rname}/>

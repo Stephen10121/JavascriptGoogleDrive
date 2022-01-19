@@ -5,18 +5,20 @@ const axios = require("axios");
 
 const File = (props) => {
     const [fileUploadMessage, setFileUploadMessage] = useState("");
+    const [showingNotification, setShowingNotification] = useState(false);
 
-    const downloadFile = async (id, which, file) => {
+    const downloadFile = async (id2, which, file) => {
         const data = await axios.get(
             'https://drive.gruzservices.com/download',
             { params: {
-                id: id,
+                id: id2,
                 location: which
             },
             onDownloadProgress: progressEvent => {
+                setShowingNotification(true);
                 const total = parseFloat(progressEvent.total)
-                const current = progressEvent.currentTarget.response.length
-                let percentCompleted = Math.floor(current / total * 100)
+                const current = progressEvent.currentTarget.response.length;
+                let percentCompleted = Math.floor(current / total * 100);
                 if (percentCompleted === 100) {
                     setFileUploadMessage("File Downloaded.");
                 } else {
@@ -52,8 +54,8 @@ const File = (props) => {
         document.getElementById(where).style.display = "flex";
     }
 
-    const begone = () => {
-        document.getElementById('file-popup').style.display = "none";
+    const begone = (e) => {
+        setShowingNotification(false);
     }
 
     return (
@@ -69,9 +71,9 @@ const File = (props) => {
                     <button onClick={() => {downloadFile(props.id, `${props.path.replace(".",'/')}/${props.file}`, props.file)}}>Download</button>
                 </div>
             </div>
-            { fileUploadMessage ? <div id="file-popup" className='file-upload-popup'>
+            { showingNotification ? <div id="file-popup" className='file-upload-popup'>
                 <p>{fileUploadMessage}</p>
-                <button onClick={begone}>&#10006;</button>
+                <button onClick={(e) => begone(e)}>&#10006;</button>
             </div>: null}
         </div>
     );
