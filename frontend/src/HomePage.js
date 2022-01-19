@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import FolderLoad from './LoadFolderStruct';
 import FileLoad from "./LoadFileStruct";
-import { convertToJson } from "./jsonIt";
+import convertToJson from "./jsonIt";
 import { getCookie } from "./Cookie";
 import './styles/mainPage.css';
 import FileUpload from "./FileUpload";

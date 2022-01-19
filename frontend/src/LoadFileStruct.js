@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import File from "./File";
 import './styles/FileStruct.css';
 

@@ -1,20 +1,19 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
 
-String.prototype.replaceAll = function(search, replacement) {
+String.prototype.replaceAll = (search, replacement) => {
     var target = this;
     return target.split(search).join(replacement);
 };
 
 const FileUpload = (props) => {
-    const [uploadedFile, setUploadedFile] = useState({});
     const [showUMessage, setShowUMessage] = useState(false);
     const [fileUploadMessage, setFileUploadMessage] = useState("");
+
     const onChange = async (e) => {
         const formData = new FormData();
         formData.append('file', e.target.files[0]);
         formData.append('jsondataRequest', JSON.stringify({id:props.id,path:props.path}));
-
         try {
             const res = await axios.post('http://192.168.0.24:5400/upload', formData, {
                 headers: {
@@ -34,9 +33,7 @@ const FileUpload = (props) => {
                     }
                 }
             });
-
-            const { fileName, filePath } = res.data;
-            setUploadedFile({fileName, filePath});
+            console.log(res);
         } catch(err) {
             if (err.response.status) {
                 if (err.response.status === 500) {

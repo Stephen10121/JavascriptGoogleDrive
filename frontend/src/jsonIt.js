@@ -17,6 +17,4 @@ const convertToJson = (theFiles) => {
     return(output);
 }
 
-module.exports = {
-    convertToJson
-}
+export default convertToJson;

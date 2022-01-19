@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { convertToJson } from "./jsonIt";
+import convertToJson from "./jsonIt";
 import './styles/FileStruct.css';
 
 const FolderLoad = (props) => {

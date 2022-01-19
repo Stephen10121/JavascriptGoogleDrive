@@ -17,4 +17,4 @@ const getCookie = (name) => {
     return decodeURI(dc.substring(begin + prefix.length, end));
 }
 
-module.exports = {getCookie}
+module.exports = {getCookie};
