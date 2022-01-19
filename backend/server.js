@@ -13,7 +13,7 @@ const upload = multer();
 var type = upload.single('document');
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', "*");
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', '*');
     next();
 });
 
@@ -34,8 +34,20 @@ const io = socketio(server, {
 const theUsernames = {}
 app.get('/', (req, res) => res.render('index'));
 
+app.get('/download', (req, res) => {
+    if (req.query.id && req.query.location) {
+        if (theUsernames[req.query.id]) {
+            console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
+            //return res.status(200).send("all good");
+            const file = `${__dirname}/views/index.ejs`;
+            return res.download(file);
+        }
+        return res.status(200).send("Invalid id");
+    }
+    return res.status(200).send("Missing parameters.");
+});
+
 app.post('/login', async (req, res) => {
-    console.log(req.get('origin'));
     if (req.body.username && req.body.password) {
         const user = await userLogin(req.body.username, req.body.password);
         if (user.error == 200) {
@@ -192,22 +204,6 @@ app.post('/upload', (req, res) => {
     });
 });
 
-app.get('/download', (req, res) => {
-    console.log(req.query);
-    if (req.query.id && req.query.location) {
-        if (theUsernames[req.query.id]) {
-            console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
-            res.status(200).send("all good");
-            //const file = `${__dirname}/views/index.ejs`;
-            //res.download(file);
-        } else {
-            res.status(200).send("Invalid id");
-        }
-    } else {
-        res.status(200).send("Missing parameters.");
-    }
-});
-
 const whiteList = [];
 
 io.on('connection', socket => {
@@ -221,7 +217,7 @@ io.on('connection', socket => {
 
     socket.on("test", (data) => {
         if (whiteList.includes(socket.id)) {
-            console.log(data);
+            //console.log(data);
         } else {
             socket.disconnect();
         }

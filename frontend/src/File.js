@@ -1,8 +1,41 @@
-import { downloadFile } from "./fileDownload";
+import React, { useState } from 'react';
 import { getType } from "./fileType";
 import './styles/File.css';
+const axios = require("axios");
 
 const File = (props) => {
+    const [fileUploadMessage, setFileUploadMessage] = useState("");
+
+    const downloadFile = async (id, which, file) => {
+        const data = await axios.get(
+            'https://drive.gruzservices.com/download',
+            { params: {
+                id: id,
+                location: which
+            },
+            onDownloadProgress: progressEvent => {
+                const total = parseFloat(progressEvent.total)
+                const current = progressEvent.currentTarget.response.length
+                let percentCompleted = Math.floor(current / total * 100)
+                if (percentCompleted === 100) {
+                    setFileUploadMessage("File Downloaded.");
+                } else {
+                    setFileUploadMessage(`Downloading ${percentCompleted}%`);
+                }
+            }
+        });
+        if (data.status === 200) {
+            const url = window.URL.createObjectURL(new Blob([data.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', file); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+            return 200;
+        } else {
+            return "error";
+        }
+    }
     const toggle = (e) => {
         let box = document.getElementById(`${props.file}1`);
         let rect = box.getBoundingClientRect();
@@ -19,6 +52,10 @@ const File = (props) => {
         document.getElementById(where).style.display = "flex";
     }
 
+    const begone = () => {
+        document.getElementById('file-popup').style.display = "none";
+    }
+
     return (
         <div className='file-container'>
             <button className="file" onClick={() => {showInfo(props.file)}}>
@@ -29,9 +66,13 @@ const File = (props) => {
                     <p>Owner: {props.owner}</p>
                     <p>Path: {`${props.path.replace(".",'/')}/${props.file}`}</p>
                     <p>Content-type: {getType(props.file.split(".").reverse()[0])}</p>
-                    <button onClick={() => {downloadFile(props.id, `${props.path.replace(".",'/')}/${props.file}`).then(data=>console.log(data))}}>Download</button>
+                    <button onClick={() => {downloadFile(props.id, `${props.path.replace(".",'/')}/${props.file}`, props.file)}}>Download</button>
                 </div>
             </div>
+            { fileUploadMessage ? <div id="file-popup" className='file-upload-popup'>
+                <p>{fileUploadMessage}</p>
+                <button onClick={begone}>&#10006;</button>
+            </div>: null}
         </div>
     );
 }
