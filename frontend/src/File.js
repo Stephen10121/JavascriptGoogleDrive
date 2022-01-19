@@ -73,7 +73,7 @@ const File = (props) => {
             </div>
             { showingNotification ? <div id="file-popup" className='file-upload-popup'>
                 <p>{fileUploadMessage}</p>
-                <button onClick={(e) => begone(e)}>&#10006;</button>
+                <button onClick={begone}>&#10006;</button>
             </div>: null}
         </div>
     );
