@@ -15,7 +15,7 @@ const FileUpload = (props) => {
         formData.append('file', e.target.files[0]);
         formData.append('jsondataRequest', JSON.stringify({id:props.id,path:props.path}));
         try {
-            const res = await axios.post('http://192.168.0.24:5400/upload', formData, {
+            const res = await axios.post('https://drive.gruzservices.com/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
