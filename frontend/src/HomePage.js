@@ -59,9 +59,9 @@ const HomePage = (props) => {
     <div className="HomePage">
         <div className="taskbar">
             <div className="profile">
-                <button title="Your Profile" className="profile-button">
+                <Link to="/profile" title="Your Profile" className="profile-button">
                     <img src="/assets/profile.jpg" alt="Profile Pic"/>
-                </button>
+                </Link>
             </div>
             <div className="upload-icon">
                 <FileUpload usern={user} changeFiles={setUser} changefiles={changeFiles} files={files} id={userId} path={currentPath}/>

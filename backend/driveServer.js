@@ -37,6 +37,7 @@ app.get('/', (req, res) => res.render('index'));
 app.get('/signup', (req, res) => res.render('index'));
 app.get('/login', (req, res) => res.render('index'));
 app.get('/logout', (req, res) => res.render('index'));
+app.get('/profile', (req, res) => res.render('index'));
 
 app.get('/download', (req, res) => {
     if (req.query.id && req.query.location) {
