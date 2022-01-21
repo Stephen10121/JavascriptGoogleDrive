@@ -2,9 +2,9 @@
   "name": "drive-backend",
   "version": "1.0.0",
   "description": "The backend for my drive.",
-  "main": "server.js",
+  "main": "driveServer.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon driveServer.js"
   },
   "keywords": [],
   "author": "Stephen Gruzin",

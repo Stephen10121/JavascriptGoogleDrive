@@ -15,7 +15,7 @@ const FileUpload = (props) => {
         formData.append('file', e.target.files[0]);
         formData.append('jsondataRequest', JSON.stringify({id:props.id,path:props.path}));
         try {
-            const res = await axios.post('https://drive.gruzservices.com/upload', formData, {
+            const res = await axios.post('/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -33,7 +33,6 @@ const FileUpload = (props) => {
                     }
                 }
             });
-            console.log(res);
         } catch(err) {
             if (err.response.status) {
                 if (err.response.status === 500) {

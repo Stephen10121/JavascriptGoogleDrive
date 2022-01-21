@@ -49,7 +49,6 @@ const HomePage = (props) => {
     const onStartup = useRef(() => {});
     onStartup.current = () => {
         loadUserData();
-        console.log(user);
     }
 
     useEffect(() => {
@@ -61,7 +60,7 @@ const HomePage = (props) => {
         <div className="taskbar">
             <div className="profile">
                 <button title="Your Profile" className="profile-button">
-                    <img src="https://drive.gruzservices.com/assets/profile.jpg" alt="Profile Pic"/>
+                    <img src="/assets/profile.jpg" alt="Profile Pic"/>
                 </button>
             </div>
             <div className="upload-icon">

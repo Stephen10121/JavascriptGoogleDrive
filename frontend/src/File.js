@@ -9,7 +9,7 @@ const File = (props) => {
 
     const downloadFile = async (id2, which, file) => {
         const data = await axios.get(
-            'https://drive.gruzservices.com/download',
+            '/download',
             { params: {
                 id: id2,
                 location: which

@@ -19,7 +19,7 @@ const Signup = (props) => {
     }
     axios({
       method: 'post',
-      url: 'https://drive.gruzservices.com/signup',
+      url: '/signup',
       data: {
           name: data.rname,
           email: data.email,

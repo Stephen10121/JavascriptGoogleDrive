@@ -13,7 +13,7 @@ const app = express();
 const upload = multer();
 var type = upload.single('document');
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', "*");
+    res.setHeader('Access-Control-Allow-Origin', "https://drive.gruzservices.com");
     res.setHeader('Access-Control-Allow-Headers', '*');
     next();
 });
@@ -34,6 +34,9 @@ const io = socketio(server, {
 });
 const theUsernames = {}
 app.get('/', (req, res) => res.render('index'));
+app.get('/signup', (req, res) => res.render('index'));
+app.get('/login', (req, res) => res.render('index'));
+app.get('/logout', (req, res) => res.render('index'));
 
 app.get('/download', (req, res) => {
     if (req.query.id && req.query.location) {
