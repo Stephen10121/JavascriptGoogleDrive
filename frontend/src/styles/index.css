@@ -6,6 +6,10 @@
   list-style-type: none;
 }
 
+:root {
+  --checkbox-timing: 0.1s;
+}
+
 body {
   width: 100vw;
   height: 100vh;
