@@ -6,7 +6,8 @@
 
 .file-struct button {
   white-space: normal;
-  background-color: rgb(115, 120, 145);
+  background-color: var(--folder-background-color);
+  color: var(--folder-color);
   outline: none;
   border: none;
   border-radius: 5px;
@@ -24,7 +25,7 @@
 }
 
 .open {
-  background-color: rgb(115, 120, 145);
+  background-color: red;
 }
 
 .file-ind-struct {

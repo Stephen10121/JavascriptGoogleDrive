@@ -68,7 +68,7 @@ const HomePage = (props) => {
             </div>
             <div className="shared-icon">
                 <button title="Shared With Me">
-                    <img src="./icons/shared.svg" alt="Shared with me"/>
+                    <img src="./icons/shared.svg" className="image-icon" alt="Shared with me"/>
                 </button>
             </div>
             <div className="logout-link">

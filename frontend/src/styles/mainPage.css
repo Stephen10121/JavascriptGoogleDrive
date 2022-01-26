@@ -6,7 +6,7 @@
 }
 
 .taskbar {
-  background-color: rgb(20, 22, 29);
+  background-color: var(--header-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,6 +60,10 @@
   height: 100%;
 }
 
+.image-icon {
+  filter: var(--icon-color);
+}
+
 .file-upload-icon:hover {
   filter: invert(0.5);
 }
@@ -74,12 +78,12 @@
   height: 50px;
   border: 1px solid black;
   border-radius: 5px;
-  background-color: rgba(190, 230, 248, 0.7);
+  background-color: var(--file-upload-popup-background-color);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  color: #00529b;
+  color: var(--file-upload-popup-color);
 }
 
 .file-upload-popup p {
@@ -105,29 +109,28 @@
 .logout-link a {
   width: 50px;
   height: 30px;
-  background-color: rgb(31, 31, 31);
+  background-color: var(--logout-color);
   padding: 5px;
-  color: #ffffff;
+  color: var(--logout-hover-background-color);
   border-radius: 5px;
 }
 
 .logout-link a:hover {
-  background-color: rgb(54, 54, 54);
-  color: rgb(226, 226, 226);
+  background-color: var(--logout-hover-color);
 }
 
 .files-box {
   display: grid;
   grid-template-rows: 70px auto;
-  background-color: rgb(33, 40, 68);
+  background-color: var(--folder-struct-color);
   height: 100vh;
   overflow-y: hidden;
 }
 
 .name-show {
-  background-color: rgb(24, 28, 43);
+  background-color: var(--color-2);
   display: flex;
-  color: rgb(199, 199, 199);
+  color: var(--name-color);
   align-items: center;
   justify-content: center;
 }
@@ -138,7 +141,7 @@
 }
 
 .main-files {
-  background-color: rgb(34, 32, 32);
+  background-color: var(--main-section-color);
   height: 100vh;
   overflow-y: auto;
 }

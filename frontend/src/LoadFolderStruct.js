@@ -23,7 +23,7 @@ const FolderLoad = (props) => {
         }
         return(newFolders.map((file, index) => 
             <li key={Math.floor(Math.random()*index*1000)+5}>
-                <button id={`${where}/${file}1`} key={Math.floor(Math.random()*index*1000)+6} onClick={(e) => {toggleFolder(e,`${where}/${file}`);props.changeDir(`${where}/${file}`)}}>{file}</button>
+                <button className="folder-button" id={`${where}/${file}1`} key={Math.floor(Math.random()*index*1000)+6} onClick={(e) => {toggleFolder(e,`${where}/${file}`);props.changeDir(`${where}/${file}`)}}>{file}</button>
                 <ul key={Math.floor(Math.random()*index*1000)+7} className="folder-ul hidden" id={`${where}/${file}`}>
                     {showFiles(`${where}/${file}`)}
                 </ul>
@@ -49,7 +49,7 @@ const FolderLoad = (props) => {
         
         changeVisible(newFolders.map((file, index) => 
             <li key={Math.floor(Math.random()*index*1000)+1}>
-                <button id={`${where}/${file}1`} key={Math.floor(Math.random()*index*1000)+2} onClick={(e) => {toggleFolder(e,`${where}/${file}`);props.changeDir(`${where}/${file}`)}}>{file}</button>
+                <button className="folder-button" id={`${where}/${file}1`} key={Math.floor(Math.random()*index*1000)+2} onClick={(e) => {toggleFolder(e,`${where}/${file}`);props.changeDir(`${where}/${file}`)}}>{file}</button>
                 <ul key={Math.floor(Math.random()*index*1000)+3} className="folder-ul hidden" id={`${where}/${file}`}>
                     {showFiles(`${where}/${file}`)}
                 </ul>
@@ -66,7 +66,7 @@ const FolderLoad = (props) => {
     <div className="file-struct">
         <ul>
             <li>
-                <button id={'home1'} onClick={(e) => {if(files.length!==0){renderFolders("home");toggleFolder(e,'home');props.changeDir('home')}}}>Home</button>
+                <button className="folder-button" id={'home1'} onClick={(e) => {if(files.length!==0){renderFolders("home");toggleFolder(e,'home');props.changeDir('home')}}}>Home</button>
                 <ul className="folder-ul hidden" id="home">
                     {visible}
                 </ul>

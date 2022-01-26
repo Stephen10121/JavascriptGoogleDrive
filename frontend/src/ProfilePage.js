@@ -9,12 +9,12 @@ const ProfilePage = (props) => {
         <div className="taskbar">
             <div className="home-icon">
                 <Link to="/" title="Go Home">
-                    <img src="./icons/house.svg" alt="house icon"/>
+                    <img src="./icons/house.svg" className="image-icon" alt="house icon"/>
                 </Link>
             </div>
             <div className="shared-icon">
                 <button title="Shared With Me">
-                    <img src="./icons/shared.svg" alt="Shared with me"/>
+                    <img src="./icons/shared.svg" className="image-icon" alt="Shared with me"/>
                 </button>
             </div>
             <div className="logout-link">
@@ -27,7 +27,6 @@ const ProfilePage = (props) => {
                 <li>Profile Pic</li>
                 <li>Allow sharing</li>
                 <li>2 factor auth</li>
-
             </ul>
         </div>
     </div>

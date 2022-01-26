@@ -1,7 +1,8 @@
 .file {
   width: 100%;
   padding: 5px;
-  background-color: rgb(115, 120, 145);
+  background-color: var(--folder-background-color);
+  color: var(--folder-color);
   border: none;
   border-radius: 7px;
   margin: 5px 0;
@@ -10,7 +11,7 @@
 }
 
 .file:hover {
-  background-color: rgb(86, 90, 109);
+  background-color: var(--folder-background-color-hover);
 }
 
 .file-container {

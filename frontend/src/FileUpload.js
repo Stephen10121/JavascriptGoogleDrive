@@ -54,7 +54,7 @@ const FileUpload = (props) => {
     return (
         <Fragment>
             <label htmlFor='theFile'>
-                <img title="Upload a file or folder" className="file-upload-icon" src="./icons/upload.svg" style={{width: "100%"}} alt="Upload"/>
+                <img title="Upload a file or folder" className="file-upload-icon image-icon" src="./icons/upload.svg" alt="Upload"/>
             </label>
             <input onChange={onChange} style={{display: "none" }} type="file" id="theFile"/>
             { showUMessage ? <div id="file-popup" className='file-upload-popup'>

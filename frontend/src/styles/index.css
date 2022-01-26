@@ -8,7 +8,58 @@
 
 :root {
   --checkbox-timing: 0.1s;
+  --header-color: rgb(20, 22, 29);
+  --folder-struct-color: rgb(33, 40, 68);
+  --main-section-color: rgb(34, 32, 32);
+  --logout-color: rgb(31, 31, 31);
+  --logout-hover-color: rgb(54, 54, 54);
+  --logout-hover-background-color: rgb(226, 226, 226);
+  --icon-color: invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg)
+    brightness(101%) contrast(101%);
+  --file-upload-popup-color: #00529b;
+  --file-upload-popup-background-color: rgba(190, 230, 248, 0.7);
+  --folder-background-color: rgb(115, 120, 145);
+  --folder-color: black;
+  --folder-background-color-hover: rgb(86, 90, 109);
+  --color-2: rgb(24, 28, 43);
+  --name-color: rgb(199, 199, 199);
 }
+.test-variable {
+  --checkbox-timing: 0.1s;
+  --header-color: red;
+  --folder-struct-color: red;
+  --main-section-color: red;
+  --logout-color: red;
+  --logout-hover-color: red;
+  --logout-hover-background-color: red;
+  --icon-color: invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg)
+    brightness(101%) contrast(101%);
+  --file-upload-popup-color: red;
+  --file-upload-popup-background-color: red;
+  --folder-background-color: red;
+  --folder-color: blue;
+  --folder-background-color-hover: blue;
+  --color-2: blue;
+  --name-color: red;
+}
+
+/* 
+--checkbox-timing: 0.1s;
+--header-color: rgb(20, 22, 29);
+--folder-struct-color: rgb(33, 40, 68);
+--main-section-color: rgb(34, 32, 32);
+--logout-color: rgb(31, 31, 31);
+--logout-hover-color: rgb(54, 54, 54);
+--logout-hover-background-color: rgb(226, 226, 226);
+--icon-color: invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(101%) contrast(101%);
+--file-upload-popup-color: #00529b;
+--file-upload-popup-background-color: rgba(190, 230, 248, 0.7);
+--folder-background-color: rgb(115, 120, 145);
+--folder-color: black;
+--folder-background-color-hover: rgb(86, 90, 109);
+--color-2: rgb(24, 28, 43);
+--name-color:rgb(199, 199, 199) ;
+*/
 
 body {
   width: 100vw;
