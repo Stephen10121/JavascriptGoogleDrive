@@ -4,55 +4,74 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chunk test</title>
+    <title>Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js" integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="shortcut icon" href="iconsmile.png" type="image/x-icon">
+    <link rel="stylesheet" href="new.css">
 </head>
 <body>
-    <input type="file" id="file2"/>
-    <button onclick="send2()">Test</button>
-    <ul>
-        <li id="b1"></li>
-        <li id="b2"></li>
-        <li id="b3"></li>
-        <li id="b4"></li>
-        <li id="b5"></li>
-        <li id="b6"></li>
-        <li id="b7"></li>
-        <li id="b8"></li>
-        <li id="b9"></li>
-        <li id="b10"></li>
-        <li id="b11"></li>
-        <li id="b12"></li>
-        <li id="b13"></li>
-        <li id="b14"></li>
-        <li id="b15"></li>
-        <li id="b16"></li>
-        <li id="b17"></li>
-        <li id="b18"></li>
-        <li id="b19"></li>
-        <li id="b20"></li>
-    </ul>
+    <div class="calculator">
+        <div class="answer">
+            <p id="reply"></p>
+        </div>
+        <div class="keys">
+            <button onclick='addAddVal("7")'>7</button>
+            <button onclick='addAddVal("8")'>8</button>
+            <button onclick='addAddVal("9")'>9</button>
+            <button onclick='addVal("")'>AC</button>
+            <button onclick='addAddVal("4")'>4</button>
+            <button onclick='addAddVal("5")'>5</button>
+            <button onclick='addAddVal("6")'>6</button>
+            <button onclick='addAddVal("/")'>/</button>
+            <button onclick='addAddVal("1")'>1</button>
+            <button onclick='addAddVal("2")'>2</button>
+            <button onclick='addAddVal("3")'>3</button>
+            <button onclick='addAddVal("*")'>X</button>
+            <button onclick='addAddVal("0")'>0</button>
+            <button onclick='addAddVal("+")'>+</button>
+            <button onclick='addAddVal("-")'>-</button>
+            <button onclick='addVal("answer")'>Enter</button>
+        </div>
+    </div>
     <script>
-        async function getFiles(uid) {
-            what = await axios({
-                method: 'post',
-                url: 'https://drive.gruzservices.com/getFiles',
-                data: {
-                    id: uid
-                }
-            });
-            if (what.data.error) {
-                if(what.data.error === 200) {
-                    return what.data.data;
-                }
-                return `Error: ${what.data.error}.`;
+        const whiteList = [48,49,50,51,52,53,54,55,56,57,111,106,109,107,189,96,97,98,99,100,101,102,103,104,105];
+        let previous = 0;
+        function calcAns() {
+            return 100;
+        }
+        function addVal(what) {
+            if (what === "answer") {
+                document.getElementById('reply').innerText = eval(document.getElementById('reply').innerText);
+                previous = 13;
+            } else {
+                document.getElementById('reply').innerText = what;
             }
-            return "error 400";
         }
-        async function send2() {
-            console.log(await getFiles("a96e737be897c1dcf18c191b9356da66fc258cfe8c61efd3aeb4c043ec4a4137"));
+        function addAddVal(what) {
+            if (previous === 13) {
+                    addVal('');
+            }
+            document.getElementById('reply').innerText += what;
+            previous = what;
         }
+        document.addEventListener('keydown', (event) => {
+            console.log(event.keyCode);
+            if (event.keyCode === 8) {
+                if (previous === 13) {
+                    addVal('');
+                }
+                else {
+                    addVal(document.getElementById('reply').innerText.slice(0, -1));
+                }
+            }
+            else if (event.keyCode === 13) {
+                addVal("answer");
+            }
+            else if (whiteList.includes(event.keyCode)) {
+                addAddVal(event.key);
+            }
+            previous = event.keyCode;
+        }, false);
     </script>
 </body>
 </html>

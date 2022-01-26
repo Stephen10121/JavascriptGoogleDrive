@@ -22,11 +22,17 @@ const ProfilePage = (props) => {
             </div>
         </div>
         <div className="profile-settings">
-            <input className="checkbox" type='checkbox'/>
-            <input className="checkbox" type='checkbox'/><input className="checkbox" type='checkbox'/><input className="checkbox" type='checkbox'/>
+            <ul>
+                <li>Theme</li>
+                <li>Profile Pic</li>
+                <li>Allow sharing</li>
+                <li>2 factor auth</li>
+
+            </ul>
         </div>
     </div>
   );
 }
+//<input id="one1" className="checkbox" type='checkbox'/>
 
 export default ProfilePage;

@@ -1,0 +1,93 @@
+@font-face {
+  font-family: lcd;
+  src: url(open24.ttf);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #8bc6ec;
+  background-image: linear-gradient(135deg, #8bc6ec 0%, #9599e2 100%);
+}
+
+.calculator {
+  width: 60%;
+  height: 60%;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.answer {
+  background-color: white;
+  width: 100%;
+  height: 60px;
+  border-radius: 5px;
+  box-shadow: inset rgba(0, 0, 0, 0.15) 0.5px 0.5px 3.6px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: 5px;
+  overflow-x: hidden;
+}
+
+#reply {
+  font-family: "lcd", sans-serif;
+  font-size: 2rem;
+  height: auto;
+  margin-top: -5px;
+}
+
+.keys {
+  width: 100%;
+  height: calc(100% - 60px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.keys button {
+  border: none;
+  outline: none;
+  background-color: #dfdfdf;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: inset rgba(0, 0, 0, 0.15) 0.5px 0.5px 3.6px;
+  font-family: sans-serif;
+}
+
+.keys button:hover {
+  background-color: #c5c5c5;
+}
+@media only screen and (max-width: 600px) {
+  .calculator {
+    width: 90%;
+  }
+}
+@media only screen and (max-width: 350px) {
+  .calculator {
+    height: 30%;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  .calculator {
+    width: 40%;
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .calculator {
+    width: 20%;
+  }
+}
