@@ -10,7 +10,12 @@ import './styles/App.css';
 
 const App = () => {
   const [userInfo, setUserInfo] = useState(null);
+  const [profilePic, changeProfilePic] = useState("/assets/profile.jpg");
 
+  const setProfilePic = (what) => {
+    console.log(what);
+    changeProfilePic(what);
+  }
   const setUserTheme = () => {
     const themeMode = localStorage.getItem("themeMode");
     if (themeMode === "default") {
@@ -35,10 +40,10 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<CheckLog userInfo={userInfo} setUser={setUserInfo} />} />
+          <Route exact path="/" element={<CheckLog profilePic={profilePic} userInfo={userInfo} setUser={setUserInfo} />} />
           <Route path="/login" element={<Login setUser={setUserInfo} />} />
           <Route path="/signup" element={<Signup setUser={setUserInfo} />} />
-          <Route path="/profile" element={<Profile userInfo={userInfo} setUser={setUserInfo} />} />
+          <Route path="/profile" element={<Profile profilePic={profilePic} setProfilePic={setProfilePic} userInfo={userInfo} setUser={setUserInfo} />} />
           <Route exact path="/logout" element={<Logout />} />
         </Routes>
       </BrowserRouter>

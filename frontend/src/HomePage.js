@@ -60,7 +60,7 @@ const HomePage = (props) => {
         <div className="taskbar">
             <div className="profile">
                 <Link to="/profile" title="Your Profile" className="profile-button">
-                    <img src="/assets/profile.jpg" alt="Profile Pic"/>
+                    <img src={props.profilePic} alt="Profile Pic"/>
                 </Link>
             </div>
             <div className="upload-icon">

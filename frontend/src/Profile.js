@@ -13,7 +13,7 @@ const Profile = (props) => {
       if (!window.localStorage.user) {
         window.localStorage.user = JSON.stringify(props.userInfo);
       }
-      setLogged(<ProfilePage />);
+      setLogged(<ProfilePage profilePic={props.profilePic} setProfilePic={props.setProfilePic}/>);
     } else {
       setLogged(<Navigate to='/login'/>);
     }

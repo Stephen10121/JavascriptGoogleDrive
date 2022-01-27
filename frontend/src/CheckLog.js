@@ -13,7 +13,7 @@ const CheckLog = (props) => {
       if (!window.localStorage.user) {
         window.localStorage.user = JSON.stringify(props.userInfo);
       }
-      setLogged(<HomePage />);
+      setLogged(<HomePage profilePic={props.profilePic}/>);
     } else {
       setLogged(<Notlogged/>);
     }

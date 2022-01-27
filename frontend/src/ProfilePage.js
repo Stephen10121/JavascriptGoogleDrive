@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import setTheme from "./setTheme";
 import "./styles/ProfilePage.css";
 import "./styles/Checkbox.css";
 
 const ProfilePage = (props) => {
+    const [profilePic, setProfilePic] = useState(props.profilePic);
+
     const selectTheme = (event, themeMode) => {
         var elems = document.querySelectorAll(".theme-selected");
         [].forEach.call(elems, (el) => {
@@ -30,6 +32,11 @@ const ProfilePage = (props) => {
         onStartup.current();
     }, []);
 
+    useEffect(() => {
+        setProfilePic(props.profilePic);
+        console.log('a change');
+    }, [props.profilePic]);
+
     return (
         <div className="ProfilePage">
             <div className="taskbar">
@@ -48,7 +55,7 @@ const ProfilePage = (props) => {
                 </div>
             </div>
             <div className="profile-settings">
-                <div className="profile-theme">
+                <div className="profile-grid profile-theme">
                     <h1>Theme</h1>
                     <div className="profile-theme-themes">
                         <button id="default-theme" title="Default Theme" onClick={(e) => selectTheme(e, "default")}></button>
@@ -56,9 +63,38 @@ const ProfilePage = (props) => {
                         <button id="dark-theme" title="Dark Theme" onClick={(e) => selectTheme(e, "dark")}></button>
                     </div>
                 </div>
+                <div className="profile-grid profile-pic">
+                    <h1>Profile picture</h1>
+                    <div className="profile-images">
+                        <div className="profile-images-current">
+                            <p>Current</p>
+                            <img src={profilePic} alt="current profile"></img>
+                        </div>
+                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile1.jpg")}}>
+                            <img src="/profilePics/profile1.jpg" alt="profile1"/>
+                        </button>
+                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile2.jpg")}}>
+                            <img src="/profilePics/profile2.jpg" alt="profile2"/>
+                        </button>
+                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile3.jpg")}}>
+                            <img src="/profilePics/profile3.jpg" alt="profile3"/>
+                        </button>
+                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile4.jpg")}}>
+                            <img src="/profilePics/profile4.jpg" alt="profile4"/>
+                        </button>
+                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile5.jpg")}}>
+                            <img src="/profilePics/profile5.jpg" alt="profile5"/>
+                        </button>
+                    </div>
+                </div>
+                <div className="profile-grid">
+                    <h1>sharing</h1>
+                    <div className="profile-allow-sharing">
+                        <p>Do you want people to share files to you?</p>
+                        <input type="checkbox" className="checkbox"/>
+                    </div>
+                </div>
                 <ul>
-                    <li>Profile Pic</li>
-                    <li>Allow sharing</li>
                     <li>2 factor auth</li>
                 </ul>
             </div>

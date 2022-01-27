@@ -8,6 +8,30 @@
 .ProfilePage.taskbar {
   height: 100vh;
 }
+.home-icon,
+.shared-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.home-icon a,
+.shared-icon button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.home-icon a:hover,
+.shared-icon button:hover {
+  filter: invert(0.5);
+}
+
+.home-icon a img {
+  width: 100%;
+  height: 100%;
+}
 
 .profile-settings {
   background-color: var(--folder-struct-color);
@@ -16,7 +40,7 @@
   flex-direction: column;
 }
 
-.profile-theme {
+.profile-grid {
   margin-top: 20px;
   display: flex;
   flex-direction: row;
@@ -27,7 +51,7 @@
   gap: 20px;
 }
 
-.profile-theme h1 {
+.profile-grid h1 {
   padding-right: 10px;
   border-right: 1px solid black;
   font-weight: 400;
@@ -68,27 +92,54 @@
   background-color: black;
 }
 
-.home-icon,
-.shared-icon {
-  width: 50px;
+.profile-pic h1 {
+  width: 400px;
+}
+
+.profile-images {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.profile-images button {
   height: 50px;
-}
-
-.home-icon a,
-.shared-icon button {
-  background: none;
-  border: none;
   cursor: pointer;
-  width: 100%;
-  height: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  border-radius: 50%;
 }
 
-.home-icon a:hover,
-.shared-icon button:hover {
-  filter: invert(0.5);
+.profile-images button:hover {
+  outline: 3px solid black;
 }
 
-.home-icon a img {
-  width: 100%;
+.profile-images button img {
+  height: 50px;
+  border-radius: 50%;
+}
+
+.profile-images-current {
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profile-images-current img {
+  height: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.profile-allow-sharing {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
