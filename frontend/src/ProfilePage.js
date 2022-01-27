@@ -1,4 +1,4 @@
-//import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import setTheme from "./setTheme";
 import "./styles/ProfilePage.css";
@@ -18,7 +18,17 @@ const ProfilePage = (props) => {
         } else if (themeMode === "light") {
             setTheme("#202936", "#9c9c9c", "#c4c4c4", "#3e3e42", "#232325", "#dfdfdf", "invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(101%) contrast(101%)", "#00529b", "rgba(190, 230, 248, 0.7)", "#7a7a7c", "#dfdfdf", "#555555", "#383838", "#000000");
         }
+        localStorage.setItem("themeMode", themeMode);
     }
+
+    const onStartup = useRef(() => {});
+    onStartup.current = () => {
+        document.getElementById(`${localStorage.getItem("themeMode")}-theme`).classList.add('theme-selected');
+    }
+
+    useEffect(() => {
+        onStartup.current();
+    }, []);
 
     return (
         <div className="ProfilePage">
