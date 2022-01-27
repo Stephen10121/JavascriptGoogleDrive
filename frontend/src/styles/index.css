@@ -4,25 +4,26 @@
   box-sizing: border-box;
   text-decoration: none;
   list-style-type: none;
+  transition: background 1s ease;
 }
 
 :root {
   --checkbox-timing: 0.1s;
-  --header-color: rgb(20, 22, 29);
-  --folder-struct-color: rgb(33, 40, 68);
-  --main-section-color: rgb(34, 32, 32);
-  --logout-color: rgb(31, 31, 31);
-  --logout-hover-color: rgb(54, 54, 54);
-  --logout-hover-background-color: rgb(226, 226, 226);
+  --header-color: #202936;
+  --folder-struct-color: #9c9c9c;
+  --main-section-color: #c4c4c4;
+  --logout-color: #3e3e42;
+  --logout-hover-color: #232325;
+  --logout-hover-background-color: #dfdfdf;
   --icon-color: invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg)
     brightness(101%) contrast(101%);
   --file-upload-popup-color: #00529b;
   --file-upload-popup-background-color: rgba(190, 230, 248, 0.7);
-  --folder-background-color: rgb(115, 120, 145);
-  --folder-color: black;
-  --folder-background-color-hover: rgb(86, 90, 109);
-  --color-2: rgb(24, 28, 43);
-  --name-color: rgb(199, 199, 199);
+  --folder-background-color: #7a7a7c;
+  --folder-color: #dfdfdf;
+  --folder-background-color-hover: #555555;
+  --color-2: #383838;
+  --name-color: #000000;
 }
 .test-variable {
   --checkbox-timing: 0.1s;
@@ -44,6 +45,7 @@
 }
 
 /* 
+Default Mode
 --checkbox-timing: 0.1s;
 --header-color: rgb(20, 22, 29);
 --folder-struct-color: rgb(33, 40, 68);
@@ -59,6 +61,42 @@
 --folder-background-color-hover: rgb(86, 90, 109);
 --color-2: rgb(24, 28, 43);
 --name-color:rgb(199, 199, 199) ;
+
+Dark Mode
+--checkbox-timing: 0.1s;
+  --header-color: #1e1e1e;
+  --folder-struct-color: #2d2d30;
+  --main-section-color: #252526;
+  --logout-color: #3e3e42;
+  --logout-hover-color: #232325;
+  --logout-hover-background-color: #dfdfdf;
+  --icon-color: invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg)
+    brightness(101%) contrast(101%);
+  --file-upload-popup-color: #00529b;
+  --file-upload-popup-background-color: rgba(190, 230, 248, 0.7);
+  --folder-background-color: #3e3e42;
+  --folder-color: #dfdfdf;
+  --folder-background-color-hover: #1b1b1b;
+  --color-2: #173a52;
+  --name-color: #000000;
+
+Light Mode
+--checkbox-timing: 0.1s;
+  --header-color: #202936;
+  --folder-struct-color: #9c9c9c;
+  --main-section-color: #c4c4c4;
+  --logout-color: #3e3e42;
+  --logout-hover-color: #232325;
+  --logout-hover-background-color: #dfdfdf;
+  --icon-color: invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg)
+    brightness(101%) contrast(101%);
+  --file-upload-popup-color: #00529b;
+  --file-upload-popup-background-color: rgba(190, 230, 248, 0.7);
+  --folder-background-color: #7a7a7c;
+  --folder-color: #dfdfdf;
+  --folder-background-color-hover: #555555;
+  --color-2: #383838;
+  --name-color: #000000;
 */
 
 body {

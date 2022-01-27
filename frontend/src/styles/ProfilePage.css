@@ -11,6 +11,61 @@
 
 .profile-settings {
   background-color: var(--folder-struct-color);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-theme {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 50px;
+  width: 50%;
+  gap: 20px;
+}
+
+.profile-theme h1 {
+  padding-right: 10px;
+  border-right: 1px solid black;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.profile-theme-themes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.profile-theme-themes button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.profile-theme-themes button:hover {
+  outline: 3px solid rgb(103, 105, 114);
+}
+
+.profile-theme-themes button.theme-selected {
+  outline: 3px solid rgb(103, 105, 114);
+}
+
+#default-theme {
+  background-color: rgb(20, 22, 29);
+}
+
+#light-theme {
+  background-color: #dfdfdf;
+}
+
+#dark-theme {
+  background-color: black;
 }
 
 .home-icon,
