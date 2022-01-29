@@ -19,6 +19,7 @@ const HomePage = (props) => {
     const [currentPath, changeCurrentPath] = useState('home');
 
     const loadUserData = () => {
+        console.log(user);
         if (userId === "") {
             const cook = getCookie("G_VAR");
             if (cook) {

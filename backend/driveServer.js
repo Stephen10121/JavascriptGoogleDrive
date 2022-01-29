@@ -2,7 +2,7 @@ const http = require("http");
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const socketio = require('socket.io');
-const { userLogin, getUserData, signup } = require("./database");
+const { userLogin, getUserData, signup } = require("./database2");
 const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
 const { hashed } = require("./functions");
@@ -64,7 +64,6 @@ app.post('/login', async (req, res) => {
     if (req.body.username && req.body.password) {
         const user = await userLogin(req.body.username, req.body.password);
         if (user.error == 200) {
-            delete user.data.userInfo.password;
             theUsernames[user.data.key] = req.body.username;
             const files = await getFiles(`./storage/${hashed(req.body.username)}`);
             const newFiles = [];
