@@ -61,7 +61,7 @@ const HomePage = (props) => {
         <div className="taskbar">
             <div className="profile">
                 <Link to="/profile" title="Your Profile" className="profile-button">
-                    <img src={props.profilePic} alt="Profile Pic"/>
+                    <img src={`/profilePics/${user.usersProfile}.jpg`} alt="Profile Pic"/>
                 </Link>
             </div>
             <div className="upload-icon">
@@ -78,12 +78,12 @@ const HomePage = (props) => {
         </div>
         <div className="files-box">
             <div className="name-show">
-                <p className="name-show-p">{user.rname}</p>
+                <p className="name-show-p">{user.usersRName}</p>
             </div>
             <FolderLoad changeDir={showFiles} id={userId} usern={user}/>
         </div>
         <div className="main-files">
-            <FileLoad path={currentPath} files={files} id={userId} owner={user.rname}/>
+            <FileLoad path={currentPath} files={files} id={userId} owner={user.usersRName}/>
         </div>
     </div>
     );

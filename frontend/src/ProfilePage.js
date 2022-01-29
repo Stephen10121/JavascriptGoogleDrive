@@ -6,6 +6,7 @@ import "./styles/Checkbox.css";
 
 const ProfilePage = (props) => {
     const [profilePic, setProfilePic] = useState(props.profilePic);
+    const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
 
     const selectTheme = (event, themeMode) => {
         var elems = document.querySelectorAll(".theme-selected");
@@ -33,7 +34,6 @@ const ProfilePage = (props) => {
     }, []);
 
     useEffect(() => {
-        setProfilePic(props.profilePic);
         console.log('a change');
     }, [props.profilePic]);
 
@@ -68,7 +68,7 @@ const ProfilePage = (props) => {
                     <div className="profile-images">
                         <div className="profile-images-current">
                             <p>Current</p>
-                            <img src={profilePic} alt="current profile"></img>
+                            <img src={`/profilePics/${user.usersProfile}.jpg`} alt="current profile"></img>
                         </div>
                         <button onClick={(e) => {props.setProfilePic("/profilePics/profile1.jpg")}}>
                             <img src="/profilePics/profile1.jpg" alt="profile1"/>
