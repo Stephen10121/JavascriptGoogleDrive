@@ -7,6 +7,7 @@ import "./styles/Checkbox.css";
 const ProfilePage = (props) => {
     const [profilePic, setProfilePic] = useState(props.profilePic);
     const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
+    const [profilePics] = useState(["profile1", "profile2", "profile3", "profile4", "profile5"]);
 
     const selectTheme = (event, themeMode) => {
         var elems = document.querySelectorAll(".theme-selected");
@@ -66,25 +67,16 @@ const ProfilePage = (props) => {
                 <div className="profile-grid profile-pic">
                     <h1>Profile picture</h1>
                     <div className="profile-images">
-                        <div className="profile-images-current">
-                            <p>Current</p>
-                            <img src={`/profilePics/${user.usersProfile}.jpg`} alt="current profile"></img>
-                        </div>
-                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile1.jpg")}}>
-                            <img src="/profilePics/profile1.jpg" alt="profile1"/>
-                        </button>
-                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile2.jpg")}}>
-                            <img src="/profilePics/profile2.jpg" alt="profile2"/>
-                        </button>
-                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile3.jpg")}}>
-                            <img src="/profilePics/profile3.jpg" alt="profile3"/>
-                        </button>
-                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile4.jpg")}}>
-                            <img src="/profilePics/profile4.jpg" alt="profile4"/>
-                        </button>
-                        <button onClick={(e) => {props.setProfilePic("/profilePics/profile5.jpg")}}>
-                            <img src="/profilePics/profile5.jpg" alt="profile5"/>
-                        </button>
+                            <button className="name-profile" onClick={(e) => {props.setProfilePic(`name-profile`)}}>
+                                    <p>{user.usersRName.charAt(0)}</p>
+                            </button>
+                        {profilePics.map((thePic, index) => {
+                            return(
+                                <button key={index} className={user.usersProfile === thePic ? "current-image": ""} onClick={(e) => {props.setProfilePic(`/profilePics/${thePic}.jpg`)}}>
+                                    <img src={`/profilePics/${thePic}.jpg`} alt="profile1"/>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
                 <div className="profile-grid">

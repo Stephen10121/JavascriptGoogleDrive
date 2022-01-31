@@ -109,7 +109,6 @@
   height: 50px;
   cursor: pointer;
   border: none;
-  background: none;
   outline: none;
   border-radius: 50%;
 }
@@ -118,9 +117,23 @@
   outline: 3px solid black;
 }
 
+.profile-images button.current-image {
+  outline: 3px solid gray;
+}
+
 .profile-images button img {
   height: 50px;
   border-radius: 50%;
+}
+
+.name-profile {
+  width: 50px;
+  background: rgb(207, 207, 207);
+}
+
+.name-profile p {
+  font-size: 1.35rem;
+  font-family: "roboto", sans-serif;
 }
 
 .profile-images-current {
