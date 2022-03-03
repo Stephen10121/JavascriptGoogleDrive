@@ -23,21 +23,19 @@ const App = () => {
   }
 
   const onStartup = useRef(() => {});
-    onStartup.current = () => {
-        setUserTheme();
-    }
+  onStartup.current = () => {
+    setUserTheme();
+  }
 
-    useEffect(() => {
-        onStartup.current();
-    }, []);
+  useEffect(() => {
+    onStartup.current();
+  }, []);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<CheckLog userInfo={userInfo} setUser={setUserInfo} />} />
-          <Route path="/login" element={<Login setUser={setUserInfo} />} />
-          <Route path="/signup" element={<Signup setUser={setUserInfo} />} />
           <Route path="/profile" element={<Profile userInfo={userInfo} setUser={setUserInfo} />} />
           <Route exact path="/logout" element={<Logout />} />
         </Routes>
@@ -49,6 +47,9 @@ const App = () => {
 export default App;
 
 /*
+<Route path="/login" element={<Login setUser={setUserInfo} />} />
+<Route path="/signup" element={<Signup setUser={setUserInfo} />} />
+
 <Link className="App-link" to="/signup">signup</Link>
 <Link className="App-link" to="/login">login</Link>
 */

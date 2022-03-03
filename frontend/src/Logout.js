@@ -40,7 +40,7 @@ const Logout = () => {
                 localStorage.removeItem("user");
             });
         }
-        return(<Navigate to="/login" />);
+        return(<Navigate to="/" />);
     }
 
     return (
