@@ -220,19 +220,20 @@ const whiteList = [];
 
 io.on('connection', socket => {
     socket.on("auth", (data) => {
-        if (data == "password") {
-            whiteList.push(socket.id);
-        } else {
-            socket.disconnect();
-        }
+        // if (data == "password") {
+        //     whiteList.push(socket.id);
+        // } else {
+        //     socket.disconnect();
+        // }
     });
 
     socket.on("test", (data) => {
-        if (whiteList.includes(socket.id)) {
-            //console.log(data);
-        } else {
-            socket.disconnect();
-        }
+        console.log(data);
+        // if (whiteList.includes(socket.id)) {
+        //     //console.log(data);
+        // } else {
+        //     socket.disconnect();
+        // }
     });
 });
 
