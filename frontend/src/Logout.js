@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 const axios = require("axios");
 
@@ -22,6 +22,8 @@ const getCookie = (name) => {
 }
 
 const Logout = () => {
+    const [log, setLog] = useState(<></>);
+
     const removeUser = () => {
         const cookie = getCookie("G_VAR");
         if (cookie) {
@@ -38,15 +40,25 @@ const Logout = () => {
             }).then(res => {
                 document.cookie = 'G_VAR=; Max-Age=-99999999;';  
                 localStorage.removeItem("user");
+                setLog(<Navigate to="/" />);
             });
+        } else {
+            setLog(<Navigate to="/" />);
         }
-        return(<Navigate to="/" />);
     }
+    const onStartup = useRef(() => {});
+    onStartup.current = () => {
+        removeUser();
+    }
+
+    useEffect(() => {
+        onStartup.current();
+    }, []);
 
     return (
     <div className="Logout">
-        {removeUser()}
-        Logging Out
+        {log}
+        Logging Out<br/>If you are not redirecting, reload the page.
     </div>
     );
 }

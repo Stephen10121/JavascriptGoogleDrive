@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import './styles/Notlogged.css';
 import './styles/GruzAuth.css';
 import useWindowDimensions from "./useWindowDimensions";
 import useSocket from "./useSocket";
 import Cookies from 'universal-cookie';
+import { useState } from "react";
 
 const Notlogged = (props) => {
   const { height2, width2 } = useWindowDimensions();
+  const [nav, setNav] = useState(<></>);
   const socket = useSocket('http://192.168.0.24:5400');
 
   const popupCenter = ({postServer, key, title, w, h}) => {
@@ -39,6 +41,7 @@ const Notlogged = (props) => {
     const cookies = new Cookies();
     socket.on("auth", (data) => {
       cookies.set('G_VAR', data, { path: '/' });
+      setNav(<Navigate to="/test" />);
     });
     //${window.location.href}
     popupCenter({postServer:`http://192.168.0.24:5400/auth`, key: socket.id, title: 'Authenticate', w: 520, h: 570});
@@ -46,6 +49,7 @@ const Notlogged = (props) => {
 
   return (
     <div className="not-logged" id="cover">
+      {nav}
       <h3 className="welcome-h">Storage Drive</h3>
       <p className="sub">By: Gruzservices</p>
       <div className="links">
