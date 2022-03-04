@@ -3,10 +3,11 @@ import './styles/Notlogged.css';
 import './styles/GruzAuth.css';
 import useWindowDimensions from "./useWindowDimensions";
 import useSocket from "./useSocket";
+import Cookies from 'universal-cookie';
 
 const Notlogged = (props) => {
   const { height2, width2 } = useWindowDimensions();
-  const socket = useSocket('https://auth.gruzservices.com');
+  const socket = useSocket('http://192.168.0.24:5400');
 
   const popupCenter = ({postServer, key, title, w, h}) => {
     // Fixes dual-screen position                             Most browsers      Firefox
@@ -35,8 +36,12 @@ const Notlogged = (props) => {
   }
 
   const loginIt = () => {
-      socket.emit('test', "test");
-      popupCenter({postServer:`${window.location.href}auth`, key: "socket.id", title: 'Authenticate', w: 520, h: 570});
+    const cookies = new Cookies();
+    socket.on("auth", (data) => {
+      cookies.set('G_VAR', data, { path: '/' });
+    });
+    //${window.location.href}
+    popupCenter({postServer:`http://192.168.0.24:5400/auth`, key: socket.id, title: 'Authenticate', w: 520, h: 570});
   }
 
   return (

@@ -13,7 +13,7 @@ const app = express();
 const upload = multer();
 var type = upload.single('document');
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', "https://drive.gruzservices.com");
+    res.setHeader('Access-Control-Allow-Origin', "https://auth.gruzservices.com");
     res.setHeader('Access-Control-Allow-Headers', '*');
     next();
 });
@@ -58,6 +58,11 @@ app.get('/download', (req, res) => {
     } else {
         return res.status(200).send("Missing parameters.");
     }
+});
+
+app.post('/auth', (req, res) => {
+    console.log(req.body);
+    io.to(req.body.key).emit('auth', req.body.data);
 });
 
 app.post('/login', async (req, res) => {
