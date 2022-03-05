@@ -41,21 +41,38 @@ const Notlogged = (props) => {
     const cookies = new Cookies();
     socket.on("auth", (data) => {
       cookies.set('G_VAR', data, { path: '/' });
-      setNav(<Navigate to="/test" />);
+      socket.off('auth');
+      //setNav(<Navigate to="/test" />);
     });
     //${window.location.href}
     popupCenter({postServer:`http://192.168.0.24:5400/auth`, key: socket.id, title: 'Authenticate', w: 520, h: 570});
   }
 
   return (
-    <div className="not-logged" id="cover">
-      {nav}
-      <h3 className="welcome-h">Storage Drive</h3>
-      <p className="sub">By: Gruzservices</p>
-      <div className="links">
-        <button id="sauth-login" onClick={() => loginIt()}>Login with Gruzservices <span><img src="https://auth.gruzservices.com/icons/lock.svg" alt="Lock" /></span></button>
-      </div>
-    </div>
+    <>
+    <header>
+        <h1><a href="#">Gruzservices</a></h1>
+        <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </header>
+    <main>
+        <div class="not-logged" id="cover">
+            <div class="box-not-logged">
+                {nav}
+                <h3 class="welcome-h">Storage Drive</h3>
+                <p class="sub">Store and Share files online.</p>
+                <div class="links">
+                    <button id="sauth-login" onClick={() => loginIt()}>Login with Gruzservices <span><img src="https://auth.gruzservices.com/icons/lock.svg" alt="Lock" /></span></button>
+                </div>
+            </div>
+        </div>
+        <div class="img-part">
+            <img src="/icons/cloud.svg" alt="" />
+        </div>
+    </main>
+    </>
   );
 }
 

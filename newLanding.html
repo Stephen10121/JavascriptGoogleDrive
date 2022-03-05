@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .skeleton {
+            opacity: .7;
+            animation: skeleton-loading 1s linear infinite alternate;
+        }
+
+        .skeleton-text.l {
+            width: 270px;
+            height: 40px;
+            border-radius: 2px;
+        }
+
+        .skeleton-text.s {
+            width: 120px;
+            height: 15px;
+            position: absolute;
+            border-radius: 2px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-color: hsl(200, 20%, 70%);
+            }
+            100% {
+                background-color: hsl(200, 20%, 95%);
+            }
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: 70px auto;
+        }
+
+        main {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background-color: #f3f3f3;
+        }
+
+        .not-logged {
+            width: 100%;
+            height: 100%;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .box-not-logged {
+            width: clamp(300px, 70%, 100%);
+            height: 50%;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .welcome-h {
+            font-size: 2.5rem;
+        }
+
+        .img-part {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img-part img {
+            width: clamp(20px, 60%, 95%);
+        }
+
+        @font-face {
+            font-family: "George-Italic";
+            src: url(https://auth.gruzservices.com/fonts/Louis-George-Cafe-Italic.ttf);
+        }
+
+        #sauth-login {
+            width: 220px;
+            margin-top: 10px;
+            font-family: "George-Italic", sans-serif;
+            border-radius: 100vw;
+            border: none;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            height: 50px;
+            cursor: pointer;
+            transition: box-shadow 0.25s linear;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            justify-content: center;
+        }
+
+        #sauth-login span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #sauth-login:hover {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 8px 8px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        header h1 a {
+            color: black;
+        }
+
+        header ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        header ul li a {
+            color: #696969;
+        }
+
+        header ul li:first-child a {
+            color: #494949;
+        }
+
+        @media only screen and (max-width: 1100px) {
+            main {
+                display: block;
+            }
+
+            .box-not-logged {
+                width: 100%;
+                height: 100%;
+                border-radius: 0px;
+                box-shadow: none;
+            }
+
+            .img-part {
+                display: none;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            body {
+                grid-template-rows: 100px auto;
+            }
+
+            header {
+                justify-content: center;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+</style>
+    <header>
+        <h1><a href="#">Gruzservices</a></h1>
+        <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </header>
+    <main>
+        <div class="not-logged" id="cover">
+            <div class="box-not-logged">
+                <h3 class="welcome-h">Storage Drive</h3>
+                <p class="sub">Store and Share files online.</p>
+                <div class="links">
+                    <button id="sauth-login">Login with Gruzservices <span><img src="https://auth.gruzservices.com/icons/lock.svg" alt="Lock" /></span></button>
+                </div>
+            </div>
+        </div>
+        <div class="img-part">
+            <img src="cloud.svg" alt="">
+        </div>
+    </main>
+</body>
+</html>
