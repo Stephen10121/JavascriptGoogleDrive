@@ -58,17 +58,17 @@ const Notlogged = (props) => {
         </ul>
     </header>
     <main>
-        <div class="not-logged" id="cover">
-            <div class="box-not-logged">
+        <div className="not-logged" id="cover">
+            <div className="box-not-logged">
                 {nav}
-                <h3 class="welcome-h">Storage Drive</h3>
-                <p class="sub">Store and Share files online.</p>
-                <div class="links">
+                <h3 className="welcome-h">Storage Drive</h3>
+                <p className="sub">Store and Share files online.</p>
+                <div className="links">
                     <button id="sauth-login" onClick={() => loginIt()}>Login with Gruzservices <span><img src="https://auth.gruzservices.com/icons/lock.svg" alt="Lock" /></span></button>
                 </div>
             </div>
         </div>
-        <div class="img-part">
+        <div className="img-part">
             <img src="/icons/cloud.svg" alt="" />
         </div>
     </main>
