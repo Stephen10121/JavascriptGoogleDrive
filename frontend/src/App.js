@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import Login from './Login';
-import Signup from './Signup';
 import CheckLog from "./CheckLog";
 import setTheme from "./setTheme";
 import Logout from "./Logout";
 import Profile from "./Profile";
 import './styles/App.css';
 
+export const UserDataContext = React.createContext();
+
 const App = () => {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState("test");
 
   const setUserTheme = () => {
     const themeMode = localStorage.getItem("themeMode");
@@ -33,13 +33,15 @@ const App = () => {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<CheckLog userInfo={userInfo} setUser={setUserInfo} />} />
-          <Route path="/profile" element={<Profile userInfo={userInfo} setUser={setUserInfo} />} />
-          <Route exact path="/logout" element={<Logout />} />
-        </Routes>
-      </BrowserRouter>
+      <UserDataContext.Provider value={userInfo}>
+        <BrowserRouter>
+          <Routes>
+            <Route exact path="/" element={<CheckLog userInfo={userInfo} setUser={setUserInfo} />} />
+            <Route path="/profile" element={<Profile userInfo={userInfo} setUser={setUserInfo} />} />
+            <Route exact path="/logout" element={<Logout />} />
+          </Routes>
+        </BrowserRouter>
+      </UserDataContext.Provider>
     </div>
   );
 }

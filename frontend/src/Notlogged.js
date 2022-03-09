@@ -42,7 +42,7 @@ const Notlogged = (props) => {
     socket.on("auth", (data) => {
       cookies.set('G_VAR', data, { path: '/' });
       socket.off('auth');
-      //setNav(<Navigate to="/test" />);
+      setNav(<Navigate to="/" />);
     });
     //${window.location.href}
     popupCenter({postServer:`http://192.168.0.24:5400/auth`, key: socket.id, title: 'Authenticate', w: 520, h: 570});

@@ -60,8 +60,11 @@ app.get('/download', (req, res) => {
     }
 });
 
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
     console.log(req.body);
+    const newData = req.body;
+    const result = await userLogin({hash: newData.data, name: newData.name, email: newData.email});
+    console.log(result);
     io.to(req.body.key).emit('auth', req.body.data);
 });
 

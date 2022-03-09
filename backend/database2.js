@@ -7,14 +7,10 @@ async function createTable() {
     try {
         await db.run(`CREATE TABLE users (
             id INTEGER PRIMARY KEY,
-            usersName varchar(200) NOT NULL,
+            usersHash varchar(200) NOT NULL,
             usersRName varchar(200) NOT NULL,
             usersEmail varchar(200) NOT NULL,
-            usersPassword varchar(300) NOT NULL,
-            usersSharing varchar(10) NOT NULL,
-            usersProfile varchar(200) NOT NULL,
-            users2FA varchar(10) NOT NULL,
-            users2FAPassword varchar(300)
+            usersProfile varchar(200) NOT NULL
         )`);
     } catch (error) {
         console.error(error.message);
@@ -24,23 +20,7 @@ async function createTable() {
     }
 }
 
-async function getUser(user) {
-    const db = await Database.open("./users.db");
-    let sql = "SELECT * FROM USERS WHERE usersName=?";
-    const result = await db.all(sql, [user]);
-    await db.close();
-    return result;
-}
-
-async function getAllUsers() {
-    const db = await Database.open("./users.db");
-    let sql = "SELECT * FROM USERS";
-    const result = await db.all(sql, []);
-    await db.close();
-    return result;
-}
-
-async function getUserById(id) {
+async function getUser(id) {
     const db = await Database.open("./users.db");
     let sql = "SELECT * FROM USERS WHERE id=?";
     const result = await db.all(sql, [id]);
@@ -48,12 +28,20 @@ async function getUserById(id) {
     return result;
 }
 
-async function addUser(name, rName, email, password, sharing, profile, twoFA, twoFAPassword) {
+async function getUserByHash(hash) {
     const db = await Database.open("./users.db");
-    const insertStatement = "INSERT INTO users (usersName, usersRName, usersEmail, usersPassword, usersSharing, usersProfile, users2FA, users2FAPassword) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    let sql = "SELECT * FROM USERS WHERE usersHash=?";
+    const result = await db.all(sql, [hash]);
+    await db.close();
+    return result;
+}
+
+async function addUser(hash, rName, email, profile) {
+    const db = await Database.open("./users.db");
+    const insertStatement = "INSERT INTO users (usersHash, usersRName, usersEmail, usersProfile) VALUES (?, ?, ?, ?)";
     
     try {
-        const result = db.run(insertStatement, [name, rName, email, password, sharing, profile, twoFA, twoFAPassword]);
+        const result = db.run(insertStatement, [hash, rName, email, profile]);
         await db.close();
         return result;
     } catch (err) {
@@ -62,11 +50,11 @@ async function addUser(name, rName, email, password, sharing, profile, twoFA, tw
     }
 }
 
-async function editUser(id, name, rName, email, password, sharing, profile, twoFA, twoFAPassword) {
+async function editUser(id, hash, rName, email, profile) {
     const db = await Database.open("./users.db");
-    const updateStatement = "UPDATE users SET usersName=?, usersRName=?, usersEmail=?, usersPassword=?, usersSharing=?, usersProfile=?, users2FA=?, users2FAPassword=? WHERE id=?";
+    const updateStatement = "UPDATE users SET usersHash=?, usersRName=?, usersEmail=?, usersProfile=? WHERE id=?";
     try {
-        const result = await db.run(updateStatement, [name, rName, email, password, sharing, profile, twoFA, twoFAPassword, id]);
+        const result = await db.run(updateStatement, [hash, rName, email, profile, id]);
         await db.close();
         return result;
     } catch (err) {
@@ -75,38 +63,17 @@ async function editUser(id, name, rName, email, password, sharing, profile, twoF
     }
 }
 
-async function signup(username, userPassword, userEmail, name) {
-    const users = await getUser(username);
-    if (users.length !== 0) {
-        return({error: 1005, errorMessage: "Username Taken"});
-    }
-    const result = await addUser(username, name, userEmail, hashed(userPassword), "false", "profile1", "false", "");
-    
-    if (result === "error") {
-        return({error: 1006, errorMessage: "Error Saving Data 1006"});
-    } else {
-        var dir = `./storage/${hashed(username)}`;
-
-        fs.mkdir(dir, { recursive: true }, (err) => {
-            if (err) throw err;
-        });
-        return({error: 200, data: {userInfo: {rname: name, email: userEmail, sharing: false, twoFA: false, profile: "profile1"}, key: createHash()}});
-    }
-}
-
-async function userLogin(username, password) {
-    const users = await getUser(username);
+async function userLogin({ hash, name, email}) {
+    const users = await getUserByHash(hash);
     if (users.length === 0) {
-        return({errorMessage: "Invalid Username", error: 1000});
+        const addedUser = await addUser(hash, name, email, JSON.stringify({}));
+        if (addedUser === 'error') {
+            return({errorMessage: "Error Try Again", error: 1000});
+        }
+        console.log(addedUser);
     }
-
-    if (users[0].usersPassword !== hashed(password)) {
-        return({error: 1001, errorMessage: "Invalid Password"});
-    }
-    delete users[0].id;
-    delete users[0].usersPassword;
-    delete users[0].users2FAPassword;
-    return({error: 200, data: {userInfo: users[0], key: createHash()}});
+    console.log(users);
+    return({error: 200, data: {userInfo: users[0]}});
 }
 
 async function getUserData(user) {
@@ -117,7 +84,6 @@ async function getUserData(user) {
 //createTable().then(data=>console.log(data));
 
 module.exports = {
-    signup,
     userLogin,
     getUserData
 }
