@@ -86,9 +86,6 @@ const ProfilePage = (props) => {
                         <input type="checkbox" className="checkbox"/>
                     </div>
                 </div>
-                <ul>
-                    <li>2 factor auth</li>
-                </ul>
             </div>
         </div>
     );
