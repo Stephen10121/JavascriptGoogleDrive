@@ -3,3 +3,4 @@
 backend/users.json
 /backend/storage/
 /backend/users.db
+/backend/.env

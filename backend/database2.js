@@ -3,6 +3,11 @@ const fs = require("fs");
 const { hashed, createHash } = require("./functions");
 
 async function createTable() {
+    const dir = `./storage/`;
+
+    fs.mkdir(dir, { recursive: true }, (err) => {
+        if (err) throw err;
+    });
     const db = await Database.open("./users.db");
     try {
         await db.run(`CREATE TABLE users (
@@ -71,6 +76,11 @@ async function userLogin({ hash, name, email, username}) {
         if (addedUser === 'error') {
             return({errorMessage: "Error Try Again", error: 1000});
         }
+        const dir = `./storage/${hashed(username)}`;
+
+        fs.mkdir(dir, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
         users = await getUserByHash(hash);
     }
     return({error: 200, data: {userInfo: users[0]}});
@@ -81,7 +91,7 @@ async function getUserData(user) {
     return users[0];
 }
 
-// createTable().then(data=>console.log(data));
+//createTable().then(data=>console.log(data));
 
 module.exports = {
     userLogin,

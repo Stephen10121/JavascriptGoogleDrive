@@ -1,3 +1,4 @@
+require('dotenv').config();
 const http = require("http");
 const express = require('express');
 const fileUpload = require('express-fileupload');
@@ -7,10 +8,12 @@ const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
 const { hashed } = require("./functions");
 const multer  = require('multer');
+const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const PORT = 5400;
 const app = express();
 const upload = multer();
+
 var type = upload.single('document');
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', "https://auth.gruzservices.com");
@@ -32,7 +35,22 @@ const io = socketio(server, {
       methods: ['GET', 'POST']
   }
 });
-const theUsernames = {}
+
+const checkJWT = (cookie) => {
+    jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        console.log(user);
+        if (err) {
+            return "clear";
+        }
+
+        const userif = await getUserData(user.hash);
+        if (userif.length == 0) {
+            return "clear";
+        }
+        return "good";
+    });
+}
+
 app.get('/', (req, res) => res.render('index'));
 app.get('/signup', (req, res) => res.render('index'));
 app.get('/login', (req, res) => res.render('index'));
@@ -41,7 +59,7 @@ app.get('/profile', (req, res) => res.render('index'));
 
 app.get('/download', (req, res) => {
     if (req.query.id && req.query.location) {
-        if (theUsernames[req.query.id]) {
+        if (checkJWT(req.query.id) === 'good') {
             console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
             const file = `${__dirname}/storage/${hashed(theUsernames[req.query.id])}${req.query.location.slice(4)}`;
             console.log(file);
@@ -68,53 +86,14 @@ app.post('/auth', async (req, res) => {
         return res.json({ msg:"Something went wrong." });
     }
     delete result.data.userInfo.id;
-    console.log(result.data.userInfo);
-    io.to(req.body.key).emit('auth', req.body.data);
-});
-
-app.post('/login', async (req, res) => {
-    if (req.body.username && req.body.password) {
-        const user = await userLogin(req.body.username, req.body.password);
-        if (user.error == 200) {
-            theUsernames[user.data.key] = req.body.username;
-            const files = await getFiles(`./storage/${hashed(req.body.username)}`);
-            const newFiles = [];
-            for (i in files) {
-                newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,'home'));
-            }
-            user.data.userInfo['files'] = newFiles;
-        }
-        res.status(200).send({error: user.error, key: user});
-    } else {
-        res.status(400).send("Missing Fields");
-    }
-});
-
-app.post('/signup', async (req, res) => {
-    if (req.body.name && req.body.email && req.body.username && req.body.password && req.body.rpassword) {
-        if (req.body.password === req.body.rpassword) {
-            const user = await signup(req.body.username, req.body.password, req.body.email, req.body.name);
-            if (user.error == 200) {
-                theUsernames[user.data.key] = req.body.username;
-            }
-            const files = await getFiles(`./storage/${hashed(req.body.username)}`);
-            const newFiles = [];
-            for (i in files) {
-                newFiles.push(files[i].replace(`./storage/${hashed(req.body.username)}`,'home'));
-            }
-            user.data.userInfo['files'] = newFiles;
-            res.status(200).send({error: user.error, key: user});
-        } else {
-            res.status(200).send({error: 444, key: {errorMessage: "Passwords Dont Match."}})
-        }
-    } else {
-        res.status(400).send("Missing Fields");
-    }
+    delete result.data.userInfo.usersHash;
+    const accessToken = jwt.sign(result.data.userInfo, process.env.ACCESS_TOKEN_SECRET);
+    io.to(req.body.key).emit('auth', {userData: result.data.userInfo, token: accessToken});
 });
 
 app.post('/userinfo', async (req, res) => {
     if (req.body.id) {
-        if (theUsernames[req.body.id]) {
+        if (checkJWT(req.body.id) === 'good') {
             const userinfo = await getUserData(theUsernames[req.body.id]);
             delete userinfo.password;
             res.status(200).send({error: 200, user: userinfo});
@@ -144,16 +123,7 @@ app.post('/getFiles', async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-    if (req.body.id) {
-        if (theUsernames[req.body.id]) {
-            delete theUsernames[req.body.id];
-            res.status(200).send({error: 200, errorMessage: "all-good"});
-        } else {
-            res.status(200).send({error: 1010, errorMessage: "invalid id"});
-        }
-    } else {
-        res.status(400).send("Missing Fields");
-    }
+    res.status(200).send({error: 200, errorMessage: "all-good"});
 });
 
 String.prototype.replaceAll = function(str1, str2, ignore) 
