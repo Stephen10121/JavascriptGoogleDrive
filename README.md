@@ -20,7 +20,7 @@ npm install
 
 In the backend folder, create a .env file and add this:
 ```bash
-ACCESS_TOKEN_SECRET="A 30 bit random key (dont add the paranthesis)"
+ACCESS_TOKEN_SECRET="A 32 character random key (dont add the paranthesis)"
 ```
 Then uncomment this line:
 
