@@ -7,9 +7,10 @@ import Profile from "./Profile";
 import './styles/App.css';
 
 export const UserDataContext = React.createContext();
+export const UserDataChangeContext = React.createContext();
 
 const App = () => {
-  const [userInfo, setUserInfo] = useState("test");
+  const [userInfo, setUserInfo] = useState(null);
 
   const setUserTheme = () => {
     const themeMode = localStorage.getItem("themeMode");
@@ -33,15 +34,17 @@ const App = () => {
 
   return (
     <div className="App">
-      <UserDataContext.Provider value={userInfo}>
-        <BrowserRouter>
-          <Routes>
-            <Route exact path="/" element={<CheckLog userInfo={userInfo} setUser={setUserInfo} />} />
-            <Route path="/profile" element={<Profile userInfo={userInfo} setUser={setUserInfo} />} />
-            <Route exact path="/logout" element={<Logout />} />
-          </Routes>
-        </BrowserRouter>
-      </UserDataContext.Provider>
+      <UserDataChangeContext.Provider value={setUserInfo}>
+        <UserDataContext.Provider value={userInfo}>
+          <BrowserRouter>
+            <Routes>
+              <Route exact path="/" element={<CheckLog />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route exact path="/logout" element={<Logout />} />
+            </Routes>
+          </BrowserRouter>
+        </UserDataContext.Provider>
+      </UserDataChangeContext.Provider>
     </div>
   );
 }

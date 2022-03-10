@@ -4,11 +4,14 @@ import './styles/GruzAuth.css';
 import useWindowDimensions from "./useWindowDimensions";
 import useSocket from "./useSocket";
 import Cookies from 'universal-cookie';
-import { useState } from "react";
+import { UserDataChangeContext, UserDataContext } from './App';
+import { useState, useContext, useEffect } from "react";
 
-const Notlogged = (props) => {
+const Notlogged = () => {
+  const UserData = useContext(UserDataContext);
+  const changeUserData = useContext(UserDataChangeContext);
+
   const { height2, width2 } = useWindowDimensions();
-  const [nav, setNav] = useState(<></>);
   const socket = useSocket('http://192.168.0.24:5400');
 
   const popupCenter = ({postServer, key, title, w, h}) => {
@@ -40,28 +43,26 @@ const Notlogged = (props) => {
   const loginIt = () => {
     const cookies = new Cookies();
     socket.on("auth", (data) => {
-      console.log(data);
+      changeUserData(data);
       cookies.set('G_VAR', data.token, { path: '/' });
+      window.localStorage.user = JSON.stringify(data);
       socket.off('auth');
-      //setNav(<Navigate to="/" />);
     });
-    //${window.location.href}
     popupCenter({postServer:`http://192.168.0.24:5400/auth`, key: socket.id, title: 'Authenticate', w: 520, h: 570});
   }
 
   return (
     <>
     <header>
-        <h1><a href="#">Gruzservices</a></h1>
+        <h1><a href="/">Gruzservices</a></h1>
         <ul>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">About</a></li>
+            <li><a href="/">Contact</a></li>
+            <li><a href="/">About</a></li>
         </ul>
     </header>
     <main>
         <div className="not-logged" id="cover">
             <div className="box-not-logged">
-                {nav}
                 <h3 className="welcome-h">Storage Drive</h3>
                 <p className="sub">Store and Share files online.</p>
                 <div className="links">

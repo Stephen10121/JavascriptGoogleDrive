@@ -107,7 +107,7 @@ app.post('/userinfo', async (req, res) => {
 
 app.post('/getFiles', async (req, res) => {
     if (req.body.id) {
-        if (theUsernames[req.body.id]) {
+        if (checkJWT(req.body.id) === 'good') {
             const files = await getFiles(`./storage/${hashed(theUsernames[req.body.id])}`);
             const newFiles = [];
             for (i in files) {

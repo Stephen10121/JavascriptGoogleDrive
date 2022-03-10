@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import FolderLoad from './LoadFolderStruct';
 import FileLoad from "./LoadFileStruct";
 import convertToJson from "./jsonIt";
 import { getCookie } from "./Cookie";
 import './styles/mainPage.css';
+import { UserDataContext } from './App';
 import FileUpload from "./FileUpload";
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -13,7 +14,8 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 const HomePage = (props) => {
-    const [user, setUser] = useState(JSON.parse(window.localStorage.getItem("user")));
+    const userData = useContext(UserDataContext);
+    const [user, setUser] = useState(userData);
     const [userId, setId] = useState(getCookie("G_VAR"));
     const [files, changeFiles] = useState([]);
     const [currentPath, changeCurrentPath] = useState('home');

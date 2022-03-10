@@ -1,23 +1,35 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Notlogged from "./Notlogged";
 import HomePage from "./HomePage";
 import { getCookie } from "./Cookie";
+import { UserDataContext, UserDataChangeContext } from './App';
 import './styles/App.css';
 
-const CheckLog = (props) => {
+const CheckLog = () => {
+  const userData = useContext(UserDataContext);
+  const userDataChange = useContext(UserDataChangeContext);
   const [logged, setLogged] = useState("");
 
   const isLoggedIn = () => {
     const gotCookie = getCookie("G_VAR");
     if (gotCookie) {
       if (!window.localStorage.user) {
-        window.localStorage.user = JSON.stringify(props.userInfo);
+        window.localStorage.user = JSON.stringify(userData);
+      }
+      if (userData === null) {
+        userDataChange(JSON.parse(window.localStorage.getItem("user")));
       }
       setLogged(<HomePage />);
     } else {
       setLogged(<Notlogged/>);
     }
   }
+
+  useEffect(() => {
+    if (userData !== null) {
+      setLogged(<HomePage />);
+    }
+  }, [userData]);
 
   const onStartup = useRef(() => {});
   onStartup.current = () => {
