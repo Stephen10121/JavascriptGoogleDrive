@@ -1,14 +1,12 @@
-import { Navigate } from "react-router-dom";
 import './styles/Notlogged.css';
 import './styles/GruzAuth.css';
 import useWindowDimensions from "./useWindowDimensions";
 import useSocket from "./useSocket";
 import Cookies from 'universal-cookie';
-import { UserDataChangeContext, UserDataContext } from './App';
-import { useState, useContext, useEffect } from "react";
+import { UserDataChangeContext } from './App';
+import { useContext } from "react";
 
 const Notlogged = () => {
-  const UserData = useContext(UserDataContext);
   const changeUserData = useContext(UserDataChangeContext);
 
   const { height2, width2 } = useWindowDimensions();

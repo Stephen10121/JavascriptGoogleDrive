@@ -28,7 +28,7 @@ async function createTable() {
 
 async function getUser(id) {
     const db = await Database.open("./users.db");
-    let sql = "SELECT * FROM USERS WHERE id=?";
+    let sql = "SELECT * FROM USERS WHERE usersHash=?";
     const result = await db.all(sql, [id]);
     await db.close();
     return result;
@@ -72,7 +72,7 @@ async function editUser(id, hash, rName, email, profile, username) {
 async function userLogin({ hash, name, email, username}) {
     let users = await getUserByHash(hash);
     if (users.length === 0) {
-        const addedUser = await addUser(username, hash, name, email, JSON.stringify({profile: "profile1.png", theme: "default", sharing: false}));
+        const addedUser = await addUser(username, hash, name, email, JSON.stringify({profile: "profile1.jpg", theme: "default", sharing: false}));
         if (addedUser === 'error') {
             return({errorMessage: "Error Try Again", error: 1000});
         }
@@ -88,7 +88,11 @@ async function userLogin({ hash, name, email, username}) {
 
 async function getUserData(user) {
     const users = await getUser(user);
-    return users[0];
+    if (users.length > 0) {
+        return users[0];
+    } else {
+        return "error";
+    }
 }
 
 //createTable().then(data=>console.log(data));

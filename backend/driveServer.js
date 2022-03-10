@@ -36,19 +36,20 @@ const io = socketio(server, {
   }
 });
 
-const checkJWT = (cookie) => {
-    jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
-        console.log(user);
+const checkJWT = async (cookie) => {
+    const jeff = await jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
         if (err) {
             return "clear";
         }
-
-        const userif = await getUserData(user.hash);
-        if (userif.length == 0) {
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
             return "clear";
         }
-        return "good";
+        return {msg: "good", data: user};
+    }).then(data => {
+        return(data);
     });
+    return jeff;
 }
 
 app.get('/', (req, res) => res.render('index'));
@@ -86,7 +87,6 @@ app.post('/auth', async (req, res) => {
         return res.json({ msg:"Something went wrong." });
     }
     delete result.data.userInfo.id;
-    delete result.data.userInfo.usersHash;
     const accessToken = jwt.sign(result.data.userInfo, process.env.ACCESS_TOKEN_SECRET);
     io.to(req.body.key).emit('auth', {userData: result.data.userInfo, token: accessToken});
 });
@@ -107,11 +107,12 @@ app.post('/userinfo', async (req, res) => {
 
 app.post('/getFiles', async (req, res) => {
     if (req.body.id) {
-        if (checkJWT(req.body.id) === 'good') {
-            const files = await getFiles(`./storage/${hashed(theUsernames[req.body.id])}`);
+        const checker = await checkJWT(req.body.id);
+        if (checker.msg === 'good') {
+            const files = await getFiles(`./storage/${hashed(checker.data.usersName)}`);
             const newFiles = [];
             for (i in files) {
-                newFiles.push(files[i].replace(`./storage/${hashed(theUsernames[req.body.id])}`,''));
+                newFiles.push(files[i].replace(`./storage/${hashed(checker.data.usersName)}/`,''));
             }
             res.status(200).send({error: 200, data: newFiles});
         } else {

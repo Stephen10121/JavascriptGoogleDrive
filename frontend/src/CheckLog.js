@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import Notlogged from "./Notlogged";
 import HomePage from "./HomePage";
 import { getCookie } from "./Cookie";
-import { UserDataContext, UserDataChangeContext } from './App';
+import { files } from "./getFiles";
+import { UserDataContext, UserDataChangeContext, UserFiles } from './App';
 import './styles/App.css';
 
 const CheckLog = () => {
   const userData = useContext(UserDataContext);
   const userDataChange = useContext(UserDataChangeContext);
+  const { userFiles, setUserFiles } = useContext(UserFiles);
   const [logged, setLogged] = useState("");
 
   const isLoggedIn = () => {
@@ -27,7 +29,11 @@ const CheckLog = () => {
 
   useEffect(() => {
     if (userData !== null) {
-      setLogged(<HomePage />);
+      console.log(userData);
+      files(userData.token).then((data) => {
+        setUserFiles(data.data.data);
+        setLogged(<HomePage />);
+      });
     }
   }, [userData]);
 

@@ -5,7 +5,7 @@ import FileLoad from "./LoadFileStruct";
 import convertToJson from "./jsonIt";
 import { getCookie } from "./Cookie";
 import './styles/mainPage.css';
-import { UserDataContext } from './App';
+import { UserDataContext, UserFiles } from './App';
 import FileUpload from "./FileUpload";
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -15,13 +15,16 @@ String.prototype.replaceAll = function(search, replacement) {
 
 const HomePage = (props) => {
     const userData = useContext(UserDataContext);
+    const {userFiles, setUserFiles} = useContext(UserFiles);
     const [user, setUser] = useState(userData);
+    const [userProfile, setUserProfile] = useState(JSON.parse(userData.userData.usersProfile));
     const [userId, setId] = useState(getCookie("G_VAR"));
-    const [files, changeFiles] = useState([]);
+    const [files, changeFiles] = useState(userFiles);
     const [currentPath, changeCurrentPath] = useState('home');
 
     const loadUserData = () => {
         console.log(user);
+        console.log(userProfile);
         if (userId === "") {
             const cook = getCookie("G_VAR");
             if (cook) {
@@ -34,10 +37,10 @@ const HomePage = (props) => {
         let newFileLocation;
         if (where.includes('/')) {
             where = where.replaceAll("/",".");
-            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(user.files)));
+            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(files)));
         }
         else {
-            newFileLocation = Object.keys(convertToJson(user.files)[where]);
+            newFileLocation = Object.keys(convertToJson(files)[where]);
         }
         let newFolders = [];
         for (const checkFile of newFileLocation) {
@@ -63,7 +66,7 @@ const HomePage = (props) => {
         <div className="taskbar">
             <div className="profile">
                 <Link to="/profile" title="Your Profile" className="profile-button">
-                    <img src={`/profilePics/${user.usersProfile}.jpg`} alt="Profile Pic"/>
+                    <img src={`/profilePics/${userProfile.profile}`} alt="Profile Pic"/>
                 </Link>
             </div>
             <div className="upload-icon">
@@ -80,12 +83,12 @@ const HomePage = (props) => {
         </div>
         <div className="files-box">
             <div className="name-show">
-                <p className="name-show-p">{user.usersRName}</p>
+                <p className="name-show-p">{user.userData.usersRName}</p>
             </div>
-            <FolderLoad changeDir={showFiles} id={userId} usern={user}/>
+            <FolderLoad changeDir={showFiles} id={userId} usern={user.userData.usersName}/>
         </div>
         <div className="main-files">
-            <FileLoad path={currentPath} files={files} id={userId} owner={user.usersRName}/>
+            <FileLoad path={currentPath} files={files} id={userId} owner={user.userData.usersRName}/>
         </div>
     </div>
     );

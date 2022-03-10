@@ -8,9 +8,11 @@ import './styles/App.css';
 
 export const UserDataContext = React.createContext();
 export const UserDataChangeContext = React.createContext();
+export const UserFiles = React.createContext();
 
 const App = () => {
   const [userInfo, setUserInfo] = useState(null);
+  const [userFiles, setUserFiles] = useState(null);
 
   const setUserTheme = () => {
     const themeMode = localStorage.getItem("themeMode");
@@ -34,17 +36,19 @@ const App = () => {
 
   return (
     <div className="App">
-      <UserDataChangeContext.Provider value={setUserInfo}>
         <UserDataContext.Provider value={userInfo}>
-          <BrowserRouter>
-            <Routes>
-              <Route exact path="/" element={<CheckLog />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route exact path="/logout" element={<Logout />} />
-            </Routes>
-          </BrowserRouter>
+          <UserFiles.Provider value={{ userFiles, setUserFiles }}>
+            <UserDataChangeContext.Provider value={setUserInfo}>
+              <BrowserRouter>
+                <Routes>
+                  <Route exact path="/" element={<CheckLog />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route exact path="/logout" element={<Logout />} />
+                </Routes>
+              </BrowserRouter>
+            </UserDataChangeContext.Provider>
+          </UserFiles.Provider>
         </UserDataContext.Provider>
-      </UserDataChangeContext.Provider>
     </div>
   );
 }
