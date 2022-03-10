@@ -10,9 +10,6 @@ First clone this repo.
 ```bash
 git clone https://github.com/Stephen10121/JavascriptGoogleDrive.git
 ```
-
-Then create a "users.json" file in the backend folder.
-Also create a "storage" folder in the backend folder.
 Go to the backend folder and install all the node dependencies.
 
 ```bash
@@ -21,8 +18,11 @@ npm install
 
 ### Note
 
-I have updated the database, so when creating this project, create a users.db file.
-Then go to the database2.js file and uncomment this comment:
+In the backend folder, create a .env file and add this:
+```bash
+ACCESS_TOKEN_SECRET="A 30 bit random key (dont add the paranthesis)"
+```
+Then uncomment this line:
 
 ```bash
 createTable().then(data=>console.log(data));
