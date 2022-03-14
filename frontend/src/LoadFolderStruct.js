@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import convertToJson from "./jsonIt";
+import { UserFiles } from './App';
 import './styles/FileStruct.css';
 
 const FolderLoad = (props) => {
-    const [files] = useState(JSON.parse(window.localStorage.getItem("user")).files);
+    const {userFiles, setUserFiles} = useContext(UserFiles);
+    const [files, changeFiles] = useState(userFiles);
     const [visible, changeVisible] = useState([]);
 
     const showFiles = (where) => {
@@ -35,10 +37,12 @@ const FolderLoad = (props) => {
         let newFileLocation;
         if (where.includes('/')) {
             where = where.replace("/",".");
-            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(files)));
+            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], files));
         }
         else {
+            console.log(where, convertToJson(files));
             newFileLocation = Object.keys(convertToJson(files)[where]);
+            console.log(newFileLocation)
         }
         let newFolders = [];
         for (const checkFile of newFileLocation) {

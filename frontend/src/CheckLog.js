@@ -14,6 +14,7 @@ const CheckLog = () => {
 
   const isLoggedIn = () => {
     const gotCookie = getCookie("G_VAR");
+    console.log(userData);
     if (gotCookie) {
       if (!window.localStorage.user) {
         window.localStorage.user = JSON.stringify(userData);
@@ -21,20 +22,25 @@ const CheckLog = () => {
       if (userData === null) {
         userDataChange(JSON.parse(window.localStorage.getItem("user")));
       }
-      setLogged(<HomePage />);
+      files(userData.token).then(({data}) => {
+        setUserFiles(data.data);
+        setLogged(<HomePage />);
+      });
+      console.log(userData);
     } else {
       setLogged(<Notlogged/>);
     }
   }
 
   useEffect(() => {
-    if (userData !== null) {
-      console.log(userData);
-      files(userData.token).then((data) => {
-        setUserFiles(data.data.data);
-        setLogged(<HomePage />);
-      });
-    }
+    isLoggedIn();
+    // if (userData !== null) {
+    //   console.log(userData);
+    //   files(userData.token).then(({data}) => {
+    //     setUserFiles(data.data);
+    //     setLogged(<HomePage />);
+    //   });
+    // }
   }, [userData]);
 
   const onStartup = useRef(() => {});

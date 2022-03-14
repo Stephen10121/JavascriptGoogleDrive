@@ -112,7 +112,7 @@ app.post('/getFiles', async (req, res) => {
             const files = await getFiles(`./storage/${hashed(checker.data.usersName)}`);
             const newFiles = [];
             for (i in files) {
-                newFiles.push(files[i].replace(`./storage/${hashed(checker.data.usersName)}/`,''));
+                newFiles.push(files[i].replace(`./storage/${hashed(checker.data.usersName)}/`,'home/'));
             }
             res.status(200).send({error: 200, data: newFiles});
         } else {
