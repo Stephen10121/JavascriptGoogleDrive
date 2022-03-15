@@ -23,7 +23,7 @@ const HomePage = (props) => {
     const [currentPath, changeCurrentPath] = useState('home');
 
     const loadUserData = () => {
-        console.log(user);
+        console.log(userData.userData);
         console.log(userProfile);
         if (userId === "") {
             const cook = getCookie("G_VAR");

@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import CheckLog from "./CheckLog";
 import setTheme from "./setTheme";
 import Logout from "./Logout";
-import Profile from "./Profile";
+import ProfileCheck from "./ProfileCheck";
 import './styles/App.css';
 
 export const UserDataContext = React.createContext();
@@ -42,7 +42,7 @@ const App = () => {
               <BrowserRouter>
                 <Routes>
                   <Route exact path="/" element={<CheckLog />} />
-                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile" element={<ProfileCheck />} />
                   <Route exact path="/logout" element={<Logout />} />
                 </Routes>
               </BrowserRouter>

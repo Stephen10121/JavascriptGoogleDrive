@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import setTheme from "./setTheme";
+import { UserDataContext } from './App';
 import "./styles/ProfilePage.css";
 import "./styles/Checkbox.css";
 
 const ProfilePage = (props) => {
+    const user = useContext(UserDataContext).userData;
     const [profilePic, setProfilePic] = useState(props.profilePic);
-    const [user] = useState(JSON.parse(window.localStorage.getItem("user")));
+    //const [user] = useState(userData.userData);
     const [profilePics] = useState(["profile1", "profile2", "profile3", "profile4", "profile5"]);
 
     const selectTheme = (event, themeMode) => {
@@ -27,7 +29,9 @@ const ProfilePage = (props) => {
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
-        document.getElementById(`${localStorage.getItem("themeMode")}-theme`).classList.add('theme-selected');
+        console.log('yest');
+        console.log(user);
+        //document.getElementById(`${localStorage.getItem("themeMode")}-theme`).classList.add('theme-selected');
     }
 
     useEffect(() => {
