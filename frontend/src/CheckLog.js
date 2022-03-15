@@ -22,7 +22,7 @@ const CheckLog = () => {
       if (userData === null) {
         userDataChange(JSON.parse(window.localStorage.getItem("user")));
       }
-      files(userData.token).then(({data}) => {
+      files(JSON.parse(window.localStorage.getItem("user")).token).then(({data}) => {
         setUserFiles(data.data);
         setLogged(<HomePage />);
       });
