@@ -34,15 +34,8 @@ const HomePage = (props) => {
     }
 
     const showFiles = (where) => {
-        let newFileLocation;
-        if (where.includes('/')) {
-            where = where.replaceAll("/",".");
-            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(userFiles)));
-        }
-        else {
-            console.log(files, userFiles);
-            newFileLocation = Object.keys(convertToJson(userFiles)[where]);
-        }
+        where = where.replaceAll("/",".");
+        let newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(userFiles)));
         let newFolders = [];
         for (const checkFile of newFileLocation) {
             if (checkFile.includes(".")) {

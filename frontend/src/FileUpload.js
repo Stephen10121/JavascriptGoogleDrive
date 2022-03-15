@@ -11,6 +11,9 @@ const FileUpload = (props) => {
     const [fileUploadMessage, setFileUploadMessage] = useState("");
 
     const onChange = async (e) => {
+        if (!e.target.files) {
+            return;
+        }
         const formData = new FormData();
         formData.append('file', e.target.files[0]);
         formData.append('jsondataRequest', JSON.stringify({id:props.id,path:props.path}));
@@ -23,13 +26,15 @@ const FileUpload = (props) => {
                     setShowUMessage(true);
                     setFileUploadMessage(`Uploading ${parseInt(Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total))}%`);
                     if (ProgressEvent.total === ProgressEvent.loaded) {
+                        setFileUploadMessage(`Uploading 100%`);
                         let files = props.files;
+                        console.log(`${props.path}`.replaceAll('.','/'));
                         const newFilePath = `${`${props.path}`.replaceAll('.','/')}/${e.target.files[0].name}`;
                         console.log(newFilePath);
                         files.push(newFilePath);
                         props.changefiles(files);
                         props.updater(props.path);
-                        setTimeout(() => setFileUploadMessage("Upload Finished!"), 1000);
+                        setTimeout(() => setFileUploadMessage("Upload Finished!"), 600);
                     }
                 }
             });
