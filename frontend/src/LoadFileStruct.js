@@ -2,8 +2,9 @@ import File from "./File";
 import './styles/FileStruct.css';
 
 const FileLoad = (props) => {
+
     const checkEmpty = (file) => {
-        console.log(file);
+        console.log(props.path);
         if (file === null) return(<p id="file-empty-p">No Files</p>);
         if (file.length === 0) return(<p id="file-empty-p">No Files</p>);
         return(<p></p>);

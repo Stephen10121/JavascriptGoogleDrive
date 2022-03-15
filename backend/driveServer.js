@@ -171,7 +171,7 @@ app.post('/uploadc', (req, res) => {
     res.send(loadedFiles);
 });
 
-app.post('/upload', (req, res) => {
+app.post('/upload', async (req, res) => {
     if(req.files === null) {
         return res.status(400).json({ msg: 'No file uploaded' });
     }
@@ -183,19 +183,25 @@ app.post('/upload', (req, res) => {
         return res.status(400).json({ msg: 'Missing parameters' });
     }
     const {id, path} = data;
-    if (!theUsernames[id]) {
-        return res.status(400).json({ msg: 'Invalid input' });
-    }
-    let path2 = path;
-    path2 = path2.replaceAll(".", "/").replace('home', hashed(theUsernames[id]));
-    const file = req.files.file;
-    file.mv(`${__dirname}/storage/${path2}/${req.files.file.name}`, (err) => {
-        if(err) {
-            console.error(err);
-            return res.status(500).send(err);
+    jwt.verify(id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.status(400).json({ msg: 'Invalid input' });
         }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.status(400).json({ msg: 'Invalid input' });
+        }
+        let path2 = path;
+        path2 = path2.replaceAll(".", "/").replace('home', hashed(user.usersName));
+        const file = req.files.file;
+        file.mv(`${__dirname}/storage/${path2}/${req.files.file.name}`, (err) => {
+            if(err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
 
-        res.json({ fileName: file.name, filePath: `test` });
+            res.json({ fileName: file.name, filePath: `test` });
+        });
     });
 });
 

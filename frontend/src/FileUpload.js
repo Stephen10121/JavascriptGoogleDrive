@@ -23,13 +23,13 @@ const FileUpload = (props) => {
                     setShowUMessage(true);
                     setFileUploadMessage(`Uploading ${parseInt(Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total))}%`);
                     if (ProgressEvent.total === ProgressEvent.loaded) {
-                        let files = props.usern.files;
+                        let files = props.files;
                         const newFilePath = `${`${props.path}`.replaceAll('.','/')}/${e.target.files[0].name}`;
+                        console.log(newFilePath);
                         files.push(newFilePath);
-                        let nuser = props.usern;
-                        nuser[files] = files
-                        props.changeFiles(nuser);
-                        setTimeout(() => setFileUploadMessage("Click on folder to refresh."), 1000);
+                        props.changefiles(files);
+                        props.updater(props.path);
+                        setTimeout(() => setFileUploadMessage("Upload Finished!"), 1000);
                     }
                 }
             });

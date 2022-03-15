@@ -19,7 +19,7 @@ const HomePage = (props) => {
     const [user, setUser] = useState(userData);
     const [userProfile, setUserProfile] = useState(JSON.parse(userData.userData.usersProfile));
     const [userId, setId] = useState(getCookie("G_VAR"));
-    const [files, changeFiles] = useState(userFiles);
+    const [files, changeFiles] = useState([]);
     const [currentPath, changeCurrentPath] = useState('home');
 
     const loadUserData = () => {
@@ -37,10 +37,11 @@ const HomePage = (props) => {
         let newFileLocation;
         if (where.includes('/')) {
             where = where.replaceAll("/",".");
-            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(files)));
+            newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(userFiles)));
         }
         else {
-            newFileLocation = Object.keys(convertToJson(files)[where]);
+            console.log(files, userFiles);
+            newFileLocation = Object.keys(convertToJson(userFiles)[where]);
         }
         let newFolders = [];
         for (const checkFile of newFileLocation) {
@@ -61,6 +62,10 @@ const HomePage = (props) => {
         onStartup.current();
     }, []);
 
+    const setTheFiles = (what) => {
+        setUserFiles(what);
+    }
+
     return (
     <div className="HomePage">
         <div className="taskbar">
@@ -70,7 +75,7 @@ const HomePage = (props) => {
                 </Link>
             </div>
             <div className="upload-icon">
-                <FileUpload usern={user} changeFiles={setUser} changefiles={changeFiles} files={files} id={userId} path={currentPath}/>
+                <FileUpload changefiles={setTheFiles} files={userFiles} id={userId} path={currentPath} updater={showFiles}/>
             </div>
             <div className="shared-icon">
                 <button title="Shared With Me">
