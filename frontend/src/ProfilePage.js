@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import setTheme from "./setTheme";
-import { UserDataContext } from './App';
+import { UserDataContext, UserDataChangeContext } from './App';
+import { sendProfile } from "./sendProfile";
 import "./styles/ProfilePage.css";
 import "./styles/Checkbox.css";
 
 const ProfilePage = (props) => {
-    const user = useContext(UserDataContext).userData;
-    const [profilePic, setProfilePic] = useState(props.profilePic);
-    //const [user] = useState(userData.userData);
-    const [profilePics] = useState(["profile1", "profile2", "profile3", "profile4", "profile5"]);
+    const userData = useContext(UserDataContext);
+    const [user] = useState(userData.userData);
+    const changeUser  = useContext(UserDataChangeContext);
+    const [usersProfile, changeUsersProfile] = useState(JSON.parse(user.usersProfile));
+    const [profilePics] = useState(["profile1.jpg", "profile2.jpg", "profile3.jpg", "profile4.jpg", "profile5.jpg"]);
 
-    const selectTheme = (event, themeMode) => {
+    const selectTheme = async (event, themeMode) => {
         var elems = document.querySelectorAll(".theme-selected");
         [].forEach.call(elems, (el) => {
             el.classList.remove("theme-selected");
@@ -25,13 +27,35 @@ const ProfilePage = (props) => {
             setTheme("#202936", "#9c9c9c", "#c4c4c4", "#3e3e42", "#232325", "#dfdfdf", "invert(0%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(101%) contrast(101%)", "#00529b", "rgba(190, 230, 248, 0.7)", "#7a7a7c", "#dfdfdf", "#555555", "#383838", "#000000");
         }
         localStorage.setItem("themeMode", themeMode);
+        const newProf = usersProfile;
+        newProf.theme = themeMode;
+        changeUsersProfile(newProf);
+        const resultSave = await sendProfile(userData.token, newProf);
+    }
+
+    const setProfilePic = async (what) => {
+        const newProf = usersProfile;
+        newProf.profile = what;
+        changeUsersProfile(newProf);
+        const resultSave = await sendProfile(userData.token, newProf);
+    }
+
+    const setShare = async (what) => {
+        const newProf = usersProfile;
+        newProf.sharing = what;
+        changeUsersProfile(newProf);
+        const newUser = user;
+        newUser.usersProfile = JSON.stringify(newProf);
+        console.log(user);
+        window.localStorage.user = JSON.stringify(newUser);
+        const resultSave = await sendProfile(userData.token, newProf);
     }
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
-        console.log('yest');
         console.log(user);
-        //document.getElementById(`${localStorage.getItem("themeMode")}-theme`).classList.add('theme-selected');
+        console.log(usersProfile);
+        document.getElementById(`${usersProfile.theme}-theme`).classList.add('theme-selected');
     }
 
     useEffect(() => {
@@ -71,13 +95,10 @@ const ProfilePage = (props) => {
                 <div className="profile-grid profile-pic">
                     <h1>Profile picture</h1>
                     <div className="profile-images">
-                            <button className="name-profile" onClick={(e) => {props.setProfilePic(`name-profile`)}}>
-                                    <p>{user.usersRName.charAt(0)}</p>
-                            </button>
                         {profilePics.map((thePic, index) => {
                             return(
-                                <button key={index} className={user.usersProfile === thePic ? "current-image": ""} onClick={(e) => {props.setProfilePic(`/profilePics/${thePic}.jpg`)}}>
-                                    <img src={`/profilePics/${thePic}.jpg`} alt="profile1"/>
+                                <button key={index} className={usersProfile.profile === thePic ? "current-image": ""} onClick={(e) => {setProfilePic(`/profilePics/${thePic}`)}}>
+                                    <img src={`/profilePics/${thePic}`} alt="profile1"/>
                                 </button>
                             );
                         })}
@@ -87,7 +108,7 @@ const ProfilePage = (props) => {
                     <h1>sharing</h1>
                     <div className="profile-allow-sharing">
                         <p>Do you want people to share files to you?</p>
-                        <input type="checkbox" className="checkbox"/>
+                        <input type="checkbox" onChange={(e) => {setShare(e.target.checked)}} className="checkbox"/>
                     </div>
                 </div>
             </div>
