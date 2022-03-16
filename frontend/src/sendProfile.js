@@ -1,9 +1,7 @@
 const axios = require("axios");
 
 const sendProfile = async (key, profileSettings) => {
-    console.log(profileSettings);
-    console.log(key)
-    return;
+    //return;
     const data = await axios({
         method: 'post',
         url: '/saveProfile',
@@ -13,7 +11,7 @@ const sendProfile = async (key, profileSettings) => {
         }
     });
     if (data.status === 200) {
-        return data;
+        return "good";
     } else {
         return "error";
     }

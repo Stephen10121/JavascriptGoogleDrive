@@ -3,7 +3,7 @@ const http = require("http");
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const socketio = require('socket.io');
-const { userLogin, getUserData, signup } = require("./database2");
+const { userLogin, getUserData, saveProfile } = require("./database2");
 const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
 const { hashed } = require("./functions");
@@ -202,6 +202,27 @@ app.post('/upload', async (req, res) => {
 
             res.json({ fileName: file.name, filePath: `test` });
         });
+    });
+});
+
+app.post('/saveProfile', async (req, res) => {
+    if (!req.body.id || !req.body.profileSettings) {
+        return res.status(400).json({ msg: 'Missing parameters' });
+    }
+    const {id, profileSettings} = req.body;
+    jwt.verify(id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.status(400).json({ msg: 'Invalid input' });
+        }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.status(400).json({ msg: 'Invalid input' });
+        }
+        if (await saveProfile(profileSettings, user.usersName) === "error") {
+            res.status(400).json({msg: "Something went wrong when updating userdb with profile."});
+        } else {
+            res.json({msg: "good"});
+        }
     });
 });
 

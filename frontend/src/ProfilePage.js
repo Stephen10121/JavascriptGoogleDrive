@@ -12,6 +12,8 @@ const ProfilePage = (props) => {
     const changeUser  = useContext(UserDataChangeContext);
     const [usersProfile, changeUsersProfile] = useState(JSON.parse(user.usersProfile));
     const [profilePics] = useState(["profile1.jpg", "profile2.jpg", "profile3.jpg", "profile4.jpg", "profile5.jpg"]);
+    const [notMessage, setNotMesssage] = useState("Error");
+    const [notAlert, setNotAlert] = useState(true);
 
     const selectTheme = async (event, themeMode) => {
         var elems = document.querySelectorAll(".theme-selected");
@@ -29,33 +31,46 @@ const ProfilePage = (props) => {
         localStorage.setItem("themeMode", themeMode);
         const newProf = usersProfile;
         newProf.theme = themeMode;
-        changeUsersProfile(newProf);
-        const resultSave = await sendProfile(userData.token, newProf);
+        await saveProfileData(newProf);
     }
 
     const setProfilePic = async (what) => {
         const newProf = usersProfile;
         newProf.profile = what;
-        changeUsersProfile(newProf);
-        const resultSave = await sendProfile(userData.token, newProf);
+        await saveProfileData(newProf);
+    }
+
+    const saveProfileData = async (newData) => {
+        const newUser = JSON.parse(window.localStorage.getItem("user"));
+        newUser.userData.usersProfile = JSON.stringify(newData);
+        const resultSave = await sendProfile(userData.token, newData);
+        if (resultSave === "good") {
+            changeUsersProfile(newData);
+            changeUser(newUser);
+            localStorage.removeItem("user");
+            window.localStorage.user = JSON.stringify(newUser);
+            setNotAlert(false);
+            setNotMesssage("Success");
+            document.getElementById("alert-box").style.top = "30px";
+        } else {
+            setNotAlert(true);
+            setNotMesssage("Error saving settings");
+            document.getElementById("alert-box").style.top = "30px";
+        }
     }
 
     const setShare = async (what) => {
         const newProf = usersProfile;
         newProf.sharing = what;
-        changeUsersProfile(newProf);
-        const newUser = user;
-        newUser.usersProfile = JSON.stringify(newProf);
-        console.log(user);
-        window.localStorage.user = JSON.stringify(newUser);
-        const resultSave = await sendProfile(userData.token, newProf);
+        await saveProfileData(newProf);
     }
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
-        console.log(user);
-        console.log(usersProfile);
         document.getElementById(`${usersProfile.theme}-theme`).classList.add('theme-selected');
+        if (usersProfile.sharing) {
+            document.getElementById("share-checkbox").checked = true;
+        }
     }
 
     useEffect(() => {
@@ -63,7 +78,6 @@ const ProfilePage = (props) => {
     }, []);
 
     useEffect(() => {
-        console.log('a change');
     }, [props.profilePic]);
 
     return (
@@ -97,7 +111,7 @@ const ProfilePage = (props) => {
                     <div className="profile-images">
                         {profilePics.map((thePic, index) => {
                             return(
-                                <button key={index} className={usersProfile.profile === thePic ? "current-image": ""} onClick={(e) => {setProfilePic(`/profilePics/${thePic}`)}}>
+                                <button key={index} id={`/profilePics/${thePic}`} className={usersProfile.profile === `/profilePics/${thePic}` ? "current-image": ""} onClick={(e) => {setProfilePic(`/profilePics/${thePic}`);}}>
                                     <img src={`/profilePics/${thePic}`} alt="profile1"/>
                                 </button>
                             );
@@ -108,8 +122,16 @@ const ProfilePage = (props) => {
                     <h1>sharing</h1>
                     <div className="profile-allow-sharing">
                         <p>Do you want people to share files to you?</p>
-                        <input type="checkbox" onChange={(e) => {setShare(e.target.checked)}} className="checkbox"/>
+                        <input type="checkbox" onChange={(e) => {setShare(e.target.checked)}} className="checkbox" id="share-checkbox"/>
                     </div>
+                </div>
+                <div id="alert-box" className={notAlert ? "alert-box alert-red" : "alert-box alert-green"}>
+                    <div>
+                        {notMessage}
+                    </div>
+                    <button onClick={() => {document.getElementById("alert-box").style.top = "-100px"}}>
+                    &#10006;
+                    </button>
                 </div>
             </div>
         </div>

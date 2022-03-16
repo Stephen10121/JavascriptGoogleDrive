@@ -1,19 +1,25 @@
+:root {
+  --checkbox-timing: 0.25s;
+}
+
 .checkbox::before {
   content: "";
   position: absolute;
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
   border-radius: 100vw;
   animation-fill-mode: forwards;
   animation: boxUnChecked2 var(--checkbox-timing) forwards;
+  visibility: visible !important;
 }
 
 .checkbox {
   position: relative;
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
   cursor: pointer;
   border-radius: 100vw;
+  visibility: hidden;
 }
 
 .checkbox:checked.checkbox::after {
@@ -26,9 +32,10 @@
 
 .checkbox::after {
   content: "";
+  visibility: visible !important;
   position: absolute;
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   border-radius: 100vw;
   background-color: white;
   animation-fill-mode: forwards;
@@ -45,7 +52,7 @@
     top: 2px;
   }
   to {
-    left: 42px;
+    left: 32px;
   }
 }
 
@@ -61,7 +68,7 @@
 @keyframes boxUnChecked {
   from {
     top: 2px;
-    left: 42px;
+    left: 32px;
   }
   to {
     left: 2px;

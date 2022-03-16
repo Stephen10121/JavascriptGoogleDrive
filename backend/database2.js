@@ -95,9 +95,23 @@ async function getUserData(user) {
     }
 }
 
+async function saveProfile(profile, user) {
+    const db = await Database.open("./users.db");
+    const updateStatement = "UPDATE users SET usersProfile=? WHERE usersName=?";
+    try {
+        const result = await db.run(updateStatement, [JSON.stringify(profile), user]);
+        await db.close();
+        return result;
+    } catch (err) {
+        console.error(err);
+        return 'error';
+    }
+} 
+
 //createTable().then(data=>console.log(data));
 
 module.exports = {
     userLogin,
-    getUserData
+    getUserData,
+    saveProfile
 }

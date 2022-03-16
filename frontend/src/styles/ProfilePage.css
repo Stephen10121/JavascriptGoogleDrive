@@ -156,3 +156,37 @@
   align-items: center;
   gap: 20px;
 }
+
+.alert-box {
+  width: 150px;
+  height: 50px;
+  position: absolute;
+  top: -100px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  transition: top 0.25s linear;
+}
+
+.alert-red {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+.alert-green {
+  background-color: rgba(0, 255, 0, 0.7);
+}
+
+.alert-box button {
+  border: none;
+  width: 20px;
+  height: 20px;
+  background: none;
+  cursor: pointer;
+  color: black;
+}
+
+.alert-box button:hover {
+  color: gray;
+}
