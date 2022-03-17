@@ -17,6 +17,4 @@ const sendProfile = async (key, profileSettings) => {
     }
 }
 
-module.exports = {
-    sendProfile
-}
+export default sendProfile;

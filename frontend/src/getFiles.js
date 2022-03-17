@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const files = async (key) => {
+const getFiles = async (key) => {
     const data = await axios({
         method: 'post',
         url: '/getFiles',
@@ -15,6 +15,4 @@ const files = async (key) => {
     }
 }
 
-module.exports = {
-    files
-}
+export default getFiles;

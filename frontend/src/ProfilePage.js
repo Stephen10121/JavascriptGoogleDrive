@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import setTheme from "./setTheme";
 import { UserDataContext, UserDataChangeContext } from './App';
-import { sendProfile } from "./sendProfile";
+import sendProfile from "./sendProfile";
 import "./styles/ProfilePage.css";
 import "./styles/Checkbox.css";
 

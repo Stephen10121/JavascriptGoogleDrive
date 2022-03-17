@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import Notlogged from "./Notlogged";
 import HomePage from "./HomePage";
 import { getCookie } from "./Cookie";
-import { files } from "./getFiles";
+import getFiles from "./getFiles";
 import { UserDataContext, UserDataChangeContext, UserFiles } from './App';
 import './styles/App.css';
 
@@ -22,7 +22,7 @@ const CheckLog = () => {
       if (userData === null) {
         userDataChange(JSON.parse(window.localStorage.getItem("user")));
       }
-      files(JSON.parse(window.localStorage.getItem("user")).token).then(({data}) => {
+      getFiles(JSON.parse(window.localStorage.getItem("user")).token).then(({data}) => {
         setUserFiles(data.data);
         setLogged(<HomePage />);
       });
