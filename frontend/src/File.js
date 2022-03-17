@@ -8,6 +8,7 @@ const File = (props) => {
     const [showingNotification, setShowingNotification] = useState(false);
 
     const downloadFile = async (id2, which, file) => {
+        console.log(which, id2);
         const data = await axios.get(
             '/download',
             { params: {

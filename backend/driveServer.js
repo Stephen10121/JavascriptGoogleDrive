@@ -59,24 +59,28 @@ app.get('/logout', (req, res) => res.render('index'));
 app.get('/profile', (req, res) => res.render('index'));
 
 app.get('/download', (req, res) => {
-    if (req.query.id && req.query.location) {
-        if (checkJWT(req.query.id) === 'good') {
-            console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
-            const file = `${__dirname}/storage/${hashed(theUsernames[req.query.id])}${req.query.location.slice(4)}`;
-            console.log(file);
-            fs.access(file, fs.F_OK, (err) => {
-                if (err) {
-                  console.error(err);
-                  return res.status(200).send("Folder doesn't exist.");
-                }
-                return res.download(file);
-            });
-        } else {
-            return res.status(200).send("Invalid id");
-        }
-    } else {
-        return res.status(200).send("Missing parameters.");
+    if (!req.query.id || !req.query.location) {
+        return res.status(400).json({msg: "Missing parameters."});
     }
+    jwt.verify(req.query.id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.status(400).json({ msg: 'Invalid input' });
+        }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.status(400).json({ msg: 'Invalid input' });
+        }
+        console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
+        const file = `${__dirname}/storage/${hashed(user.usersName)}${req.query.location.slice(4)}`;
+        console.log(file);
+        fs.access(file, fs.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(200).send("Folder doesn't exist.");
+            }
+            return res.download(file);
+        });
+    });
 });
 
 app.post('/auth', async (req, res) => {
