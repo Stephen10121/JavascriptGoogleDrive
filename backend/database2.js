@@ -72,7 +72,7 @@ async function editUser(id, hash, rName, email, profile, username) {
 async function userLogin({ hash, name, email, username}) {
     let users = await getUserByHash(hash);
     if (users.length === 0) {
-        const addedUser = await addUser(username, hash, name, email, JSON.stringify({profile: "profile1.jpg", theme: "default", sharing: false}));
+        const addedUser = await addUser(username, hash, name, email, JSON.stringify({profile: "profilePics/profile1.jpg", theme: "default", sharing: false}));
         if (addedUser === 'error') {
             return({errorMessage: "Error Try Again", error: 1000});
         }

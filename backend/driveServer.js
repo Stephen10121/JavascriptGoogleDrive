@@ -10,7 +10,7 @@ const { hashed } = require("./functions");
 const multer  = require('multer');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const PORT = 5400;
+const PORT = 5500;
 const app = express();
 const upload = multer();
 
@@ -32,7 +32,8 @@ const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
       origin: '*',
-      methods: ['GET', 'POST']
+      methods: ['GET', 'POST'],
+      allowEIO3: true
   }
 });
 
@@ -85,6 +86,7 @@ app.get('/download', (req, res) => {
 
 app.post('/auth', async (req, res) => {
     const newData = req.body;
+    console.log(req.body);
     const result = await userLogin({hash: newData.data, name: newData.name, email: newData.email, username: newData.username});
     if (result.error !== 200) {
         console.log(result.errorMessage);
