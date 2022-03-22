@@ -10,7 +10,7 @@ const Notlogged = () => {
   const changeUserData = useContext(UserDataChangeContext);
 
   const { height2, width2 } = useWindowDimensions();
-  const socket = useSocket('http://192.168.0.24:5400');
+  const socket = useSocket('https://drive.gruzservices.com');
 
   const popupCenter = ({postServer, key, title, w, h}) => {
     // Fixes dual-screen position                             Most browsers      Firefox
@@ -46,7 +46,7 @@ const Notlogged = () => {
       window.localStorage.user = JSON.stringify(data);
       socket.off('auth');
     });
-    popupCenter({postServer:`http://192.168.0.24:5400/auth`, key: socket.id, title: 'Authenticate', w: 520, h: 570});
+    popupCenter({postServer:`https://drive.gruzservices.com/auth`, key: socket.id, title: 'Authenticate', w: 520, h: 570});
   }
 
   return (

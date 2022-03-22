@@ -15,6 +15,14 @@ const FileUpload = (props) => {
             return;
         }
         const formData = new FormData();
+        if (e.target.files.length === 0) {
+            return;
+        }
+        if(!e.target.files[0].name.includes(".")) {
+            setFileUploadMessage("Select a valid file.");
+            setShowUMessage(true);
+            return;
+        }
         formData.append('file', e.target.files[0]);
         formData.append('jsondataRequest', JSON.stringify({id:props.id,path:props.path}));
         try {
