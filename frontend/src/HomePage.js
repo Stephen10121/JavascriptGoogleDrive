@@ -21,6 +21,7 @@ const HomePage = (props) => {
     const [userId, setId] = useState(getCookie("G_VAR"));
     const [files, changeFiles] = useState([]);
     const [currentPath, changeCurrentPath] = useState('home');
+    const [inputPopup, changeInputPopup] = useState(null);
 
     const loadUserData = () => {
         console.log(userData.userData);
@@ -46,6 +47,17 @@ const HomePage = (props) => {
         changeFiles(newFolders);
     }
 
+    const showRightClick = (xAxis, yAxis, contextMenu) => {
+        contextMenu.style.left = `${xAxis}px`;
+        contextMenu.style.top = `${yAxis}px`;
+        contextMenu.style.visibility = "visible";
+    }
+
+    const hideRightClick = () => {
+        const contextMenu = document.querySelector(".right-click");
+        contextMenu.style.visibility = "hidden";
+    }
+
     const rightClickListener = () => {
         const contextMenu = document.querySelector(".right-click");
         const folderBox = document.querySelector("#folder-box");
@@ -57,23 +69,25 @@ const HomePage = (props) => {
             winHeight = window.innerHeight,
             cmWidth = contextMenu.offsetWidth,
             cmHeight = contextMenu.offsetHeight;
-            x = x > winWidth - cmWidth ? winWidth - cmWidth : x;
-            y = y > winHeight - cmHeight ? winHeight - cmHeight : y;
-            contextMenu.style.left = `${x}px`;
-            contextMenu.style.top = `${y}px`;
-            contextMenu.style.visibility = "visible";
+            showRightClick(x > winWidth - cmWidth ? winWidth - cmWidth : x, y > winHeight - cmHeight ? winHeight - cmHeight : y, contextMenu);
         });
 
         document.addEventListener("click", (e) => {
             if (contextMenu.style.visibility !== "visible") {return;}
             const pos = {x: parseInt(contextMenu.style.left.replace("px", "")), y: parseInt(contextMenu.style.top.replace("px", "")), width: contextMenu.offsetWidth, height: contextMenu.offsetHeight}
-            if ((pos.x + pos.width) >= e.pageX && e.pageX >= pos.x) {
-                if ((pos.y + pos.height) >= e.pageY && e.pageY >= pos.y) {
-                    return;
-                }
+            if ((pos.x + pos.width) >= e.pageX && e.pageX >= pos.x && (pos.y + pos.height) >= e.pageY && e.pageY >= pos.y) {
+                return;
             }
-            contextMenu.style.visibility = "hidden";
+            hideRightClick();
         });
+    }
+
+    const textPopup = (placeholder) => {
+        changeInputPopup(
+        <div className="input-popup">
+            <input type="text" placeholder={placeholder} />
+            <button onClick={() => {changeInputPopup(null)}}>&#10006;</button>
+        </div>);
     }
 
     const onStartup = useRef(() => {});
@@ -92,12 +106,13 @@ const HomePage = (props) => {
 
     return (
     <div className="HomePage">
+        {inputPopup}
         <div className="right-click">
             <ul>
-                <li><button>New Folder</button></li>
-                <li><button>Delete Folder</button></li>
-                <li><button>Move Folder</button></li>
-                <li><button>Share Folder</button></li>
+                <li><button onClick={() => {hideRightClick();textPopup("Folder Name")}}>New Folder</button></li>
+                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
+                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Move Folder</button></li>
+                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Share Folder</button></li>
             </ul>
         </div>
         <div className="taskbar">
