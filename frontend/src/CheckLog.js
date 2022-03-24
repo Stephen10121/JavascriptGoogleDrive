@@ -14,7 +14,6 @@ const CheckLog = () => {
 
   const isLoggedIn = () => {
     const gotCookie = getCookie("G_VAR");
-    console.log(userData);
     if (gotCookie) {
       if (!window.localStorage.user) {
         window.localStorage.user = JSON.stringify(userData);
@@ -26,7 +25,6 @@ const CheckLog = () => {
         setUserFiles(data.data);
         setLogged(<HomePage />);
       });
-      console.log(userData);
     } else {
       setLogged(<Notlogged/>);
     }

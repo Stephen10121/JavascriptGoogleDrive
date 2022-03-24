@@ -4,6 +4,7 @@ import FolderLoad from './LoadFolderStruct';
 import FileLoad from "./LoadFileStruct";
 import convertToJson from "./jsonIt";
 import { getCookie } from "./Cookie";
+import newFolderPost from "./newFolderPost";
 import './styles/mainPage.css';
 import { UserDataContext, UserFiles } from './App';
 import FileUpload from "./FileUpload";
@@ -82,12 +83,16 @@ const HomePage = (props) => {
         });
     }
 
-    const textPopup = (placeholder) => {
+    const textPopup = async (placeholder, callback) => {
         changeInputPopup(
         <div className="input-popup">
-            <input type="text" placeholder={placeholder} />
+            <input type="text" placeholder={placeholder} onKeyDown={(e) => {if (e.key==="Enter"){callback(e.target.value)}}}/>
             <button onClick={() => {changeInputPopup(null)}}>&#10006;</button>
         </div>);
+    }
+
+    const newFolder = async (folderName) => {
+        console.log(await newFolderPost(userId, currentPath, folderName));
     }
 
     const onStartup = useRef(() => {});
@@ -109,7 +114,7 @@ const HomePage = (props) => {
         {inputPopup}
         <div className="right-click">
             <ul>
-                <li><button onClick={() => {hideRightClick();textPopup("Folder Name")}}>New Folder</button></li>
+                <li><button onClick={async () => {hideRightClick();textPopup("Folder Name", newFolder)}}>New Folder</button></li>
                 <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
                 <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Move Folder</button></li>
                 <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Share Folder</button></li>
