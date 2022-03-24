@@ -11,9 +11,23 @@ const newFolderPost = async (key, path, name) => {
         }
     });
     if (data.status === 200) {
-        return data;
+        if (data.data.error) {
+            if (data.data.error === 200) {
+                return data.data.msg;
+            }
+            return data.data.msg;
+        }
+        if (data.data.msg) {
+            return data.data.msg;
+        } else {
+            return "Success?";
+        }
     } else {
-        return "error";
+        if (data.data.msg) {
+            return data.data.msg;
+        } else {
+            return "An error Occured.";
+        }
     }
 }
 

@@ -23,6 +23,7 @@ const FolderLoad = (props) => {
                 newFolders.push(checkFile);
             }
         }
+
         return(newFolders.map((file, index) => 
             <li key={Math.floor(Math.random()*index*1000)+5}>
                 <button className="folder-button" id={`${where}/${file}1`} key={Math.floor(Math.random()*index*1000)+6} onClick={(e) => {toggleFolder(e,`${where}/${file}`);props.changeDir(`${where}/${file}`)}}>{file}</button>

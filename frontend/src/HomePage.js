@@ -23,6 +23,7 @@ const HomePage = (props) => {
     const [files, changeFiles] = useState([]);
     const [currentPath, changeCurrentPath] = useState('home');
     const [inputPopup, changeInputPopup] = useState(null);
+    const [folderPostMessage, setFolderPostMessage] = useState(null);
 
     const loadUserData = () => {
         console.log(userData.userData);
@@ -92,13 +93,24 @@ const HomePage = (props) => {
     }
 
     const newFolder = async (folderName) => {
-        console.log(await newFolderPost(userId, currentPath, folderName));
+        const resulstpost2 = await newFolderPost(userId, currentPath, folderName);
+        if (typeof resulstpost2 === "object") {
+            console.log(typeof resulstpost2);
+            setUserFiles(resulstpost2);
+            setFolderPostMessage("Success!");
+        } else {
+            setFolderPostMessage(resulstpost2);
+        }
     }
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
         loadUserData();
         rightClickListener();
+    }
+
+    const begone = () => {
+        setFolderPostMessage(null);
     }
 
     useEffect(() => {
@@ -147,6 +159,10 @@ const HomePage = (props) => {
         <div className="main-files">
             <FileLoad path={currentPath} files={files} id={userId} owner={user.userData.usersRName}/>
         </div>
+        {folderPostMessage !==null ? <div id="file-popup" className='file-upload-popup'>
+                <p>{folderPostMessage}</p>
+                <button onClick={begone}>&#10006;</button>
+            </div>: null}
     </div>
     );
 }

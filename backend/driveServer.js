@@ -13,6 +13,8 @@ const fs = require('fs');
 const PORT = 5500;
 const app = express();
 const upload = multer();
+const path = require('path');
+const illegalChars = ["#", "%", "&", "{", "}", "\\", "<", ">", "*", "?", "/", " ", "$", "!", "'", '"', ":", "@", "+", "`", "|", "="];
 
 var type = upload.single('document');
 app.use((req, res, next) => {
@@ -229,6 +231,41 @@ app.post('/saveProfile', async (req, res) => {
         } else {
             res.json({msg: "good"});
         }
+    });
+});
+
+app.post('/newFolder', async (req, res) => {
+    if (!req.body.id || !req.body.path || !req.body.name) {
+        return res.status(200).json({ error: 400, msg: 'Missing parameters' });
+    }
+    const {id, name} = req.body;
+    jwt.verify(id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.status(200).json({ error: 400, msg: 'Invalid input' });
+        }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.status(200).json({ error: 400, msg: 'Invalid input' });
+        }
+        const result1 = illegalChars.some(illegalChar => name.includes(illegalChar));
+        if (result1) {
+            return res.status(200).json({ error: 400, msg: "Cannot include special chars." });
+        }
+        console.log(user);
+        let path2 = path.join(__dirname, "storage", req.body.path.replace("home", hashed(user.usersName)), name);
+        let errorpath = false;
+        fs.mkdir(path2, { recursive: true }, (err) => {
+            if (err) {
+                errorpath=true;
+                throw err;
+            }
+        });
+        const files = await getFiles(`./storage/${hashed(user.usersName)}`);
+        const newFiles = [];
+        for (i in files) {
+            newFiles.push(files[i].replace(`./storage/${hashed(user.usersName)}/`,'home/'));
+        }
+        return res.status(200).json({ error: errorpath ? 500 : 200, msg: errorpath ? "Error Internal" : newFiles });
     });
 });
 
