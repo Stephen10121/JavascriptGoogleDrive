@@ -124,6 +124,7 @@
   background-color: var(--folder-struct-color);
   height: 100vh;
   overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .name-show {

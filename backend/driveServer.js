@@ -252,8 +252,9 @@ app.post('/newFolder', async (req, res) => {
             return res.status(200).json({ error: 400, msg: "Cannot include special chars." });
         }
         console.log(user);
-        let path2 = path.join(__dirname, "storage", req.body.path.replace("home", hashed(user.usersName)), name);
+        let path2 = path.join(__dirname, "storage", req.body.path.replace("home", hashed(user.usersName)).replaceAll(".", "/"), name);
         let errorpath = false;
+        console.log(path2);
         fs.mkdir(path2, { recursive: true }, (err) => {
             if (err) {
                 errorpath=true;

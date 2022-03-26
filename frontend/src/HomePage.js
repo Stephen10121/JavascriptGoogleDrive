@@ -95,7 +95,6 @@ const HomePage = (props) => {
     const newFolder = async (folderName) => {
         const resulstpost2 = await newFolderPost(userId, currentPath, folderName);
         if (typeof resulstpost2 === "object") {
-            console.log(typeof resulstpost2);
             setUserFiles(resulstpost2);
             setFolderPostMessage("Success!");
         } else {
