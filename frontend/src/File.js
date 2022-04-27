@@ -39,11 +39,14 @@ const File = (props) => {
                 {props.file}
             </button>
             <div className='file-popup' id={props.file} onClick={(e) => toggle(e)}>
-                <div id={`${props.file}1`}>
+                <div id={`${props.file}1`} className="file-popup-box">
                     <p>Owner: {props.owner}</p>
                     <p>Path: {`${props.path.replaceAll(".",'/')}/${props.file}`}</p>
                     <p>Content-type: {getType(props.file.split(".").reverse()[0])}</p>
-                    <button onClick={() => {downloadFile(props.id, `${props.path.replaceAll(".",'/')}/${props.file}`, props.file)}}>Download</button>
+                    <div className='file-button-group'>
+                        <button className='download-button' onClick={() => {downloadFile(props.id, `${props.path.replaceAll(".",'/')}/${props.file}`, props.file)}}>Download</button>
+                        <button className='share-button'>Share</button>
+                    </div>
                 </div>
             </div>
             { showingNotification ? <div id="file-popup" className='file-upload-popup'>

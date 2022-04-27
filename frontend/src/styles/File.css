@@ -28,7 +28,7 @@
   padding: 5px;
 }
 
-.file-popup div {
+.file-popup-box {
   background-color: rgba(65, 65, 65, 0.5);
   width: 60%;
   height: 60%;
@@ -40,15 +40,34 @@
   gap: 10px;
 }
 
-.file-popup div button {
+.file-button-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.file-button-group button {
   padding: 10px;
   border: none;
-  background-color: rgb(255, 165, 0);
   border-radius: 5px;
   cursor: pointer;
 }
 
-.file-popup div button:hover {
+.download-button {
+  background-color: rgb(255, 165, 0);
+}
+
+.download-button:hover {
   outline: 1px solid rgb(207, 135, 0);
   background-color: rgb(207, 135, 0);
+}
+
+.share-button {
+  background-color: rgb(49, 100, 211);
+}
+
+.share-button:hover {
+  background-color: rgb(46, 85, 168);
+  outline: 1px solid rgb(46, 85, 168);
 }
