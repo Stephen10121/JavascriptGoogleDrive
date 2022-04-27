@@ -25,6 +25,7 @@
   display: none;
   align-items: center;
   justify-content: center;
+  padding: 5px;
 }
 
 .file-popup div {

@@ -1,43 +1,17 @@
 import React, { useState } from 'react';
 import { getType } from "./fileType";
 import './styles/File.css';
-const axios = require("axios");
 
 const File = (props) => {
     const [fileUploadMessage, setFileUploadMessage] = useState("");
     const [showingNotification, setShowingNotification] = useState(false);
 
     const downloadFile = async (id2, which, file) => {
-        console.log(which, id2);
-        const data = await axios.get(
-            '/download',
-            { params: {
-                id: id2,
-                location: which
-            },
-            onDownloadProgress: progressEvent => {
-                setShowingNotification(true);
-                const total = parseFloat(progressEvent.total)
-                const current = progressEvent.currentTarget.response.length;
-                let percentCompleted = Math.floor(current / total * 100);
-                if (percentCompleted === 100) {
-                    setFileUploadMessage("File Downloaded.");
-                } else {
-                    setFileUploadMessage(`Downloading ${percentCompleted}%`);
-                }
-            }
-        });
-        if (data.status === 200) {
-            const url = window.URL.createObjectURL(new Blob([data.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', file); //or any other extension
-            document.body.appendChild(link);
-            link.click();
-            return 200;
-        } else {
-            return "error";
-        }
+        console.log(which, id2, window.location.href);
+        window.location.href = `https://drive.gruzservices.com/download?id=${id2}&location=${which}`;
+        setShowingNotification(true);
+        setFileUploadMessage("File Downloading.");
+        return;
     }
     const toggle = (e) => {
         let box = document.getElementById(`${props.file}1`);
