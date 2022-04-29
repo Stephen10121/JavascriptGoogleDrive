@@ -10,6 +10,7 @@ First clone this repo.
 ```bash
 git clone https://github.com/Stephen10121/JavascriptGoogleDrive.git
 ```
+
 Go to the backend folder and install all the node dependencies.
 
 ```bash
@@ -18,23 +19,11 @@ npm install
 
 ### Note
 
-In the backend folder, create a .env file and add this:
-```bash
-ACCESS_TOKEN_SECRET="A 32 character random key (dont add the paranthesis)"
-```
-Then uncomment this line:
+To run this program for the first time, use this command to set the env vars and database:
 
 ```bash
-createTable().then(data=>console.log(data));
+npm run startup
 ```
-
-Then run the file using:
-
-```bash
-node database2.js
-```
-
-After you run it and there are no errors, comment that line of code and thats it.
 
 ### End Note
 
