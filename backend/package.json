@@ -4,6 +4,7 @@
   "description": "The backend for my drive.",
   "main": "driveServer.js",
   "scripts": {
+    "startup": "node startup.js",
     "dev": "nodemon driveServer.js"
   },
   "keywords": [],
