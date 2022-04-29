@@ -3,7 +3,7 @@ const http = require("http");
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const socketio = require('socket.io');
-const { userLogin, getUserData, saveProfile } = require("./database2");
+const { userLogin, getUserData, saveProfile, checkUserSharing } = require("./database2");
 const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
 const { hashed } = require("./functions");
@@ -130,6 +130,43 @@ app.post('/getFiles', async (req, res) => {
         res.status(400).send("Missing Fields");
     }
 });
+
+app.post('/shareFiles', async (req, res) => {
+    console.log(req.body);
+    console.log(await checkUserSharing(req.body.whom));
+    return res.json({msg: "good"})
+    if (!req.query.id || !req.query.location) {
+        return res.status(400).json({msg: "Missing parameters."});
+    }
+    jwt.verify(req.query.id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.status(400).json({ msg: 'Invalid input' });
+        }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.status(400).json({ msg: 'Invalid input' });
+        }
+        console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
+        const file = `${__dirname}/storage/${hashed(user.usersName)}${req.query.location.slice(4)}`;
+        console.log(file);
+        fs.access(file, fs.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(200).send("Folder doesn't exist.");
+            }
+            return res.download(file);
+        });
+    });
+});
+// url: '/shareFiles',
+//         data: {
+//             id: key,
+//             whom,
+//             location,
+//             file
+//         }
+
+
 
 app.post("/logout", (req, res) => {
     res.status(200).send({error: 200, errorMessage: "all-good"});

@@ -84,10 +84,11 @@ const HomePage = (props) => {
         });
     }
 
-    const textPopup = async (placeholder, callback) => {
+    const textPopup = async (placeholder, callback, extra=null) => {
+        console.log(extra);
         changeInputPopup(
         <div className="input-popup">
-            <input type="text" placeholder={placeholder} onKeyDown={(e) => {if (e.key==="Enter"){callback(e.target.value)}}}/>
+            <input type="text" placeholder={placeholder} onKeyDown={(e) => {if (e.key==="Enter"){callback(e.target.value, extra);changeInputPopup(null)}}}/>
             <button onClick={() => {changeInputPopup(null)}}>&#10006;</button>
         </div>);
     }
@@ -156,7 +157,7 @@ const HomePage = (props) => {
             <FolderLoad changeDir={showFiles} id={userId} usern={user.userData.usersName} files={files}/>
         </div>
         <div className="main-files">
-            <FileLoad path={currentPath} files={files} id={userId} owner={user.userData.usersRName}/>
+            <FileLoad path={currentPath} files={files} id={userId} owner={user.userData.usersRName} textPopup={textPopup}/>
         </div>
         {folderPostMessage !==null ? <div id="file-popup" className='file-upload-popup'>
                 <p>{folderPostMessage}</p>

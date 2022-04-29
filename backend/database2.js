@@ -42,6 +42,14 @@ async function getUserByHash(hash) {
     return result;
 }
 
+async function getUserByName(name) {
+    const db = await Database.open("./users.db");
+    let sql = "SELECT * FROM USERS WHERE usersName=?";
+    const result = await db.all(sql, [name]);
+    await db.close();
+    return result;
+}
+
 async function addUser(username, hash, rName, email, profile) {
     const db = await Database.open("./users.db");
     const insertStatement = "INSERT INTO users (usersName, usersHash, usersRName, usersEmail, usersProfile) VALUES (?, ?, ?, ?, ?)";
@@ -106,12 +114,25 @@ async function saveProfile(profile, user) {
         console.error(err);
         return 'error';
     }
-} 
+}
 
-//createTable().then(data=>console.log(data));
+async function checkUserSharing(user) {
+    const gettingUser = await getUserByName(user);
+    if (gettingUser.length > 0) {
+        if (JSON.parse(gettingUser[0].usersProfile).sharing===false) {
+            return null;
+        } else {
+            return 200;
+        }
+    } else {
+        return null;
+    }
+}
 
 module.exports = {
     userLogin,
     getUserData,
-    saveProfile
+    saveProfile,
+    checkUserSharing,
+    createTable
 }

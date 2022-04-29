@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getType } from "./fileType";
+import shareFilePost from "./shareFilePost";
 import './styles/File.css';
 
 const File = (props) => {
@@ -13,6 +14,17 @@ const File = (props) => {
         setFileUploadMessage("File Downloading.");
         return;
     }
+
+    const shareFile = async (id2, which, file) => {
+        document.getElementById(props.file).style.display = 'none';
+        props.textPopup("Share with", shareTo, {id2, which, file});
+    }
+
+    const shareTo = async (info, {id2, which, file}) => {
+        const res = await shareFilePost(id2, info, which, file);
+        console.log(res);
+    }
+
     const toggle = (e) => {
         let box = document.getElementById(`${props.file}1`);
         let rect = box.getBoundingClientRect();
@@ -45,7 +57,7 @@ const File = (props) => {
                     <p>Content-type: {getType(props.file.split(".").reverse()[0])}</p>
                     <div className='file-button-group'>
                         <button className='download-button' onClick={() => {downloadFile(props.id, `${props.path.replaceAll(".",'/')}/${props.file}`, props.file)}}>Download</button>
-                        <button className='share-button'>Share</button>
+                        <button className='share-button' onClick={() => {shareFile(props.id, `${props.path.replaceAll(".",'/')}/${props.file}`, props.file)}}>Share</button>
                     </div>
                 </div>
             </div>
