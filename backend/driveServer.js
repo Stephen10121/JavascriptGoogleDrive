@@ -132,39 +132,46 @@ app.post('/getFiles', async (req, res) => {
 });
 
 app.post('/shareFiles', async (req, res) => {
-    console.log(req.body);
-    console.log(await checkUserSharing(req.body.whom));
-    return res.json({msg: "good"})
-    if (!req.query.id || !req.query.location) {
-        return res.status(400).json({msg: "Missing parameters."});
+    if (!req.body.id || !req.body.whom || !req.body.location || !req.body.file) {
+        return res.json({msg: "Missing parameters."});
     }
-    jwt.verify(req.query.id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+    jwt.verify(req.body.id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
         if (err) {
-            return res.status(400).json({ msg: 'Invalid input' });
+            return res.json({ msg: 'Invalid user' });
         }
         const userif = await getUserData(user.usersHash);
         if (userif == "error") {
-            return res.status(400).json({ msg: 'Invalid input' });
+            return res.json({ msg: 'Invalid user' });
         }
-        console.log(`Id: ${req.query.id}. Location: ${req.query.location}.`);
-        const file = `${__dirname}/storage/${hashed(user.usersName)}${req.query.location.slice(4)}`;
-        console.log(file);
-        fs.access(file, fs.F_OK, (err) => {
+        const checkusersharingres = await checkUserSharing(req.body.whom);
+        if (checkusersharingres === null) {
+            return res.json({ msg: "User doesnt exist." });
+        }
+        if (checkusersharingres === "sfalse") {
+            return res.json({ msg: "User disabled sharing." });
+        }
+        const sharingData = {
+            whom: req.body.whom,
+            location: req.body.location.replace("home", `./storage/${hashed(user.usersName)}`),
+            saveLocation: `./storage/${hashed(req.body.whom)}/shared/${req.body.file}`,
+            file: req.body.file
+        }
+        if (fs.existsSync(sharingData.saveLocation)) {
+            return res.json({ msg: "File already exists." });
+        }
+        console.log(sharingData);
+        fs.copyFile(sharingData.location, sharingData.saveLocation, (err) => {
             if (err) {
-                console.error(err);
-                return res.status(200).send("Folder doesn't exist.");
+                console.log("Error Found:", err);
+                return res.json({ msg: "File share error" });
             }
-            return res.download(file);
+            else {
+                console.log("good");
+                return res.json({ msg: "All good" });
+            }
         });
     });
 });
-// url: '/shareFiles',
-//         data: {
-//             id: key,
-//             whom,
-//             location,
-//             file
-//         }
 
 
 

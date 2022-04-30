@@ -22,7 +22,13 @@ const File = (props) => {
 
     const shareTo = async (info, {id2, which, file}) => {
         const res = await shareFilePost(id2, info, which, file);
-        console.log(res);
+        if (res.data.msg) {
+            setShowingNotification(true);
+            setFileUploadMessage(res.data.msg);
+        } else {
+            setShowingNotification(true);
+            setFileUploadMessage("An error occured.");
+        }
     }
 
     const toggle = (e) => {

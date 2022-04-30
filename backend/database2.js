@@ -84,7 +84,7 @@ async function userLogin({ hash, name, email, username}) {
         if (addedUser === 'error') {
             return({errorMessage: "Error Try Again", error: 1000});
         }
-        const dir = `./storage/${hashed(username)}`;
+        const dir = `./storage/${hashed(username)}/shared`;
 
         fs.mkdir(dir, { recursive: true }, (err) => {
             if (err) throw err;
@@ -120,7 +120,7 @@ async function checkUserSharing(user) {
     const gettingUser = await getUserByName(user);
     if (gettingUser.length > 0) {
         if (JSON.parse(gettingUser[0].usersProfile).sharing===false) {
-            return null;
+            return "sfalse";
         } else {
             return 200;
         }
