@@ -159,14 +159,12 @@ app.post('/shareFiles', async (req, res) => {
         if (fs.existsSync(sharingData.saveLocation)) {
             return res.json({ msg: "File already exists." });
         }
-        console.log(sharingData);
         fs.copyFile(sharingData.location, sharingData.saveLocation, (err) => {
             if (err) {
                 console.log("Error Found:", err);
                 return res.json({ msg: "File share error" });
             }
             else {
-                console.log("good");
                 return res.json({ msg: "All good" });
             }
         });
