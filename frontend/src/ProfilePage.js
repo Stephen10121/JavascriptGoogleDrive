@@ -89,9 +89,9 @@ const ProfilePage = (props) => {
                     </Link>
                 </div>
                 <div className="shared-icon">
-                    <button title="Shared With Me">
+                    <Link to="/shared" title="Shared With Me">
                         <img src="./icons/shared.svg" className="image-icon" alt="Shared with me"/>
-                    </button>
+                    </Link>
                 </div>
                 <div className="logout-link">
                     <Link to="/logout">Logout</Link>

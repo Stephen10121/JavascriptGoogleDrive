@@ -4,6 +4,7 @@ import CheckLog from "./CheckLog";
 import setTheme from "./setTheme";
 import Logout from "./Logout";
 import ProfileCheck from "./ProfileCheck";
+import SharedCheck from "./SharedCheck";
 import './styles/App.css';
 
 export const UserDataContext = React.createContext();
@@ -42,7 +43,8 @@ const App = () => {
               <BrowserRouter>
                 <Routes>
                   <Route exact path="/" element={<CheckLog />} />
-                  <Route path="/profile" element={<ProfileCheck />} />
+                  <Route exact path="/shared" element={<SharedCheck />} />
+                  <Route exact path="/profile" element={<ProfileCheck />} />
                   <Route exact path="/logout" element={<Logout />} />
                 </Routes>
               </BrowserRouter>

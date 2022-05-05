@@ -55,7 +55,7 @@ const checkJWT = async (cookie) => {
     return jeff;
 }
 
-app.get('/', (req, res) => res.render('index'));
+app.get('/', (req, res) => {res.render('index');});
 app.get('/signup', (req, res) => res.render('index'));
 app.get('/login', (req, res) => res.render('index'));
 app.get('/logout', (req, res) => res.render('index'));

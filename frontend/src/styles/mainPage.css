@@ -39,7 +39,7 @@
 }
 
 .upload-icon button,
-.shared-icon button {
+.shared-icon a {
   background: none;
   border: none;
   cursor: pointer;
@@ -48,7 +48,7 @@
 }
 
 .upload-icon button:hover,
-.shared-icon button:hover {
+.shared-icon a:hover {
   filter: invert(0.5);
 }
 
@@ -100,7 +100,7 @@
 /* End File popup */
 
 .upload-icon button img,
-.shared-icon button img {
+.shared-icon a img {
   width: 100%;
   height: 100%;
 }

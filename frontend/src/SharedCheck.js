@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Notlogged from "./Notlogged";
-import HomePage from "./HomePage";
+import Profile from "./Profile";
 import { getCookie } from "./Cookie";
 import getFiles from "./getFiles";
 import { UserDataContext, UserDataChangeContext, UserFiles } from './App';
 import './styles/App.css';
 
-const CheckLog = () => {
+const SharedCheck = () => {
   const userData = useContext(UserDataContext);
   const userDataChange = useContext(UserDataChangeContext);
   const { userFiles, setUserFiles } = useContext(UserFiles);
@@ -14,6 +14,7 @@ const CheckLog = () => {
 
   const isLoggedIn = () => {
     const gotCookie = getCookie("G_VAR");
+    console.log(userData);
     if (gotCookie) {
       if (!window.localStorage.user) {
         window.localStorage.user = JSON.stringify(userData);
@@ -22,18 +23,10 @@ const CheckLog = () => {
         userDataChange(JSON.parse(window.localStorage.getItem("user")));
       }
       getFiles(JSON.parse(window.localStorage.getItem("user")).token).then(({data}) => {
-        let normFiles = [];
-        let sharedFiles = [];
-        for (let i = 0; i<data.data.length; i++) {
-          if (data.data[i].includes("home/shared")) {
-            sharedFiles.push(data.data[i]);
-          } else {
-            normFiles.push(data.data[i]);
-          }
-        }
-        setUserFiles(normFiles);
-        setLogged(<HomePage />);
+        setUserFiles(data.data);
+        setLogged(<Profile />);
       });
+      console.log(userData);
     } else {
       setLogged(<Notlogged/>);
     }
@@ -66,4 +59,4 @@ const CheckLog = () => {
   );
 }
 
-export default CheckLog;
+export default SharedCheck;
