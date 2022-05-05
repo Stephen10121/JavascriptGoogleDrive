@@ -68,6 +68,11 @@
   filter: invert(0.5);
 }
 
+.blocked {
+  user-select: none !important;
+  cursor: default !important;
+}
+
 /* File popup */
 
 .file-upload-popup {

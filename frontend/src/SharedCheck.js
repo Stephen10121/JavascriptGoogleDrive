@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Notlogged from "./Notlogged";
-import Profile from "./Profile";
 import { getCookie } from "./Cookie";
 import getFiles from "./getFiles";
+import Shared from "./Shared";
 import { UserDataContext, UserDataChangeContext, UserFiles } from './App';
 import './styles/App.css';
 
@@ -23,8 +23,17 @@ const SharedCheck = () => {
         userDataChange(JSON.parse(window.localStorage.getItem("user")));
       }
       getFiles(JSON.parse(window.localStorage.getItem("user")).token).then(({data}) => {
-        setUserFiles(data.data);
-        setLogged(<Profile />);
+        let normFiles = [];
+        let sharedFiles = [];
+        for (let i = 0; i<data.data.length; i++) {
+          if (data.data[i].includes("home/shared")) {
+            sharedFiles.push(data.data[i]);
+          } else {
+            normFiles.push(data.data[i]);
+          }
+        }
+        setUserFiles(sharedFiles);
+        setLogged(<Shared />);
       });
       console.log(userData);
     } else {

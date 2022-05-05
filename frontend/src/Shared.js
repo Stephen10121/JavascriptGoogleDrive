@@ -14,7 +14,7 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.split(search).join(replacement);
 };
 
-const HomePage = (props) => {
+const Shared = (props) => {
     const userData = useContext(UserDataContext);
     const {userFiles, setUserFiles} = useContext(UserFiles);
     const [user, setUser] = useState(userData);
@@ -126,10 +126,7 @@ const HomePage = (props) => {
         {inputPopup}
         <div className="right-click">
             <ul>
-                <li><button onClick={async () => {hideRightClick();textPopup("Folder Name", newFolder)}}>New Folder</button></li>
-                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
-                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Move Folder</button></li>
-                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Share Folder</button></li>
+                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Add to my drive</button></li>
             </ul>
         </div>
         <div className="taskbar">
@@ -141,13 +138,11 @@ const HomePage = (props) => {
             <div className="upload-icon">
                 <FileUpload changefiles={setTheFiles} files={userFiles} id={userId} path={currentPath} updater={showFiles}/>
             </div>
-            {userProfile.sharing ? 
-                    <div className="shared-icon">
-                        <Link to="/shared" title="Shared With Me" className={!userProfile.sharing ? "blocked" : ""}>
-                            <img src="./icons/shared.svg" className="image-icon" alt="Shared with me"/>
-                        </Link>
-                    </div>
-                : null}
+            <div className="home-icon">
+                    <Link to="/" title="Go Home">
+                        <img src="./icons/house.svg" className="image-icon" alt="house icon"/>
+                    </Link>
+                </div>
             <div className="logout-link">
                 <Link to="/logout">Logout</Link>
             </div>
@@ -169,4 +164,4 @@ const HomePage = (props) => {
     );
 }
 
-export default HomePage;
+export default Shared;

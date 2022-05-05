@@ -74,6 +74,7 @@ const ProfilePage = (props) => {
     }
 
     useEffect(() => {
+        console.log(usersProfile);
         onStartup.current();
     }, []);
 
@@ -88,11 +89,13 @@ const ProfilePage = (props) => {
                         <img src="./icons/house.svg" className="image-icon" alt="house icon"/>
                     </Link>
                 </div>
-                <div className="shared-icon">
-                    <Link to="/shared" title="Shared With Me">
-                        <img src="./icons/shared.svg" className="image-icon" alt="Shared with me"/>
-                    </Link>
-                </div>
+                {usersProfile.sharing ? 
+                    <div className="shared-icon">
+                        <Link to="/shared" title="Shared With Me" className={!usersProfile.sharing ? "blocked" : ""}>
+                            <img src="./icons/shared.svg" className="image-icon" alt="Shared with me"/>
+                        </Link>
+                    </div>
+                : null}
                 <div className="logout-link">
                     <Link to="/logout">Logout</Link>
                 </div>

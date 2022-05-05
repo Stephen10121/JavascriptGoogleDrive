@@ -23,7 +23,16 @@ const CheckLog = () => {
         userDataChange(JSON.parse(window.localStorage.getItem("user")));
       }
       getFiles(JSON.parse(window.localStorage.getItem("user")).token).then(({data}) => {
-        setUserFiles(data.data);
+        let normFiles = [];
+        let sharedFiles = [];
+        for (let i = 0; i<data.data.length; i++) {
+          if (data.data[i].includes("home/shared")) {
+            sharedFiles.push(data.data[i]);
+          } else {
+            normFiles.push(data.data[i]);
+          }
+        }
+        setUserFiles(normFiles);
         setLogged(<Profile />);
       });
       console.log(userData);
