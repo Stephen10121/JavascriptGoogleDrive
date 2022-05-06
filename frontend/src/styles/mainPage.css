@@ -254,3 +254,65 @@
 .input-popup button:hover {
   color: gray;
 }
+
+.you-sure-popup {
+  position: fixed;
+  width: 17rem;
+  height: 3rem;
+  border-radius: 5px;
+  background-color: rgba(54, 54, 54, 0.9);
+  font-family: sans-serif;
+  top: 50%;
+  left: 50%;
+  margin-top: -1.5rem;
+  margin-left: -7.5rem;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.you-sure-popup #yesButton,
+.you-sure-popup #noButton {
+  font-family: "Roboto", sans-serif;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.you-sure-popup #yesButton {
+  background-color: rgb(0, 255, 0);
+}
+.you-sure-popup #yesButton:hover {
+  background-color: rgb(24, 206, 24);
+}
+
+.you-sure-popup #noButton {
+  background-color: rgb(255, 0, 0);
+}
+.you-sure-popup #noButton:hover {
+  background-color: rgb(190, 35, 35);
+}
+
+.you-sure-popup #xButton {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 20px;
+  margin-left: 10px;
+  height: 20px;
+  padding-top: 1px;
+  padding-left: 1px;
+  color: black;
+}
+
+.you-sure-popup #xButton:hover {
+  color: gray;
+}

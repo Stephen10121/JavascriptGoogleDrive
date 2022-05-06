@@ -24,6 +24,7 @@ const HomePage = (props) => {
     const [files, changeFiles] = useState([]);
     const [currentPath, changeCurrentPath] = useState('home');
     const [inputPopup, changeInputPopup] = useState(null);
+    const [youSurePopup, changeYouSurePopup] = useState(null);
     const [folderPostMessage, setFolderPostMessage] = useState(null);
 
     const loadUserData = () => {
@@ -94,6 +95,17 @@ const HomePage = (props) => {
         </div>);
     }
 
+    const yesNoPopup = async (placeholder, callback, extra=null) => {
+        console.log(extra);
+        changeYouSurePopup(
+        <div className="you-sure-popup">
+            <p>{placeholder}</p>
+            <button id="yesButton" onClick={() => {changeYouSurePopup(null);callback(true, extra)}}>Yes</button>
+            <button id="noButton" onClick={() => {changeYouSurePopup(null);callback(false, extra)}}>No</button>
+            <button id="xButton" onClick={() => {changeYouSurePopup(null)}}>&#10006;</button>
+        </div>);
+    }
+
     const newFolder = async (folderName) => {
         const resulstpost2 = await newFolderPost(userId, currentPath, folderName);
         if (typeof resulstpost2 === "object") {
@@ -141,10 +153,11 @@ const HomePage = (props) => {
     return (
     <div className="HomePage">
         {inputPopup}
+        {youSurePopup}
         <div className="right-click">
             <ul>
                 <li><button onClick={async () => {hideRightClick();textPopup("Folder Name", newFolder)}}>New Folder</button></li>
-                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
+                <li><button onClick={() => {hideRightClick();yesNoPopup("Are you sure?", console.log)}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
                 <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Move Folder</button></li>
                 <li><button onClick={() => {hideRightClick();textPopup("Share To", shareFolder)}} className={currentPath.includes(".") ? null : "non-selectable"}>Share Folder</button></li>
             </ul>
