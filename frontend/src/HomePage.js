@@ -5,6 +5,7 @@ import FileLoad from "./LoadFileStruct";
 import convertToJson from "./jsonIt";
 import { getCookie } from "./Cookie";
 import newFolderPost from "./newFolderPost";
+import shareFolderPost from "./shareFolderPost";
 import './styles/mainPage.css';
 import { UserDataContext, UserFiles } from './App';
 import FileUpload from "./FileUpload";
@@ -96,12 +97,28 @@ const HomePage = (props) => {
     const newFolder = async (folderName) => {
         const resulstpost2 = await newFolderPost(userId, currentPath, folderName);
         if (typeof resulstpost2 === "object") {
-            setUserFiles(resulstpost2);
+            console.log(resulstpost2);
+            let normFiles = [];
+            for (let i = 0; i<resulstpost2.length; i++) {
+                if (!resulstpost2[i].includes("home/shared")) {
+                    normFiles.push(resulstpost2[i]);
+                }
+            }
+            setUserFiles(normFiles);
             setFolderPostMessage("Success!");
         } else {
             setFolderPostMessage(resulstpost2);
         }
     }
+
+    const shareFolder = async (whom) => {
+        const shareFolderRes = await shareFolderPost(userId, whom, currentPath.replaceAll(".", "/"), currentPath.split(".").reverse()[0]);
+        if (shareFolderRes.data.msg) {
+            setFolderPostMessage(shareFolderRes.data.msg);
+        } else {
+            setFolderPostMessage("An error Occured")
+        }
+    } 
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
@@ -129,7 +146,7 @@ const HomePage = (props) => {
                 <li><button onClick={async () => {hideRightClick();textPopup("Folder Name", newFolder)}}>New Folder</button></li>
                 <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
                 <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Move Folder</button></li>
-                <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Share Folder</button></li>
+                <li><button onClick={() => {hideRightClick();textPopup("Share To", shareFolder)}} className={currentPath.includes(".") ? null : "non-selectable"}>Share Folder</button></li>
             </ul>
         </div>
         <div className="taskbar">

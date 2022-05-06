@@ -6,7 +6,7 @@ const socketio = require('socket.io');
 const { userLogin, getUserData, saveProfile, checkUserSharing } = require("./database2");
 const { getFiles } = require("./data");
 const { PassThrough } = require("stream");
-const { hashed } = require("./functions");
+const { hashed, copyRecursiveSync } = require("./functions");
 const multer  = require('multer');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -168,6 +168,48 @@ app.post('/shareFiles', async (req, res) => {
                 return res.json({ msg: "All good" });
             }
         });
+    });
+});
+
+app.post('/shareFolder', async (req, res) => {
+    if (!req.body.id || !req.body.whom || !req.body.location || !req.body.folder) {
+        return res.json({msg: "Missing parameters."});
+    }
+    jwt.verify(req.body.id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.json({ msg: 'Invalid user' });
+        }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.json({ msg: 'Invalid user' });
+        }
+        const checkusersharingres = await checkUserSharing(req.body.whom);
+        if (checkusersharingres === null) {
+            return res.json({ msg: "User doesnt exist." });
+        }
+        if (checkusersharingres === "sfalse") {
+            return res.json({ msg: "User disabled sharing." });
+        }
+        const sharingData = {
+            whom: req.body.whom,
+            location: req.body.location.replace("home", `./storage/${hashed(user.usersName)}`),
+            saveLocation: `./storage/${hashed(req.body.whom)}/shared/${req.body.folder}`,
+            folder: req.body.folder
+        }
+        if (fs.existsSync(sharingData.saveLocation)) {
+            return res.json({ msg: "Folder already exists." });
+        }
+        copyRecursiveSync(sharingData.location, sharingData.saveLocation);
+        res.json({ msg: "Success"});
+        // fs.copyFile(sharingData.location, sharingData.saveLocation, (err) => {
+        //     if (err) {
+        //         console.log("Error Found:", err);
+        //         return res.json({ msg: "File share error" });
+        //     }
+        //     else {
+        //         return res.json({ msg: "All good" });
+        //     }
+        // });
     });
 });
 
