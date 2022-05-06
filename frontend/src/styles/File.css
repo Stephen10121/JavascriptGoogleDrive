@@ -71,3 +71,12 @@
   background-color: rgb(46, 85, 168);
   outline: 1px solid rgb(46, 85, 168);
 }
+
+.delete-button {
+  background-color: rgb(255, 0, 0);
+}
+
+.delete-button:hover {
+  background-color: rgb(190, 35, 35);
+  outline: 1px solid rgb(190, 35, 35);
+}

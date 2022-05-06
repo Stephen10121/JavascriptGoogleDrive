@@ -79,11 +79,22 @@ const FolderLoad = (props) => {
         }
     }, [userFiles]);
 
+    function reverseString(str) {
+        return (str === '') ? '' : reverseString(str.substr(1)) + str.charAt(0);
+    }
+
     useEffect(() => {
-        console.log(prev);
+        console.log(prev, userFiles);
         document.getElementById(currentPath + "1").style.background = "var(--name-color)";
         if (prev !== null) {
-            document.getElementById(prev).style.background = "var(--folder-background-color)";
+            try {
+                let prevDoc = document.getElementById(prev);
+                if (prevDoc!==null) {
+                    prevDoc.style.background = "var(--folder-background-color)";
+                }
+            } catch (err) {
+                throw err;
+            }
         }
         changePrev(`${currentPath}1`);
         console.log(currentPath);

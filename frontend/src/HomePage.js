@@ -39,15 +39,30 @@ const HomePage = (props) => {
         }
     }
 
-    const showFiles = (where) => {
+    const showFiles = (where, extra=null) => {
         where = where.replaceAll("/",".");
         let newFileLocation = Object.keys(where.split('.').reduce((o,i)=> o[i], convertToJson(userFiles)));
         let newFolders = [];
+        let newUserFiles = userFiles;
         for (const checkFile of newFileLocation) {
             if (checkFile.includes(".")) {
-                newFolders.push(checkFile);
+                let yessiree = false;
+                if (extra!==null) {
+                    if (extra["rm"]) {
+                        if (extra.rm === checkFile) {
+                            yessiree=true;
+                            newUserFiles = newUserFiles.filter(e => e !== currentPath.replaceAll(".","/") +"/"+ extra.rm);
+                        }
+                    }
+                }
+                if (!yessiree) {
+                    newFolders.push(checkFile);
+                }
             }
         }
+        changeCurrentPath(where);
+        changeFiles(newFolders);
+        setUserFiles(newUserFiles);
         changeCurrentPath(where);
         changeFiles(newFolders);
     }
@@ -140,6 +155,16 @@ const HomePage = (props) => {
         const deleteFolderRes = await deleteFolderPost(userId, currentPath);
         if (deleteFolderRes.data.msg) {
             setFolderPostMessage(deleteFolderRes.data.msg);
+            if (deleteFolderRes.data.msg==="Success") {
+                let normFiles = [];
+                for (let i = 0; i<userFiles.length; i++) {
+                    if (!userFiles[i].includes("home/shared") && userFiles[i]!==currentPath.replaceAll(".","/")) {
+                        normFiles.push(userFiles[i]);
+                    }
+                }
+                setUserFiles(normFiles);
+                changeCurrentPath("home");
+            }
         } else {
             setFolderPostMessage("An error Occured")
         }
@@ -202,7 +227,7 @@ const HomePage = (props) => {
             <FolderLoad changeDir={showFiles} id={userId} usern={user.userData.usersName} files={files}/>
         </div>
         <div className="main-files">
-            <FileLoad path={currentPath} files={files} id={userId} owner={user.userData.usersRName} textPopup={textPopup}/>
+            <FileLoad path={currentPath} files={files} id={userId} owner={user.userData.usersRName} textPopup={textPopup} yesNoPopup={yesNoPopup} updater={showFiles}/>
         </div>
         {folderPostMessage !==null ? <div id="file-popup" className='file-upload-popup'>
                 <p>{folderPostMessage}</p>

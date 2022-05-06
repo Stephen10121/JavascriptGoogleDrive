@@ -232,6 +232,33 @@ app.post('/deleteFolder', async (req, res) => {
     });
 });
 
+app.post('/deleteFile', async (req, res) => {
+    if (!req.body.id || !req.body.fileLocation || !req.body.file) {
+        return res.json({msg: "Missing parameters."});
+    }
+    jwt.verify(req.body.id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.json({ msg: 'Invalid user' });
+        }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.json({ msg: 'Invalid user' });
+        }
+        const deleteDirectory = `${req.body.fileLocation.replaceAll(".","/").replace("home",`./storage/${hashed(user.usersName)}`)}/${req.body.file}`;
+        
+        if (!fs.existsSync(deleteDirectory)) {
+            return res.json({ msg: "File doesnt exist." });
+        }
+        try {
+            fs.unlinkSync(deleteDirectory);
+            return res.json({ msg: "Success"});
+        } catch (err) {
+            res.json({ msg: "An error occured" });
+            throw err;
+        }
+    });
+});
+
 
 
 app.post("/logout", (req, res) => {

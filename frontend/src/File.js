@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getType } from "./fileType";
 import shareFilePost from "./shareFilePost";
+import deleteFilePost from "./deleteFilePost";
 import './styles/File.css';
 
 const File = (props) => {
@@ -18,6 +19,28 @@ const File = (props) => {
     const shareFile = async (id2, which, file) => {
         document.getElementById(props.file).style.display = 'none';
         props.textPopup("Share with", shareTo, {id2, which, file});
+    }
+
+    const deleteFile = async (id2, which, file) => {
+        document.getElementById(props.file).style.display = 'none';
+        props.yesNoPopup("Delete File?", deleteFileRes, {id2, which, file});
+    }
+
+    const deleteFileRes = async (info, {id2, which, file}) => {
+        if (!info) {
+            return;
+        }
+        const res = await deleteFilePost(id2, which, file);
+        if (res.data.msg) {
+            setShowingNotification(true);
+            setFileUploadMessage(res.data.msg);
+            if (res.data.msg === "Success") {
+                props.updater(which, {rm: file});
+            }
+        } else {
+            setShowingNotification(true);
+            setFileUploadMessage("An error occured.");
+        }
     }
 
     const shareTo = async (info, {id2, which, file}) => {
@@ -64,6 +87,7 @@ const File = (props) => {
                     <div className='file-button-group'>
                         <button className='download-button' onClick={() => {downloadFile(props.id, `${props.path.replaceAll(".",'/')}/${props.file}`, props.file)}}>Download</button>
                         <button className='share-button' onClick={() => {shareFile(props.id, `${props.path.replaceAll(".",'/')}/${props.file}`, props.file)}}>Share</button>
+                        <button className='delete-button' onClick={() => {deleteFile(props.id, props.path.replaceAll(".",'/'), props.file)}}>Delete</button>
                     </div>
                 </div>
             </div>
