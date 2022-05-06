@@ -1,0 +1,35 @@
+{
+  "short_name": "Storage Drive",
+  "name": "Storage Drive | Gruzservices",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "icons2/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons2/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons2/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons2/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "display": "fullscreen",
+  "theme_color": "#240370",
+  "background_color": "#dfdfdf",
+  "orientation": "landscape"
+}
