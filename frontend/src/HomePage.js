@@ -6,6 +6,7 @@ import convertToJson from "./jsonIt";
 import { getCookie } from "./Cookie";
 import newFolderPost from "./newFolderPost";
 import shareFolderPost from "./shareFolderPost";
+import deleteFolderPost from "./deleteFolderPost";
 import './styles/mainPage.css';
 import { UserDataContext, UserFiles } from './App';
 import FileUpload from "./FileUpload";
@@ -130,7 +131,19 @@ const HomePage = (props) => {
         } else {
             setFolderPostMessage("An error Occured")
         }
-    } 
+    }
+
+    const deleteFolder = async (result, extraInfo=null) => {
+        if (!result) {
+            return;
+        }
+        const deleteFolderRes = await deleteFolderPost(userId, currentPath);
+        if (deleteFolderRes.data.msg) {
+            setFolderPostMessage(deleteFolderRes.data.msg);
+        } else {
+            setFolderPostMessage("An error Occured")
+        }
+    }
 
     const onStartup = useRef(() => {});
     onStartup.current = () => {
@@ -157,7 +170,7 @@ const HomePage = (props) => {
         <div className="right-click">
             <ul>
                 <li><button onClick={async () => {hideRightClick();textPopup("Folder Name", newFolder)}}>New Folder</button></li>
-                <li><button onClick={() => {hideRightClick();yesNoPopup("Are you sure?", console.log)}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
+                <li><button onClick={() => {hideRightClick();yesNoPopup("Are you sure?", deleteFolder)}} className={currentPath.includes(".") ? null : "non-selectable"}>Delete Folder</button></li>
                 <li><button onClick={() => {hideRightClick();}} className={currentPath.includes(".") ? null : "non-selectable"}>Move Folder</button></li>
                 <li><button onClick={() => {hideRightClick();textPopup("Share To", shareFolder)}} className={currentPath.includes(".") ? null : "non-selectable"}>Share Folder</button></li>
             </ul>

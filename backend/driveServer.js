@@ -201,15 +201,34 @@ app.post('/shareFolder', async (req, res) => {
         }
         copyRecursiveSync(sharingData.location, sharingData.saveLocation);
         res.json({ msg: "Success"});
-        // fs.copyFile(sharingData.location, sharingData.saveLocation, (err) => {
-        //     if (err) {
-        //         console.log("Error Found:", err);
-        //         return res.json({ msg: "File share error" });
-        //     }
-        //     else {
-        //         return res.json({ msg: "All good" });
-        //     }
-        // });
+    });
+});
+
+app.post('/deleteFolder', async (req, res) => {
+    if (!req.body.id || !req.body.folder) {
+        return res.json({msg: "Missing parameters."});
+    }
+    jwt.verify(req.body.id, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+        if (err) {
+            return res.json({ msg: 'Invalid user' });
+        }
+        const userif = await getUserData(user.usersHash);
+        if (userif == "error") {
+            return res.json({ msg: 'Invalid user' });
+        }
+        const deleteDirectory = req.body.folder.replaceAll(".","/").replace("home",`./storage/${hashed(user.usersName)}`);
+
+        if (!fs.existsSync(deleteDirectory)) {
+            return res.json({ msg: "Folder doesnt exist." });
+        }
+
+        fs.rmdir(deleteDirectory, { recursive: true }, (err) => {
+            if (err) {
+                res.json({ msg: "An error occured" });
+                throw err;
+            }
+            return res.json({ msg: "Success"});
+        });
     });
 });
 
